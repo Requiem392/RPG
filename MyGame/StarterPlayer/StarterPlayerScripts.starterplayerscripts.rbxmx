@@ -1,0 +1,1038 @@
+<roblox version="4">
+  <Item class="StarterPlayerScripts" referent="0">
+    <Properties>
+      <string name="Name">StarterPlayerScripts</string>
+      <BinaryString name="AttributesSerialize"></BinaryString>
+      <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+      <bool name="DefinesCapabilities">false</bool>
+      <int64 name="SourceAssetId">-1</int64>
+      <BinaryString name="Tags"></BinaryString>
+    </Properties>
+    <Item class="LocalScript" referent="1">
+      <Properties>
+        <string name="Name">AnimaCombate</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <bool name="Disabled">true</bool>
+        <ContentId name="LinkedSource">
+          <null>
+          </null>
+        </ContentId>
+        <token name="RunContext">0</token>
+        <bool name="DefinesCapabilities">false</bool>
+        <string name="Source">local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local ContentProvider = game:GetService("ContentProvider") 
+local Debris = game:GetService("Debris")
+
+local CombateMath = require(ReplicatedStorage:WaitForChild("CombateMath"))
+local eventoCombate = ReplicatedStorage:WaitForChild("EventoCombate")
+
+local pastaAssets = ReplicatedStorage:WaitForChild("AssetsVFX")
+local trailTemplate = pastaAssets:WaitForChild("RastroPunch") 
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local animator = humanoid:WaitForChild("Animator")
+
+-- === CONFIGURAÇÕES ===
+local FORCA_IMPULSO = 20
+local ALCANCE_VISUAL = 6
+local LARGURA_LEQUE = 3
+local QUANTIDADE_LINHAS = 5
+local TEMPO_VISUAL = 0.3
+
+local SENSIBILIDADE = 2
+local RAIO_VIRTUAL = 100
+
+-- === ⏳ CONFIGURAÇÃO DE COOLDOWN (NOVO) ===
+local COOLDOWN_FORTE = 0.9  -- O Hook demora quase 1 seg pra recuperar
+local COOLDOWN_JAB = 0.7   -- O Jab é rapidinho
+local ultimoAtaque = 0      -- Guarda o tempo do último golpe
+
+-- Hitbox Local (Para o som preciso)
+local DURACAO_HITBOX = 0.4
+local PONTOS_DE_RASTREIO = {
+	CFrame.new(0, -1, 0),     -- Ponta
+	CFrame.new(0.4, -1, 0),   -- Lados
+	CFrame.new(-0.4, -1, 0),
+	CFrame.new(0, -0.5, 0),   -- Meio
+}
+
+-- Áudio
+local SONS_SWING = {
+	"rbxassetid://74238153433253",
+	"rbxassetid://101467914599270",
+	"rbxassetid://121514852904179"
+}
+
+local SONS_HIT = {
+	"rbxassetid://109316755832781",
+	"rbxassetid://113828106042161",
+	"rbxassetid://98330897555423"
+}
+
+local objetosDeSomSwing = {}
+local objetosDeSomHit = {} 
+
+local LISTA_ANIMS = {
+	Idle = {
+		["Cima"]     = "rbxassetid://126482891056522", 
+		["Esquerda"] = "rbxassetid://128460161440253", 
+		["Direita"]  = "rbxassetid://107639627598983", 
+	},
+	AtaqueForte = {
+		["Cima"]     = "rbxassetid://71862221299248", 
+		["Esquerda"] = "rbxassetid://105078068476566", 
+		["Direita"]  = "rbxassetid://102891047100381", 
+	},
+	Jab = {
+		["Cima"]     = "rbxassetid://100060013737086", 
+		["Direita"]  = "rbxassetid://100060013737086", 
+		["Esquerda"] = "rbxassetid://97672890714490", 
+	}
+}
+
+local tracksIdle, tracksForte, tracksJab = {}, {}, {}
+local posturaAtual = "Cima"
+local mouseVirtual = Vector2.new(0, 0)
+local ultimaAnimTocada = nil -- Variável de controle da guarda
+
+-- === PRELOAD DE SOM ===
+local function prepararSons()
+	objetosDeSomSwing = {} 
+	objetosDeSomHit = {}
+	local sonsParaCarregar = {}
+
+	for _, id in ipairs(SONS_SWING) do
+		local som = Instance.new("Sound")
+		som.SoundId = id; som.Volume = 0.5; som.Parent = rootPart 
+		table.insert(objetosDeSomSwing, som); table.insert(sonsParaCarregar, som)
+	end
+
+	for _, id in ipairs(SONS_HIT) do
+		local som = Instance.new("Sound")
+		som.SoundId = id; som.Volume = 1; som.Parent = rootPart
+		table.insert(objetosDeSomHit, som); table.insert(sonsParaCarregar, som)
+	end
+
+	task.spawn(function() pcall(function() ContentProvider:PreloadAsync(sonsParaCarregar) end) end)
+end
+
+local function tocarSomSwing()
+	if #objetosDeSomSwing &gt; 0 then objetosDeSomSwing[math.random(1, #objetosDeSomSwing)]:Play() end
+end
+
+local function tocarSomHit()
+	if #objetosDeSomHit &gt; 0 then objetosDeSomHit[math.random(1, #objetosDeSomHit)]:Play() end
+end
+
+-- === LINHAS INTELIGENTES &amp; DASH ===
+if workspace:FindFirstChild("VisualCombate") then workspace.VisualCombate:Destroy() end
+local pastaVisual = Instance.new("Folder", workspace); pastaVisual.Name = "VisualCombate"
+
+local function executarLinhasInteligentes()
+	local centroChar = rootPart.CFrame
+	local espacamento = LARGURA_LEQUE / (QUANTIDADE_LINHAS - 1)
+	local inicioEsquerda = -LARGURA_LEQUE / 2
+
+	local params = RaycastParams.new()
+	params.FilterDescendantsInstances = {character, pastaVisual}
+	params.FilterType = Enum.RaycastFilterType.Exclude
+
+	local encontrouInimigo = false
+
+	for i = 0, QUANTIDADE_LINHAS - 1 do
+		local offsetX = inicioEsquerda + (espacamento * i)
+		local origem = (centroChar * CFrame.new(offsetX, 0, 0)).Position
+		local direcao = centroChar.LookVector * ALCANCE_VISUAL
+		local resultado = workspace:Raycast(origem, direcao, params)
+
+		local cor = Color3.fromRGB(255, 0, 0)
+		local distanciaDesenho = ALCANCE_VISUAL
+
+		if resultado then
+			distanciaDesenho = resultado.Distance
+			if resultado.Instance.Parent:FindFirstChild("Humanoid") then
+				cor = Color3.fromRGB(0, 255, 0)
+				encontrouInimigo = true
+			end
+		end
+
+		local visual = Instance.new("Part")
+		visual.Size = Vector3.new(0.05, 0.05, distanciaDesenho)
+		visual.Anchored, visual.CanCollide, visual.Material = true, false, Enum.Material.Neon
+		visual.Color = cor; visual.Transparency = 0.8
+		visual.CFrame = CFrame.new(origem, origem + direcao.Unit * distanciaDesenho) * CFrame.new(0, 0, -distanciaDesenho / 2)
+		visual.Parent = pastaVisual
+		Debris:AddItem(visual, TEMPO_VISUAL)
+	end
+
+	if not encontrouInimigo then
+		local empurrao = Instance.new("BodyVelocity")
+		empurrao.Velocity = rootPart.CFrame.LookVector * FORCA_IMPULSO
+		empurrao.MaxForce = Vector3.new(100000, 0, 100000)
+		empurrao.Parent = rootPart
+		Debris:AddItem(empurrao, 0.2)
+	end
+end
+
+-- === DETECÇÃO DE HIT PRECISA ===
+local function detectarHitSomPreciso(lado)
+	local nomeBraco = (lado == "Esquerda") and "Left Arm" or "Right Arm"
+	local mao = character:FindFirstChild(nomeBraco) or character:FindFirstChild(lado == "Esquerda" and "LeftHand" or "RightHand")
+
+	if not mao then return end
+
+	local tempoInicio = os.clock()
+	local conexao
+	local jaTocouSom = false
+
+	local ultimasPosicoes = {}
+	for i, offset in ipairs(PONTOS_DE_RASTREIO) do
+		ultimasPosicoes[i] = (mao.CFrame * offset).Position
+	end
+
+	conexao = RunService.RenderStepped:Connect(function()
+		if (os.clock() - tempoInicio) &gt; DURACAO_HITBOX or jaTocouSom then
+			conexao:Disconnect()
+			return
+		end
+
+		for i, offset in ipairs(PONTOS_DE_RASTREIO) do
+			local posicaoAtual = (mao.CFrame * offset).Position
+			local ultimaPosicao = ultimasPosicoes[i]
+			local direcaoRaio = posicaoAtual - ultimaPosicao
+			local distancia = direcaoRaio.Magnitude
+
+			if distancia &gt; 0.01 then
+				local params = RaycastParams.new()
+				params.FilterDescendantsInstances = {character} 
+				params.FilterType = Enum.RaycastFilterType.Exclude
+
+				local resultado = workspace:Raycast(ultimaPosicao, direcaoRaio, params)
+
+				if resultado then
+					local hitModel = resultado.Instance.Parent
+					if hitModel:FindFirstChild("Humanoid") then
+						tocarSomHit() 
+						jaTocouSom = true
+						conexao:Disconnect()
+						return
+					end
+				end
+			end
+			ultimasPosicoes[i] = posicaoAtual
+		end
+	end)
+end
+
+-- === TRAIL ===
+local function instalarTrail(char)
+	local bracos = {
+		char:FindFirstChild("Right Arm") or char:FindFirstChild("RightHand"),
+		char:FindFirstChild("Left Arm") or char:FindFirstChild("LeftHand")
+	}
+	for _, braco in pairs(bracos) do
+		if braco and not braco:FindFirstChild("RastroInstalado") then
+			local rastroPart = trailTemplate:Clone()
+			rastroPart.Name = "RastroInstalado"
+			rastroPart.CFrame = braco.CFrame
+			rastroPart.Parent = braco
+			rastroPart.Anchored = false 
+			local weld = Instance.new("WeldConstraint")
+			weld.Part0 = braco; weld.Part1 = rastroPart; weld.Parent = rastroPart
+			rastroPart.Transparency = 1; rastroPart.CanCollide = false; rastroPart.Massless = true
+			for _, filho in pairs(rastroPart:GetChildren()) do
+				if filho:IsA("Trail") then filho.Enabled = false end
+			end
+		end
+	end
+end
+
+local function toggleTrail(lado, ligar)
+	local nomeBraco = (lado == "Esquerda") and "Left Arm" or "Right Arm"
+	local braco = character:FindFirstChild(nomeBraco) or character:FindFirstChild(nomeBraco == "Left Arm" and "LeftHand" or "RightHand")
+	if braco then
+		local rastroPart = braco:FindFirstChild("RastroInstalado")
+		if rastroPart then
+			for _, filho in pairs(rastroPart:GetChildren()) do
+				if filho:IsA("Trail") then filho.Enabled = ligar end
+			end
+		end
+	end
+end
+
+-- === CARREGAR ANIMAÇÕES ===
+local function carregarAnimacoes()
+	for direcao, id in pairs(LISTA_ANIMS.Idle) do
+		local anim = Instance.new("Animation"); anim.AnimationId = id
+		tracksIdle[direcao] = animator:LoadAnimation(anim); tracksIdle[direcao].Looped = true; tracksIdle[direcao].Priority = Enum.AnimationPriority.Movement
+	end
+	for direcao, id in pairs(LISTA_ANIMS.AtaqueForte) do
+		local anim = Instance.new("Animation"); anim.AnimationId = id
+		tracksForte[direcao] = animator:LoadAnimation(anim); tracksForte[direcao].Priority = Enum.AnimationPriority.Action
+	end
+	for direcao, id in pairs(LISTA_ANIMS.Jab) do
+		local anim = Instance.new("Animation"); anim.AnimationId = id
+		tracksJab[direcao] = animator:LoadAnimation(anim); tracksJab[direcao].Priority = Enum.AnimationPriority.Action
+	end
+end
+
+-- === LOOP PRINCIPAL (POSTURA + GUARDA) ===
+RunService.RenderStepped:Connect(function()
+	local novaPosturaRaw = nil
+	local mouseTravado = UserInputService.MouseBehavior == Enum.MouseBehavior.LockCenter
+
+	if mouseTravado then
+		local delta = UserInputService:GetMouseDelta()
+		mouseVirtual = mouseVirtual + (delta * SENSIBILIDADE)
+		if mouseVirtual.Magnitude &gt; RAIO_VIRTUAL then mouseVirtual = mouseVirtual.Unit * RAIO_VIRTUAL end
+		novaPosturaRaw = CombateMath.CalcularPostura(mouseVirtual, Vector2.new(0,0))
+	else
+		local camera = workspace.CurrentCamera
+		local centro = camera.ViewportSize / 2
+		local mousePos = UserInputService:GetMouseLocation()
+		mouseVirtual = mousePos - centro
+		novaPosturaRaw = CombateMath.CalcularPostura(mousePos, centro)
+	end
+
+	if novaPosturaRaw then posturaAtual = novaPosturaRaw end
+
+	-- TRADUÇÃO PRA ANIM DE GUARDA (IDLE)
+	local posturaParaAnim = "Cima"
+	if posturaAtual == "Ponta1" or posturaAtual == "Bolinha" then
+		posturaParaAnim = "Cima"
+	elseif posturaAtual == "Ponta2" or posturaAtual == "Ponta5" then
+		posturaParaAnim = "Esquerda"
+	elseif posturaAtual == "Ponta3" or posturaAtual == "Ponta4" then
+		posturaParaAnim = "Direita"
+	end
+
+	if posturaParaAnim ~= ultimaAnimTocada then
+		if ultimaAnimTocada and tracksIdle[ultimaAnimTocada] then tracksIdle[ultimaAnimTocada]:Stop(0.2) end
+		if tracksIdle[posturaParaAnim] then tracksIdle[posturaParaAnim]:Play(0.2) end
+		ultimaAnimTocada = posturaParaAnim
+	end
+end)
+
+UserInputService.InputBegan:Connect(function(input, gp)
+	if gp then return end
+
+	-- TRADUTOR: 5 PONTAS -&gt; 3 LADOS
+	local ladoSoco = "Direita"
+	local animacaoAlvo = "Direita"
+
+	if posturaAtual == "Ponta1" then
+		ladoSoco = "Direita"; animacaoAlvo = "Cima"
+	elseif posturaAtual == "Ponta2" then 
+		ladoSoco = "Esquerda"; animacaoAlvo = "Esquerda"
+	elseif posturaAtual == "Ponta5" then 
+		ladoSoco = "Esquerda"; animacaoAlvo = "Esquerda"
+	elseif posturaAtual == "Ponta3" then 
+		ladoSoco = "Direita"; animacaoAlvo = "Direita"
+	elseif posturaAtual == "Ponta4" then 
+		ladoSoco = "Direita"; animacaoAlvo = "Direita"
+	elseif posturaAtual == "Bolinha" then 
+		ladoSoco = "Direita"; animacaoAlvo = "Cima"
+	end
+
+	-- ATAQUE FORTE (MB1) - MAIOR COOLDOWN
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		if os.clock() - ultimoAtaque &lt; COOLDOWN_FORTE then return end -- ⛔ Checa Cooldown
+		ultimoAtaque = os.clock() -- ✅ Reseta timer
+
+		tocarSomSwing() 
+		executarLinhasInteligentes() 
+		toggleTrail(ladoSoco, true)
+		detectarHitSomPreciso(ladoSoco) 
+		task.delay(0.4, function() toggleTrail(ladoSoco, false) end)
+
+		local anim = tracksForte[animacaoAlvo]
+		if anim then anim:AdjustSpeed(1.0); anim:Play(); eventoCombate:FireServer("Forte", animacaoAlvo) end
+	end
+
+	-- JAB RÁPIDO (MB2) - MENOR COOLDOWN
+	if input.UserInputType == Enum.UserInputType.MouseButton2 then
+		if os.clock() - ultimoAtaque &lt; COOLDOWN_JAB then return end -- ⛔ Checa Cooldown
+		ultimoAtaque = os.clock() -- ✅ Reseta timer
+
+		tocarSomSwing()
+		executarLinhasInteligentes()
+		toggleTrail(ladoSoco, true)
+		detectarHitSomPreciso(ladoSoco)
+		task.delay(0.3, function() toggleTrail(ladoSoco, false) end)
+
+		local anim = tracksJab[animacaoAlvo]
+		if anim then anim:AdjustSpeed(1.3); anim:Play(); eventoCombate:FireServer("Rapido", animacaoAlvo) end
+	end
+end)
+
+carregarAnimacoes()
+prepararSons() 
+instalarTrail(character) 
+
+player.CharacterAdded:Connect(function(newChar)
+	character = newChar
+	humanoid = newChar:WaitForChild("Humanoid")
+	rootPart = newChar:WaitForChild("HumanoidRootPart")
+	animator = humanoid:WaitForChild("Animator")
+	tracksIdle, tracksForte, tracksJab = {}, {}, {}
+	ultimaAnimTocada = nil
+	carregarAnimacoes()
+	prepararSons() 
+	task.wait(0.5) 
+	instalarTrail(character)
+end)</string>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+      </Properties>
+    </Item>
+    <Item class="LocalScript" referent="2">
+      <Properties>
+        <string name="Name">SistemaTrava</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <bool name="Disabled">false</bool>
+        <ContentId name="LinkedSource">
+          <null>
+          </null>
+        </ContentId>
+        <token name="RunContext">0</token>
+        <bool name="DefinesCapabilities">false</bool>
+        <string name="Source">local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace") -- Pegamos o Workspace pra organizar filtros
+
+local player = Players.LocalPlayer
+local camera = workspace.CurrentCamera
+
+-- ==============================================================================
+-- ⚙️ CONFIGURAÇÕES
+-- ==============================================================================
+
+local TECLA = Enum.KeyCode.F
+local ALCANCE_MAX = 60
+
+-- [POSIÇÃO]
+local OFFSET_X_LADO = 3.5      
+local OFFSET_Y_ALTURA = 5.0    
+local OFFSET_Z_DISTANCIA = 8.0 
+
+-- [SUAVIDADE GERAL]
+local SUAVIDADE_GERAL = 1 
+
+-- [ESTABILIZADOR DE PULO]
+-- Quer tirar? Coloque 1.0 (Fica instantâneo igual antes)
+-- Quer manter? Deixe 0.1 (Suave)
+local SUAVIDADE_VERTICAL = 1.0  -- &lt;--- MUDEI PRA 1.0 PRA DESATIVAR POR PADRÃO
+
+-- ==============================================================================
+
+local alvo = nil
+local highlight = nil
+local travado = false
+local alturaAtualCam = 0 
+
+local function buscarInimigo()
+	local char = player.Character
+	if not char or not char:FindFirstChild("HumanoidRootPart") then return nil end
+	local root = char.HumanoidRootPart
+
+	local melhorAlvo = nil
+	local menorDist = ALCANCE_MAX
+
+	for _, v in pairs(workspace:GetDescendants()) do
+		if v:IsA("Model") and v ~= char and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") then
+			local tRoot = v.HumanoidRootPart
+			local dist = (tRoot.Position - root.Position).Magnitude
+			if dist &lt; menorDist and v.Humanoid.Health &gt; 0 then
+				local _, naTela = camera:WorldToViewportPoint(tRoot.Position)
+				if naTela then
+					menorDist = dist
+					melhorAlvo = tRoot
+				end
+			end
+		end
+	end
+	return melhorAlvo
+end
+
+local function atualizarCamera()
+	if not alvo or not alvo.Parent or not player.Character then
+		alternar(false)
+		return
+	end
+
+	local char = player.Character
+	local root = char:FindFirstChild("HumanoidRootPart")
+	local hum = char:FindFirstChild("Humanoid")
+
+	if not root or not hum or hum.Health &lt;= 0 then return end
+
+	-- 1. CÁLCULO DE ALTURA (Se SUAVIDADE_VERTICAL for 1, isso aqui não faz diferença nenhuma)
+	local yAlvo = root.Position.Y
+	if math.abs(yAlvo - alturaAtualCam) &gt; 10 then
+		alturaAtualCam = yAlvo
+	else
+		alturaAtualCam = alturaAtualCam + (yAlvo - alturaAtualCam) * SUAVIDADE_VERTICAL
+	end
+
+	local minhaPosEstavel = Vector3.new(root.Position.X, alturaAtualCam, root.Position.Z)
+	local alvoPos = alvo.Position
+
+	-- 2. MOVIMENTO DO PERSONAGEM
+	local olharReto = Vector3.new(alvoPos.X, root.Position.Y, alvoPos.Z)
+	local cframeBoneco = CFrame.lookAt(root.Position, olharReto)
+	root.CFrame = root.CFrame:Lerp(cframeBoneco, SUAVIDADE_GERAL)
+
+	-- 3. CÁLCULO DA CÂMERA
+	local cframeFocoTotal = CFrame.lookAt(minhaPosEstavel, alvoPos)
+	local posicaoIdeal = cframeFocoTotal * CFrame.new(OFFSET_X_LADO, OFFSET_Y_ALTURA, OFFSET_Z_DISTANCIA)
+
+	-- === [CORREÇÃO DO BUG DO SOCO] ===
+	-- O problema é o Raycast batendo na Hitbox. Vamos melhorar o filtro.
+	local params = RaycastParams.new()
+
+	-- Lista do que a câmera vai IGNORAR:
+	local ignorar = {char, alvo.Parent}
+
+	-- Se você tiver uma pasta de "Effects" ou "Hitboxes" no workspace, adicione ela aqui:
+	if workspace:FindFirstChild("Effects") then table.insert(ignorar, workspace.Effects) end
+	if workspace:FindFirstChild("Debris") then table.insert(ignorar, workspace.Debris) end
+	-- (Se sua hitbox for criada solta no workspace, ela pode atrapalhar se não estiver numa pasta)
+
+	params.FilterDescendantsInstances = ignorar
+	params.FilterType = Enum.RaycastFilterType.Exclude
+
+	local origemRaio = root.Position + Vector3.new(0, 2, 0)
+	local direcaoCam = posicaoIdeal.Position - origemRaio
+
+	-- Raio da câmera (Colisão)
+	local raio = workspace:Raycast(origemRaio, direcaoCam, params)
+
+	local posicaoFinal = posicaoIdeal.Position
+	if raio then
+		-- Verifica se bateu em algo que é "CanCollide false" (como hitboxes costumam ser)
+		-- Se a hitbox tiver CanQuery = true, o raio pega ela.
+		if raio.Instance.CanCollide == true then
+			posicaoFinal = raio.Position - (direcaoCam.Unit * 0.5)
+		end
+	end
+
+	-- 4. APLICAÇÃO FINAL
+	local pontoDeFoco = alvoPos + Vector3.new(0, -1, 0)
+	local cframeFinal = CFrame.lookAt(posicaoFinal, pontoDeFoco)
+
+	camera.CFrame = camera.CFrame:Lerp(cframeFinal, SUAVIDADE_GERAL)
+end
+
+function alternar(forcarOff)
+	-- Garante que existe a caixinha pra guardar o alvo
+	local caixaAlvo = player:FindFirstChild("AlvoTravaObj")
+	if not caixaAlvo then
+		caixaAlvo = Instance.new("ObjectValue")
+		caixaAlvo.Name = "AlvoTravaObj"
+		caixaAlvo.Parent = player
+	end
+
+	if forcarOff == false or travado then
+		-- DESLIGANDO A TRAVA
+		travado = false
+		alvo = nil
+
+		-- === CORREÇÃO: Limpa o valor da caixinha ===
+		caixaAlvo.Value = nil 
+		-- ===========================================
+
+		if highlight then highlight:Destroy() end
+		highlight = nil
+		RunService:UnbindFromRenderStep("TravaManual")
+		camera.CameraType = Enum.CameraType.Custom
+		UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+		if player.Character then player.Character.Humanoid.AutoRotate = true end
+	else
+		-- LIGANDO A TRAVA
+		local achou = buscarInimigo() 
+		if achou then
+			alvo = achou
+			travado = true
+
+			-- === CORREÇÃO: Guarda o inimigo na caixinha ===
+			caixaAlvo.Value = alvo.Parent 
+			-- ==============================================
+
+			if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+				alturaAtualCam = player.Character.HumanoidRootPart.Position.Y
+			end
+
+			highlight = Instance.new("Highlight")
+			highlight.Parent = alvo.Parent
+			highlight.FillTransparency = 1
+			highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+
+			if player.Character then player.Character.Humanoid.AutoRotate = false end
+			camera.CameraType = Enum.CameraType.Scriptable
+			RunService:BindToRenderStep("TravaManual", Enum.RenderPriority.Camera.Value + 1, atualizarCamera)
+		end
+	end
+end
+
+UserInputService.InputBegan:Connect(function(input, gp)
+	if gp then return end
+	if input.KeyCode == TECLA then alternar() end
+end)</string>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+      </Properties>
+    </Item>
+    <Item class="LocalScript" referent="3">
+      <Properties>
+        <string name="Name">GerenciadorVFX</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <bool name="Disabled">false</bool>
+        <ContentId name="LinkedSource">
+          <null>
+          </null>
+        </ContentId>
+        <token name="RunContext">0</token>
+        <bool name="DefinesCapabilities">false</bool>
+        <string name="Source">local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Debris = game:GetService("Debris")
+
+local eventoVFX = ReplicatedStorage:WaitForChild("EventoVFX")
+local pastaAssets = ReplicatedStorage:WaitForChild("AssetsVFX")
+
+local hitPrefab = pastaAssets:WaitForChild("Hitblood")
+local floorPrefab = pastaAssets:WaitForChild("BloodFloor")
+
+local function RaycastPerfurador(origem, direcao)
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	local ignoreList = {}
+
+	while true do
+		params.FilterDescendantsInstances = ignoreList
+		local resultado = workspace:Raycast(origem, direcao, params)
+		if not resultado then return nil end
+
+		local hitPart = resultado.Instance
+		local hitModel = hitPart.Parent
+		local ehHumano = hitModel:FindFirstChild("Humanoid") or hitModel.Parent:FindFirstChild("Humanoid")
+		local ehVFX = hitPart.Name == "Hitblood" or hitPart.Name == "BloodFloor" or hitPart.Transparency == 1
+		local semColisao = (hitPart.CanCollide == false)
+
+		if ehHumano or ehVFX or semColisao then
+			table.insert(ignoreList, hitPart)
+		else
+			return resultado
+		end
+	end
+end
+
+local function tocarEfeito(nomeEfeito, posicaoHit, normalHit)
+	if nomeEfeito == "Sangue" then
+
+		-- REMOVI A PARTE DO SOM DAQUI PRA NÃO DAR ECO!
+		-- AGORA O SOM TOCA LÁ NO CLIENTE INSTANTANEAMENTE.
+
+		-- 1. EFEITO DE IMPACTO
+		local vfxHit = hitPrefab:Clone()
+		vfxHit.Parent = workspace
+
+		local direcaoOlhar = normalHit or Vector3.new(0, 1, 0)
+		if direcaoOlhar.Magnitude &lt; 0.001 then direcaoOlhar = Vector3.new(0, 1, 0) end
+		vfxHit.CFrame = CFrame.lookAt(posicaoHit, posicaoHit + direcaoOlhar)
+
+		local attach = vfxHit:FindFirstChildWhichIsA("Attachment")
+		if attach then
+			local bolinha = attach:FindFirstChild("Bolinha")
+			local shards = attach:FindFirstChild("Shards")
+			if bolinha then bolinha:Emit(50) end
+			if shards then shards:Emit(50) end
+		end
+		Debris:AddItem(vfxHit, 2)
+
+		-- 2. EFEITO DE CHÃO
+		task.delay(0.5, function()
+			local raioChao = RaycastPerfurador(posicaoHit, Vector3.new(0, -15, 0))
+
+			if raioChao then
+				local vfxFloor = floorPrefab:Clone()
+				vfxFloor.Parent = workspace
+				vfxFloor.Transparency = 1 
+				vfxFloor.Anchored = true 
+				vfxFloor.CanCollide = false
+
+				local posicaoSegura = raioChao.Position + (raioChao.Normal * 0.05)
+				local cfAlinhado = CFrame.lookAt(posicaoSegura, posicaoSegura + raioChao.Normal)
+				vfxFloor.CFrame = cfAlinhado * CFrame.Angles(math.rad(90), 0, 0) 
+
+				local floorEmitter = vfxFloor:FindFirstChild("Floor")
+				if floorEmitter then
+					floorEmitter:Emit(5) 
+				end
+				Debris:AddItem(vfxFloor, 10)
+			end
+		end)
+	end
+end
+
+eventoVFX.OnClientEvent:Connect(tocarEfeito)</string>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+      </Properties>
+    </Item>
+    <Item class="LocalScript" referent="4">
+      <Properties>
+        <string name="Name">DialogueManager</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <bool name="Disabled">false</bool>
+        <ContentId name="LinkedSource">
+          <null>
+          </null>
+        </ContentId>
+        <token name="RunContext">0</token>
+        <bool name="DefinesCapabilities">false</bool>
+        <string name="Source">local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+
+-- ============================================================================
+-- ⚙️ CONFIGURAÇÃO
+-- ============================================================================
+local USAR_CAMERA = true 
+local FOCAR_PLAYER_NAS_OPCOES = true 
+local TEMPO_TRANSICAO_CAM = 0.8 
+local FOV_CINEMA = 50 
+local FOV_PADRAO = 70
+
+local CAMERA_OFFSET_NPC = Vector3.new(-4, 2, -6) 
+local CAMERA_OFFSET_PLAYER = Vector3.new(3, 2, -5) 
+
+-- ============================================================================
+-- REFERÊNCIAS
+-- ============================================================================
+local DialogoRF = ReplicatedStorage:WaitForChild("DialogoRF")
+local eventoStart = ReplicatedStorage:WaitForChild("RequestDialogoStart")
+
+local player = Players.LocalPlayer
+local camera = workspace.CurrentCamera
+local playerGui = player:WaitForChild("PlayerGui")
+
+local gui = playerGui:WaitForChild("DialogoGui")
+local frame = gui:WaitForChild("CaixaDialogo")
+local labelTexto = frame:WaitForChild("TextoFala")
+local containerRespostas = frame:WaitForChild("ContainerRespostas")
+
+-- [[ CORREÇÃO 1: Nome exato que está no seu Print ]]
+local templateBotao = containerRespostas:FindFirstChild("RespostaTemplate") 
+
+local barraCima = gui:WaitForChild("BarraCima")
+local barraBaixo = gui:WaitForChild("BarraBaixo")
+
+-- CONTROLE GERAL
+local estaEscrevendo = false
+local npcAtualModel = nil 
+local emDialogo = false 
+local tweenCameraAtual = nil 
+local conexaoMorte = nil 
+
+-- CONTROLE DE MÍDIA
+local somAtual = nil
+local trackBody = nil 
+local trackFace = nil 
+
+-- ============================================================================
+-- 1. SISTEMA DE SEGURANÇA E CÂMERA
+-- ============================================================================
+
+local function CancelarTweenCamera()
+	if tweenCameraAtual then
+		tweenCameraAtual:Cancel()
+		tweenCameraAtual = nil
+	end
+end
+
+local function PararAnimacoes()
+	if trackBody then trackBody:Stop(); trackBody = nil end
+	if trackFace then trackFace:Stop(); trackFace = nil end
+end
+
+local function PararTudo()
+	if somAtual then
+		somAtual:Stop()
+		somAtual:Destroy()
+		somAtual = nil
+	end
+	PararAnimacoes()
+end
+
+local function RestaurarGameplay()
+	CancelarTweenCamera()
+
+	local char = player.Character
+	local hum = char and char:FindFirstChild("Humanoid")
+	if hum then
+		hum.WalkSpeed = 16
+		hum.JumpPower = 50
+		hum.AutoRotate = true
+		camera.CameraSubject = hum 
+	end
+
+	task.wait(0.1) 
+
+	camera.CameraType = Enum.CameraType.Custom
+	camera.FieldOfView = FOV_PADRAO
+
+	if conexaoMorte then conexaoMorte:Disconnect(); conexaoMorte = nil end
+	npcAtualModel = nil
+end
+
+local function ForcarSaidaDialogo()
+	emDialogo = false
+	estaEscrevendo = false
+
+	PararTudo() 
+
+	gui.Enabled = false
+	frame.Visible = false
+
+	barraCima.Position = UDim2.new(0.5, 0, -0.3, 0)
+	barraBaixo.Position = UDim2.new(0.5, 0, 1.3, 0)
+
+	RestaurarGameplay()
+end
+
+local function MoverCameraPara(alvoPart, offset)
+	if not USAR_CAMERA or not alvoPart then return end
+
+	CancelarTweenCamera()
+	camera.CameraType = Enum.CameraType.Scriptable
+
+	local posicaoFinal = alvoPart.CFrame:ToWorldSpace(CFrame.new(offset)).Position
+	local olharPara = alvoPart.Position
+	local novaCFrame = CFrame.lookAt(posicaoFinal, olharPara)
+
+	local tweenInfo = TweenInfo.new(TEMPO_TRANSICAO_CAM, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	tweenCameraAtual = TweenService:Create(camera, tweenInfo, {CFrame = novaCFrame, FieldOfView = FOV_CINEMA})
+	tweenCameraAtual:Play()
+end
+
+local function CongelarJogador()
+	local char = player.Character
+	local humanoid = char and char:FindFirstChild("Humanoid")
+
+	if humanoid then
+		if conexaoMorte then conexaoMorte:Disconnect() end
+		conexaoMorte = humanoid.Died:Connect(function() ForcarSaidaDialogo() end)
+
+		humanoid.WalkSpeed = 0
+		humanoid.JumpPower = 0
+		humanoid.AutoRotate = false 
+	end
+end
+
+-- ============================================================================
+-- 2. EXECUTAR MÍDIA
+-- ============================================================================
+local function ExecutarMidia(dados, modeloNPC)
+	PararTudo() 
+
+	if not modeloNPC then return end
+
+	-- SOM
+	if dados.SoundId then
+		local root = modeloNPC:FindFirstChild("HumanoidRootPart") or modeloNPC:FindFirstChild("Head")
+		if root then
+			local som = Instance.new("Sound")
+			som.SoundId = "rbxassetid://" .. tostring(dados.SoundId)
+			som.Volume = 1
+			som.Parent = root
+			som:Play()
+			somAtual = som
+		end
+	end
+
+	-- ANIMAÇÕES
+	local humanoid = modeloNPC:FindFirstChild("Humanoid")
+	local animator = humanoid and humanoid:FindFirstChild("Animator")
+
+	if humanoid and not animator then animator = Instance.new("Animator", humanoid) end
+	if not animator then return end
+
+	if dados.BodyAnimId then
+		local anim = Instance.new("Animation")
+		anim.AnimationId = "rbxassetid://" .. tostring(dados.BodyAnimId)
+		trackBody = animator:LoadAnimation(anim)
+		trackBody.Priority = Enum.AnimationPriority.Movement 
+		trackBody:Play()
+	end
+
+	if dados.FaceAnimId then
+		local anim = Instance.new("Animation")
+		anim.AnimationId = "rbxassetid://" .. tostring(dados.FaceAnimId)
+		trackFace = animator:LoadAnimation(anim)
+		trackFace.Priority = Enum.AnimationPriority.Action 
+		trackFace:Play()
+	end
+end
+
+local function AnimarBarras(entrando)
+	local infoTween = TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	if entrando then
+		TweenService:Create(barraCima, infoTween, {Position = UDim2.new(0.5, 0, 0, 0)}):Play()
+		TweenService:Create(barraBaixo, infoTween, {Position = UDim2.new(0.5, 0, 1, 0)}):Play()
+	else
+		TweenService:Create(barraCima, infoTween, {Position = UDim2.new(0.5, 0, -0.3, 0)}):Play()
+		TweenService:Create(barraBaixo, infoTween, {Position = UDim2.new(0.5, 0, 1.3, 0)}):Play()
+	end
+end
+
+local function EscreverTexto(texto)
+	estaEscrevendo = true
+	labelTexto.Text = texto
+	labelTexto.MaxVisibleGraphemes = 0
+
+	for i = 1, utf8.len(texto) do
+		if not estaEscrevendo then break end 
+		labelTexto.MaxVisibleGraphemes = i
+		task.wait(0.02)
+	end
+	labelTexto.MaxVisibleGraphemes = -1
+	estaEscrevendo = false
+end
+
+-- ============================================================================
+-- 4. LOOP PRINCIPAL
+-- ============================================================================
+local function CarregarDialogo(idDialogo, modeloNPC)
+
+	if modeloNPC then npcAtualModel = modeloNPC end
+
+	local sucesso, dados = pcall(function()
+		return DialogoRF:InvokeServer("PegarDialogo", idDialogo)
+	end)
+
+	if sucesso and dados then
+		gui.Enabled = true
+		frame.Visible = true
+
+		CongelarJogador()
+		AnimarBarras(true)
+
+		if npcAtualModel and npcAtualModel:FindFirstChild("Head") then
+			MoverCameraPara(npcAtualModel.Head, CAMERA_OFFSET_NPC)
+		end
+
+		ExecutarMidia(dados, npcAtualModel)
+		EscreverTexto(dados.Text)
+
+		if not emDialogo then return end
+
+		-- Espera som ou tempo padrão
+		if somAtual and somAtual.IsPlaying then
+			while somAtual and somAtual.IsPlaying and emDialogo do task.wait(0.1) end
+			task.wait(0.2) 
+		else
+			task.wait(1) 
+		end
+
+		if not emDialogo then return end
+
+		PararAnimacoes() 
+
+		-- [[ CORREÇÃO 2: Limpa botões velhos sem apagar o UIListLayout ou o Template ]]
+		for _, v in pairs(containerRespostas:GetChildren()) do
+			-- Só apaga se for Botão e NÃO for o template
+			if v:IsA("GuiButton") and v ~= templateBotao then 
+				v:Destroy() 
+			end
+		end
+
+		if dados.Responses then
+			containerRespostas.Visible = true
+
+			if FOCAR_PLAYER_NAS_OPCOES and player.Character and player.Character:FindFirstChild("Head") then
+				MoverCameraPara(player.Character.Head, CAMERA_OFFSET_PLAYER)
+			end
+
+			for _, resposta in pairs(dados.Responses) do
+				local btn = nil
+
+				-- [[ CORREÇÃO 3: Lógica para usar seu RespostaTemplate ]]
+				if templateBotao then
+					btn = templateBotao:Clone()
+					btn.Visible = true
+
+					-- Verifica se tem o objeto "Text" dentro (baseado no seu print)
+					local textoInterno = btn:FindFirstChild("Text")
+					if textoInterno then
+						textoInterno.Text = resposta.Text
+						if btn:IsA("TextButton") then btn.Text = "" end -- Limpa texto do botão pai se houver
+					else
+						-- Se não achar o objeto Text, tenta por direto no botão
+						if btn:IsA("TextButton") then btn.Text = resposta.Text end
+					end
+
+					btn.Parent = containerRespostas
+				else
+					-- Cria botão feio de emergência se não achar o template
+					btn = Instance.new("TextButton", containerRespostas)
+					btn.Size = UDim2.new(1, 0, 0, 30)
+					btn.Text = resposta.Text
+				end
+
+				btn.MouseButton1Click:Connect(function()
+					if not emDialogo then return end 
+
+					if resposta.Action then 
+						pcall(function() DialogoRF:InvokeServer("EscolherOpcao", resposta.Action) end)
+					end
+
+					if resposta.NextID and resposta.NextID ~= "EXIT" then
+						CarregarDialogo(resposta.NextID, nil)
+					else
+						frame.Visible = false
+						AnimarBarras(false)
+						PararTudo() 
+						RestaurarGameplay()
+
+						task.delay(0.8, function()
+							gui.Enabled = false
+							emDialogo = false
+						end)
+					end
+				end)
+			end
+		else
+			containerRespostas.Visible = false
+		end
+	else
+		warn("❌ Erro ao carregar diálogo.")
+		ForcarSaidaDialogo() 
+	end
+end
+
+eventoStart.OnClientEvent:Connect(function(id, npc)
+	if emDialogo then return end
+	emDialogo = true
+	CarregarDialogo(id, npc)
+end)
+
+player.CharacterRemoving:Connect(function()
+	ForcarSaidaDialogo()
+end)</string>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+      </Properties>
+    </Item>
+  </Item>
+</roblox>

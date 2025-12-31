@@ -1,0 +1,1111 @@
+<roblox version="4">
+  <Item class="StringValue" referent="0">
+    <Properties>
+      <string name="Name">Attack2</string>
+      <BinaryString name="AttributesSerialize"></BinaryString>
+      <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+      <bool name="DefinesCapabilities">false</bool>
+      <int64 name="SourceAssetId">-1</int64>
+      <BinaryString name="Tags"></BinaryString>
+      <string name="Value">{"Information":{"Created":1721785532,"ExportPriority":"Action","Modified":1721785936,"Length":300,"Looped":false},"Items":[{"Path":{"InstanceTypes":["DataModel","Workspace","Model"],"ItemType":"Rig","InstanceNames":["game","Workspace","erick587"]}}]}</string>
+    </Properties>
+    <Item class="Folder" referent="1">
+      <Properties>
+        <string name="Name">1</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <bool name="DefinesCapabilities">false</bool>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+      </Properties>
+      <Item class="Folder" referent="2">
+        <Properties>
+          <string name="Name">Rig</string>
+          <BinaryString name="AttributesSerialize"></BinaryString>
+          <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+          <bool name="DefinesCapabilities">false</bool>
+          <int64 name="SourceAssetId">-1</int64>
+          <BinaryString name="Tags"></BinaryString>
+        </Properties>
+        <Item class="Folder" referent="3">
+          <Properties>
+            <string name="Name">_joint</string>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+          </Properties>
+          <Item class="Folder" referent="4">
+            <Properties>
+              <string name="Name">_keyframes</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+            </Properties>
+            <Item class="Folder" referent="5">
+              <Properties>
+                <string name="Name">59</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="6">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="7">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0</X>
+                      <Y>-0.5</Y>
+                      <Z>0</Z>
+                      <R00>-1</R00>
+                      <R01>0</R01>
+                      <R02>0</R02>
+                      <R10>0</R10>
+                      <R11>0.25271687</R11>
+                      <R12>0.96754026</R12>
+                      <R20>0</R20>
+                      <R21>0.96754026</R21>
+                      <R22>-0.25271687</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="8">
+              <Properties>
+                <string name="Name">70</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="9">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="10">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0</X>
+                      <Y>-0.5</Y>
+                      <Z>0</Z>
+                      <R00>-1</R00>
+                      <R01>0</R01>
+                      <R02>0</R02>
+                      <R10>0</R10>
+                      <R11>0.8349324</R11>
+                      <R12>0.55035245</R12>
+                      <R20>0</R20>
+                      <R21>0.55035245</R21>
+                      <R22>-0.8349324</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="StringValue" referent="11">
+            <Properties>
+              <string name="Name">_hier</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <string name="Value">Torso.Head</string>
+            </Properties>
+          </Item>
+          <Item class="CFrameValue" referent="12">
+            <Properties>
+              <string name="Name">default</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <CoordinateFrame name="Value">
+                <X>0</X>
+                <Y>-0.5</Y>
+                <Z>0</Z>
+                <R00>-1</R00>
+                <R01>0</R01>
+                <R02>0</R02>
+                <R10>0</R10>
+                <R11>0</R11>
+                <R12>1</R12>
+                <R20>0</R20>
+                <R21>1</R21>
+                <R22>0</R22>
+              </CoordinateFrame>
+            </Properties>
+          </Item>
+        </Item>
+        <Item class="Folder" referent="13">
+          <Properties>
+            <string name="Name">_joint</string>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+          </Properties>
+          <Item class="Folder" referent="14">
+            <Properties>
+              <string name="Name">_keyframes</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+            </Properties>
+            <Item class="Folder" referent="15">
+              <Properties>
+                <string name="Name">0</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="16">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="17">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>-0.5</X>
+                      <Y>1</Y>
+                      <Z>0</Z>
+                      <R00>0</R00>
+                      <R01>-0.16171448</R01>
+                      <R02>-0.98683757</R02>
+                      <R10>0</R10>
+                      <R11>0.98683757</R11>
+                      <R12>-0.16171448</R12>
+                      <R20>1</R20>
+                      <R21>0</R21>
+                      <R22>0</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="18">
+              <Properties>
+                <string name="Name">59</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="19">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="20">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>-0.5</X>
+                      <Y>1</Y>
+                      <Z>-0.000000059604645</Z>
+                      <R00>0</R00>
+                      <R01>-0.16171448</R01>
+                      <R02>-0.98683757</R02>
+                      <R10>-0.8233862</R10>
+                      <R11>0.5600121</R11>
+                      <R12>-0.09176998</R12>
+                      <R20>0.5674815</R20>
+                      <R21>0.8125484</R21>
+                      <R22>-0.13315347</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="21">
+              <Properties>
+                <string name="Name">70</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="22">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="23">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>-0.50000006</X>
+                      <Y>1</Y>
+                      <Z>0.000000059604645</Z>
+                      <R00>-0.104714125</R00>
+                      <R01>-0.19311632</R01>
+                      <R02>-0.97557217</R02>
+                      <R10>0.94849086</R10>
+                      <R11>0.27553532</R11>
+                      <R12>-0.15635006</R12>
+                      <R20>0.29899836</R20>
+                      <R21>-0.94169337</R21>
+                      <R22>0.15431663</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="StringValue" referent="24">
+            <Properties>
+              <string name="Name">_hier</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <string name="Value">Torso.Left Leg</string>
+            </Properties>
+          </Item>
+          <Item class="CFrameValue" referent="25">
+            <Properties>
+              <string name="Name">default</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <CoordinateFrame name="Value">
+                <X>-0.5</X>
+                <Y>1</Y>
+                <Z>0</Z>
+                <R00>0</R00>
+                <R01>0</R01>
+                <R02>-1</R02>
+                <R10>0</R10>
+                <R11>1</R11>
+                <R12>0</R12>
+                <R20>1</R20>
+                <R21>0</R21>
+                <R22>0</R22>
+              </CoordinateFrame>
+            </Properties>
+          </Item>
+        </Item>
+        <Item class="Folder" referent="26">
+          <Properties>
+            <string name="Name">_joint</string>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+          </Properties>
+          <Item class="Folder" referent="27">
+            <Properties>
+              <string name="Name">_keyframes</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+            </Properties>
+            <Item class="Folder" referent="28">
+              <Properties>
+                <string name="Name">0</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="29">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="30">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>-0.5</X>
+                      <Y>0.5</Y>
+                      <Z>0</Z>
+                      <R00>0.5389033</R00>
+                      <R01>-0.49895287</R01>
+                      <R02>0.67869675</R02>
+                      <R10>-0.49801558</R10>
+                      <R11>0.4610963</R11>
+                      <R12>0.73441863</R12>
+                      <R20>-0.6793848</R20>
+                      <R21>-0.7337822</R21>
+                      <R22>0</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="31">
+              <Properties>
+                <string name="Name">59</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="32">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="33">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>-0.49999994</X>
+                      <Y>0.5</Y>
+                      <Z>0.000000029802322</Z>
+                      <R00>-0.018710837</R00>
+                      <R01>0.7783829</R01>
+                      <R02>0.6275108</R02>
+                      <R10>0.53961957</R10>
+                      <R11>-0.52049965</R11>
+                      <R12>0.6617332</R12>
+                      <R20>0.84170103</R20>
+                      <R21>0.3509987</R21>
+                      <R22>-0.4102917</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="34">
+              <Properties>
+                <string name="Name">70</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="35">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="36">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>-0.5</X>
+                      <Y>0.5000001</Y>
+                      <Z>0</Z>
+                      <R00>0.79347336</R00>
+                      <R01>-0.30255288</R01>
+                      <R02>0.52807367</R02>
+                      <R10>-0.5854161</R10>
+                      <R11>-0.6166562</R11>
+                      <R12>0.52632993</R12>
+                      <R20>0.16639727</R20>
+                      <R21>-0.7267716</R21>
+                      <R22>-0.66641957</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="StringValue" referent="37">
+            <Properties>
+              <string name="Name">_hier</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <string name="Value">Torso.Right Arm</string>
+            </Properties>
+          </Item>
+          <Item class="CFrameValue" referent="38">
+            <Properties>
+              <string name="Name">default</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <CoordinateFrame name="Value">
+                <X>-0.5</X>
+                <Y>0.5</Y>
+                <Z>0</Z>
+                <R00>0</R00>
+                <R01>0</R01>
+                <R02>1</R02>
+                <R10>0</R10>
+                <R11>1</R11>
+                <R12>0</R12>
+                <R20>-1</R20>
+                <R21>0</R21>
+                <R22>0</R22>
+              </CoordinateFrame>
+            </Properties>
+          </Item>
+        </Item>
+        <Item class="Folder" referent="39">
+          <Properties>
+            <string name="Name">_joint</string>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+          </Properties>
+          <Item class="Folder" referent="40">
+            <Properties>
+              <string name="Name">_keyframes</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+            </Properties>
+            <Item class="Folder" referent="41">
+              <Properties>
+                <string name="Name">0</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="42">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="43">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0</X>
+                      <Y>0</Y>
+                      <Z>0</Z>
+                      <R00>-1</R00>
+                      <R01>0</R01>
+                      <R02>0</R02>
+                      <R10>0</R10>
+                      <R11>0</R11>
+                      <R12>1</R12>
+                      <R20>0</R20>
+                      <R21>1</R21>
+                      <R22>0</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="44">
+              <Properties>
+                <string name="Name">59</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="45">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="46">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0</X>
+                      <Y>0</Y>
+                      <Z>0</Z>
+                      <R00>-1</R00>
+                      <R01>0</R01>
+                      <R02>0</R02>
+                      <R10>0</R10>
+                      <R11>0.77472115</R11>
+                      <R12>0.63230306</R12>
+                      <R20>0</R20>
+                      <R21>0.63230306</R21>
+                      <R22>-0.77472115</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="47">
+              <Properties>
+                <string name="Name">70</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="48">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="49">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0</X>
+                      <Y>0</Y>
+                      <Z>0</Z>
+                      <R00>-1</R00>
+                      <R01>0</R01>
+                      <R02>0</R02>
+                      <R10>0</R10>
+                      <R11>-0.9932878</R11>
+                      <R12>0.11566922</R12>
+                      <R20>0</R20>
+                      <R21>0.11566922</R21>
+                      <R22>0.9932878</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="StringValue" referent="50">
+            <Properties>
+              <string name="Name">_hier</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <string name="Value">Torso</string>
+            </Properties>
+          </Item>
+          <Item class="CFrameValue" referent="51">
+            <Properties>
+              <string name="Name">default</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <CoordinateFrame name="Value">
+                <X>0</X>
+                <Y>0</Y>
+                <Z>0</Z>
+                <R00>-1</R00>
+                <R01>0</R01>
+                <R02>0</R02>
+                <R10>0</R10>
+                <R11>0</R11>
+                <R12>1</R12>
+                <R20>0</R20>
+                <R21>1</R21>
+                <R22>0</R22>
+              </CoordinateFrame>
+            </Properties>
+          </Item>
+        </Item>
+        <Item class="Folder" referent="52">
+          <Properties>
+            <string name="Name">_joint</string>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+          </Properties>
+          <Item class="Folder" referent="53">
+            <Properties>
+              <string name="Name">_keyframes</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+            </Properties>
+            <Item class="Folder" referent="54">
+              <Properties>
+                <string name="Name">0</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="55">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="56">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0.5</X>
+                      <Y>1</Y>
+                      <Z>0</Z>
+                      <R00>0</R00>
+                      <R01>0.12800363</R01>
+                      <R02>0.9917737</R02>
+                      <R10>0</R10>
+                      <R11>0.9917737</R11>
+                      <R12>-0.12800363</R12>
+                      <R20>-1</R20>
+                      <R21>0</R21>
+                      <R22>0</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="57">
+              <Properties>
+                <string name="Name">59</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="58">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="59">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0.5</X>
+                      <Y>1</Y>
+                      <Z>0.000000059604645</Z>
+                      <R00>0</R00>
+                      <R01>0.12800363</R01>
+                      <R02>0.9917737</R02>
+                      <R10>0.8233862</R10>
+                      <R11>0.5628133</R11>
+                      <R12>-0.07263969</R12>
+                      <R20>-0.5674815</R20>
+                      <R21>0.81661284</R21>
+                      <R22>-0.10539641</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="60">
+              <Properties>
+                <string name="Name">70</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="61">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="62">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0.49999994</X>
+                      <Y>0.99999994</Y>
+                      <Z>-0.000000059604645</Z>
+                      <R00>-0.15019444</R00>
+                      <R01>0.17308177</R01>
+                      <R02>0.9733881</R02>
+                      <R10>-0.94235957</R10>
+                      <R11>0.2726955</R11>
+                      <R12>-0.19389573</R12>
+                      <R20>-0.29899836</R20>
+                      <R21>-0.94640374</R21>
+                      <R22>0.122147925</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="StringValue" referent="63">
+            <Properties>
+              <string name="Name">_hier</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <string name="Value">Torso.Right Leg</string>
+            </Properties>
+          </Item>
+          <Item class="CFrameValue" referent="64">
+            <Properties>
+              <string name="Name">default</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <CoordinateFrame name="Value">
+                <X>0.5</X>
+                <Y>1</Y>
+                <Z>0</Z>
+                <R00>0</R00>
+                <R01>0</R01>
+                <R02>1</R02>
+                <R10>0</R10>
+                <R11>1</R11>
+                <R12>0</R12>
+                <R20>-1</R20>
+                <R21>0</R21>
+                <R22>0</R22>
+              </CoordinateFrame>
+            </Properties>
+          </Item>
+        </Item>
+        <Item class="Folder" referent="65">
+          <Properties>
+            <string name="Name">_joint</string>
+            <BinaryString name="AttributesSerialize"></BinaryString>
+            <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+            <bool name="DefinesCapabilities">false</bool>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags"></BinaryString>
+          </Properties>
+          <Item class="Folder" referent="66">
+            <Properties>
+              <string name="Name">_keyframes</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+            </Properties>
+            <Item class="Folder" referent="67">
+              <Properties>
+                <string name="Name">0</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="68">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="69">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0.5</X>
+                      <Y>0.49999994</Y>
+                      <Z>0.000000029802322</Z>
+                      <R00>0.5265561</R00>
+                      <R01>0.5013708</R01>
+                      <R02>-0.68656105</R02>
+                      <R10>0.4789941</R10>
+                      <R11>0.49223274</R11>
+                      <R12>0.7268229</R12>
+                      <R20>0.7023556</R20>
+                      <R21>-0.7115717</R21>
+                      <R22>0.019034497</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="70">
+              <Properties>
+                <string name="Name">59</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="71">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="72">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0.49999994</X>
+                      <Y>0.49999988</Y>
+                      <Z>0.000000029802322</Z>
+                      <R00>0.035528675</R00>
+                      <R01>-0.76492953</R01>
+                      <R02>-0.6431333</R02>
+                      <R10>-0.52537894</R10>
+                      <R11>-0.5617318</R11>
+                      <R12>0.6390888</R12>
+                      <R20>-0.85012627</R20>
+                      <R21>0.31518263</R21>
+                      <R22>-0.4218354</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+            <Item class="Folder" referent="73">
+              <Properties>
+                <string name="Name">70</string>
+                <BinaryString name="AttributesSerialize"></BinaryString>
+                <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                <bool name="DefinesCapabilities">false</bool>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags"></BinaryString>
+              </Properties>
+              <Item class="Folder" referent="74">
+                <Properties>
+                  <string name="Name">Values</string>
+                  <BinaryString name="AttributesSerialize"></BinaryString>
+                  <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                  <bool name="DefinesCapabilities">false</bool>
+                  <int64 name="SourceAssetId">-1</int64>
+                  <BinaryString name="Tags"></BinaryString>
+                </Properties>
+                <Item class="CFrameValue" referent="75">
+                  <Properties>
+                    <string name="Name">0</string>
+                    <BinaryString name="AttributesSerialize"></BinaryString>
+                    <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+                    <bool name="DefinesCapabilities">false</bool>
+                    <int64 name="SourceAssetId">-1</int64>
+                    <BinaryString name="Tags"></BinaryString>
+                    <CoordinateFrame name="Value">
+                      <X>0.5000001</X>
+                      <Y>0.49999994</Y>
+                      <Z>0.00000008940697</Z>
+                      <R00>0.73777163</R00>
+                      <R01>0.36060184</R01>
+                      <R02>-0.5706657</R02>
+                      <R10>0.66048265</R10>
+                      <R11>-0.5602774</R11>
+                      <R12>0.49985185</R12>
+                      <R20>-0.1394836</R20>
+                      <R21>-0.7456913</R21>
+                      <R22>-0.651528</R22>
+                    </CoordinateFrame>
+                  </Properties>
+                </Item>
+              </Item>
+            </Item>
+          </Item>
+          <Item class="StringValue" referent="76">
+            <Properties>
+              <string name="Name">_hier</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <string name="Value">Torso.Left Arm</string>
+            </Properties>
+          </Item>
+          <Item class="CFrameValue" referent="77">
+            <Properties>
+              <string name="Name">default</string>
+              <BinaryString name="AttributesSerialize"></BinaryString>
+              <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+              <bool name="DefinesCapabilities">false</bool>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags"></BinaryString>
+              <CoordinateFrame name="Value">
+                <X>0.5</X>
+                <Y>0.5</Y>
+                <Z>0</Z>
+                <R00>0</R00>
+                <R01>0</R01>
+                <R02>-1</R02>
+                <R10>0</R10>
+                <R11>1</R11>
+                <R12>0</R12>
+                <R20>1</R20>
+                <R21>0</R21>
+                <R22>0</R22>
+              </CoordinateFrame>
+            </Properties>
+          </Item>
+        </Item>
+      </Item>
+    </Item>
+  </Item>
+</roblox>
