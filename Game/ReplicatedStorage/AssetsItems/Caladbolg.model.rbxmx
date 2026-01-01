@@ -123,7 +123,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">256</token>
         <string name="MaterialVariantSerialized"></string>
         <CoordinateFrame name="PivotOffset">
@@ -854,7 +854,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">256</token>
         <string name="MaterialVariantSerialized"></string>
         <CoordinateFrame name="PivotOffset">
@@ -1907,7 +1907,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">256</token>
         <string name="MaterialVariantSerialized"></string>
         <CoordinateFrame name="PivotOffset">
@@ -2431,7 +2431,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">1088</token>
         <string name="MaterialVariantSerialized"></string>
         <Content name="MeshContent">
@@ -2572,7 +2572,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">1088</token>
         <string name="MaterialVariantSerialized"></string>
         <Content name="MeshContent">
@@ -2713,7 +2713,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">1088</token>
         <string name="MaterialVariantSerialized"></string>
         <Content name="MeshContent">
@@ -2854,7 +2854,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">1088</token>
         <string name="MaterialVariantSerialized"></string>
         <Content name="MeshContent">
@@ -2995,7 +2995,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">1088</token>
         <string name="MaterialVariantSerialized"></string>
         <Content name="MeshContent">
@@ -3136,7 +3136,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">1088</token>
         <string name="MaterialVariantSerialized"></string>
         <Content name="MeshContent">
@@ -3277,7 +3277,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">1088</token>
         <string name="MaterialVariantSerialized"></string>
         <Content name="MeshContent">
@@ -3403,7 +3403,7 @@
         <token name="LeftSurface">0</token>
         <token name="LeftSurfaceInput">0</token>
         <bool name="Locked">false</bool>
-        <bool name="Massless">false</bool>
+        <bool name="Massless">true</bool>
         <token name="Material">256</token>
         <string name="MaterialVariantSerialized"></string>
         <CoordinateFrame name="PivotOffset">

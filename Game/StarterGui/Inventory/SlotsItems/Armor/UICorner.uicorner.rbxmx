@@ -1,16 +1,16 @@
 <roblox version="4">
-  <Item class="BloomEffect" referent="0">
+  <Item class="UICorner" referent="0">
     <Properties>
-      <string name="Name">Bloom</string>
+      <string name="Name">UICorner</string>
       <BinaryString name="AttributesSerialize"></BinaryString>
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
-      <bool name="Enabled">true</bool>
-      <float name="Intensity">1</float>
+      <UDim name="CornerRadius">
+        <S>0.1</S>
+        <O>0</O>
+      </UDim>
       <bool name="DefinesCapabilities">false</bool>
-      <float name="Size">24</float>
       <int64 name="SourceAssetId">-1</int64>
       <BinaryString name="Tags"></BinaryString>
-      <float name="Threshold">2</float>
     </Properties>
   </Item>
 </roblox>

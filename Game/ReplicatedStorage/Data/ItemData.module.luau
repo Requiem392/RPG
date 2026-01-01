@@ -8,12 +8,9 @@ local ItemDataModule = {}
 -- TABELA DE ANIMAÇÕES (Seus IDs aqui)
 -- ============================================================================
 local CaladbolgAnims = {
-	Reach   = "rbxassetid://119051669592142",  -- Mão indo buscar nas costas
-	Equip   = "rbxassetid://73645844171878",   -- Sacando (Pull)
-
+	Equip   = "rbxassetid://112156963453342",   -- Sacando (Pull)
 	-- Você pediu para deixar nil por enquanto:
 	Idle    = nil, -- "rbxassetid://129922265401211"
-
 	Unequip = "rbxassetid://136686216344450"   -- Guardando
 }
 

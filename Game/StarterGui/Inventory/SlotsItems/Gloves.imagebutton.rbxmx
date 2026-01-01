@@ -1,21 +1,22 @@
 <roblox version="4">
-  <Item class="ImageLabel" referent="0">
+  <Item class="ImageButton" referent="0">
     <Properties>
-      <string name="Name">Topo</string>
-      <bool name="Active">false</bool>
+      <string name="Name">Gloves</string>
+      <bool name="Active">true</bool>
       <Vector2 name="AnchorPoint">
         <X>0.5</X>
         <Y>0.5</Y>
       </Vector2>
       <BinaryString name="AttributesSerialize"></BinaryString>
+      <bool name="AutoButtonColor">true</bool>
       <bool name="AutoLocalize">true</bool>
       <token name="AutomaticSize">0</token>
       <Color3 name="BackgroundColor3">
-        <R>1</R>
-        <G>1</G>
-        <B>1</B>
+        <R>0.10196079</R>
+        <G>0.10196079</G>
+        <B>0.10196079</B>
       </Color3>
-      <float name="BackgroundTransparency">1</float>
+      <float name="BackgroundTransparency">0</float>
       <Color3 name="BorderColor3">
         <R>0</R>
         <G>0</G>
@@ -26,13 +27,18 @@
       <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
       <bool name="ClipsDescendants">false</bool>
       <bool name="Draggable">false</bool>
+      <Ref name="HoverHapticEffect">null</Ref>
+      <Content name="HoverImageContent">
+        <null>
+        </null>
+      </Content>
       <Color3 name="ImageColor3">
         <R>1</R>
         <G>1</G>
         <B>1</B>
       </Color3>
       <Content name="ImageContent">
-        <uri>rbxassetid://111535125086752</uri>
+        <uri>rbxassetid://103797382958129</uri>
       </Content>
       <Vector2 name="ImageRectOffset">
         <X>0</X>
@@ -42,25 +48,32 @@
         <X>0</X>
         <Y>0</Y>
       </Vector2>
-      <float name="ImageTransparency">0.7</float>
+      <float name="ImageTransparency">0</float>
       <bool name="Interactable">true</bool>
       <int name="LayoutOrder">0</int>
+      <bool name="Modal">false</bool>
       <Ref name="NextSelectionDown">null</Ref>
       <Ref name="NextSelectionLeft">null</Ref>
       <Ref name="NextSelectionRight">null</Ref>
       <Ref name="NextSelectionUp">null</Ref>
       <UDim2 name="Position">
-        <XS>0.5000495</XS>
+        <XS>0.79207903</XS>
         <XO>0</XO>
-        <YS>0.07175846</YS>
+        <YS>0.3239437</YS>
         <YO>0</YO>
       </UDim2>
+      <Ref name="PressHapticEffect">null</Ref>
+      <Content name="PressedImageContent">
+        <null>
+        </null>
+      </Content>
       <token name="ResampleMode">0</token>
       <Ref name="RootLocalizationTable">null</Ref>
       <float name="Rotation">0</float>
       <bool name="DefinesCapabilities">false</bool>
-      <token name="ScaleType">0</token>
-      <bool name="Selectable">false</bool>
+      <token name="ScaleType">4</token>
+      <bool name="Selectable">true</bool>
+      <bool name="Selected">false</bool>
       <token name="SelectionBehaviorDown">0</token>
       <token name="SelectionBehaviorLeft">0</token>
       <token name="SelectionBehaviorRight">0</token>
@@ -69,9 +82,9 @@
       <Ref name="SelectionImageObject">null</Ref>
       <int name="SelectionOrder">0</int>
       <UDim2 name="Size">
-        <XS>0.99990106</XS>
+        <XS>0.4</XS>
         <XO>0</XO>
-        <YS>0.084125414</YS>
+        <YS>0.4</YS>
         <YO>0</YO>
       </UDim2>
       <token name="SizeConstraint">0</token>
@@ -87,6 +100,7 @@
       </Rect2D>
       <float name="SliceScale">1</float>
       <int64 name="SourceAssetId">-1</int64>
+      <token name="Style">0</token>
       <BinaryString name="Tags"></BinaryString>
       <UDim2 name="TileSize">
         <XS>1</XS>
@@ -95,7 +109,34 @@
         <YO>0</YO>
       </UDim2>
       <bool name="Visible">true</bool>
-      <int name="ZIndex">-2</int>
+      <int name="ZIndex">1</int>
     </Properties>
+    <Item class="UICorner" referent="1">
+      <Properties>
+        <string name="Name">UICorner</string>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <UDim name="CornerRadius">
+          <S>0.1</S>
+          <O>0</O>
+        </UDim>
+        <bool name="DefinesCapabilities">false</bool>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+      </Properties>
+    </Item>
+    <Item class="UIAspectRatioConstraint" referent="2">
+      <Properties>
+        <string name="Name">UIAspectRatioConstraint</string>
+        <float name="AspectRatio">1.0449173</float>
+        <token name="AspectType">0</token>
+        <BinaryString name="AttributesSerialize"></BinaryString>
+        <SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+        <token name="DominantAxis">0</token>
+        <bool name="DefinesCapabilities">false</bool>
+        <int64 name="SourceAssetId">-1</int64>
+        <BinaryString name="Tags"></BinaryString>
+      </Properties>
+    </Item>
   </Item>
 </roblox>

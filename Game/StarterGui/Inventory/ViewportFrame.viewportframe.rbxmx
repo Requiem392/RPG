@@ -20,7 +20,7 @@
         <G>0</G>
         <B>0</B>
       </Color3>
-      <float name="BackgroundTransparency">1</float>
+      <float name="BackgroundTransparency">0.5</float>
       <Color3 name="BorderColor3">
         <R>0.10588236</R>
         <G>0.16470589</G>
@@ -69,9 +69,9 @@
       <Ref name="NextSelectionRight">null</Ref>
       <Ref name="NextSelectionUp">null</Ref>
       <UDim2 name="Position">
-        <XS>0.77845144</XS>
+        <XS>0.8000421</XS>
         <XO>0</XO>
-        <YS>0.49807742</YS>
+        <YS>0.35652134</YS>
         <YO>0</YO>
       </UDim2>
       <Ref name="RootLocalizationTable">null</Ref>
@@ -86,15 +86,15 @@
       <Ref name="SelectionImageObject">null</Ref>
       <int name="SelectionOrder">0</int>
       <UDim2 name="Size">
-        <XS>0.54996794</XS>
+        <XS>0.3512906</XS>
         <XO>0</XO>
-        <YS>0.742683</YS>
+        <YS>0.46376374</YS>
         <YO>0</YO>
       </UDim2>
-      <token name="SizeConstraint">2</token>
+      <token name="SizeConstraint">0</token>
       <int64 name="SourceAssetId">-1</int64>
       <BinaryString name="Tags"></BinaryString>
-      <bool name="Visible">false</bool>
+      <bool name="Visible">true</bool>
       <int name="ZIndex">2</int>
     </Properties>
   </Item>
