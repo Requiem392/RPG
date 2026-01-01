@@ -137,7 +137,7 @@ end
 
 local ServicesToExport = {
    -- "Workspace",
-    "Lighting",
+    --"Lighting",
     "ReplicatedFirst",
     "ReplicatedStorage",
     "ServerScriptService",
@@ -145,8 +145,8 @@ local ServicesToExport = {
     "StarterGui",
     "StarterPack",
     "StarterPlayer",
-    "SoundService",
-    "Chat"
+    --"SoundService",
+    --"Chat"
 }
 
 for _, serviceName in ipairs(ServicesToExport) do
