@@ -3,13 +3,10 @@ local roblox = require("@lune/roblox")
 local net = require("@lune/net")
 local serde = require("@lune/serde")
 
---========== CONFIGURAÇÕES ===========--
-
+-- 1. CONFIGURAÇÕES
 local outputFolder = "Game"
-local inputFileName = "Place.rbxl" -- NOME DO ARQUIVO AQUI
+local inputFileName = "Place.rbxl" 
 local API_URL = "https://raw.githubusercontent.com/CloneTrooper1019/Roblox-Client-Tracker/roblox/API-Dump.json"
-
-local RobloxClasses = {} 
 
 local ScriptExtensions = {
     ["ModuleScript"] = ".module.luau",
@@ -17,150 +14,106 @@ local ScriptExtensions = {
     ["LocalScript"]  = ".client.luau"
 }
 
---===============================--
-
-local function FetchRobloxAPI()
-    print("Baixando API Dump...")
-    local response = net.request({ url = API_URL, method = "GET" })
-    if not response.ok then error("Erro API: " .. response.statusMessage) end
+-- 2. PREPARAÇÃO
+local RobloxClasses = {}
+local response = net.request({ url = API_URL, method = "GET" })
+if response.ok then
     local data = serde.decode("json", response.body)
     for _, classDef in ipairs(data.Classes) do RobloxClasses[classDef.Name] = classDef end
 end
 
-local function CreateDir(path)
-    if not fs.isDir(path) then fs.writeDir(path) end
+if fs.isDir(outputFolder) then fs.removeDir(outputFolder) end
+fs.writeDir(outputFolder)
+
+-- 3. FUNÇÕES AUXILIARES
+local function Sanitize(name)
+    return name:gsub("[\\/:*?\"<>|]", "_")
 end
 
---===============================--
--- INÍCIO
---===============================--
+local function CleanSource(code)
+    local s = code:find("<string name=\"Source\">")
+    if not s then return code end
+    s = s + 22
+    local e = code:find("</string>", s) or -1
+    return code:sub(s, e - 1):gsub("&lt;", "<"):gsub("&gt;", ">"):gsub("&amp;", "&"):gsub("&quot;", '"'):gsub("&apos;", "'"):gsub("<!%[CDATA%[", ""):gsub("%]%]>", "")
+end
 
-FetchRobloxAPI()
+-- 4. ESCREVE ARQUIVO (Itens sem filhos)
+local function WriteItem(instance, path)
+    local name = Sanitize(instance.Name)
+    local ext = ScriptExtensions[instance.ClassName]
+    local fileName, content
 
-print("Lendo arquivo " .. inputFileName .. "...")
+    local suffix = "." .. instance.ClassName:lower()
+
+    if ext then
+        fileName = name .. ext
+        content = CleanSource(roblox.serializeModel({instance}, true))
+    else
+        -- Se for Folder sem filhos, não precisa do sufixo .folder no arquivo também, 
+        -- mas como é um arquivo placeholder, vamos manter pra saber o tipo, ou tirar se preferir.
+        -- Vou manter no arquivo solto pra diferenciar de arquivo sem extensão.
+        fileName = name .. suffix .. ".rbxmx"
+        content = "PLACEHOLDER\nType: " .. instance.ClassName
+    end
+
+    fs.writeFile(path .. "/" .. fileName, content)
+end
+
+-- 5. LÓGICA DE PASTAS (AQUI ESTÁ A MUDANÇA)
+local function ProcessNode(instance, currentPath)
+    local children = instance:GetChildren()
+    local name = Sanitize(instance.Name)
+
+    if #children > 0 then
+        -- Define o nome da pasta
+        local folderName
+        
+        if instance.ClassName == "Folder" then
+            -- Se JÁ É uma Folder, usa só o nome (Ex: "AssetsItems")
+            folderName = name
+        else
+            -- Se é outra coisa (ScreenGui, Frame), usa o sufixo (Ex: "CombateUI.screengui")
+            folderName = name .. "." .. instance.ClassName:lower()
+        end
+        
+        local newPath = currentPath .. "/" .. folderName
+        
+        if not fs.isDir(newPath) then fs.writeDir(newPath) end
+
+        -- Se for Folder normal, não precisamos salvar o arquivo "pai" dentro dela,
+        -- pois a pasta já representa a Folder.
+        -- Mas se for um objeto especial (ScreenGui), precisamos do arquivo placeholder dentro?
+        -- Na versão anterior removemos para limpar. Mantemos assim.
+        
+        -- Nota: Se o objeto tiver atributos/tags importantes, não salvar o arquivo pai 
+        -- significa perder esses dados na visualização.
+        -- Mas para visualização de código, tá limpo assim.
+
+        for _, child in ipairs(children) do
+            ProcessNode(child, newPath)
+        end
+    else
+        WriteItem(instance, currentPath)
+    end
+end
+
+-- 6. RODAR
 local parsedFile = fs.readFile(inputFileName)
 local game = roblox.deserializePlace(parsedFile)
 
-CreateDir(outputFolder)
+local Services = {"ReplicatedFirst", "ReplicatedStorage", "ServerScriptService", "ServerStorage", "StarterGui", "StarterPack", "StarterPlayer", "Workspace"}
 
---===============================--
-
-local function InheritsFrom(className, targetBaseClass)
-    local currentClass = RobloxClasses[className]
-    while currentClass do
-        if currentClass.Name == targetBaseClass then return true end
-        currentClass = RobloxClasses[currentClass.Superclass]
-    end
-    return false
-end
-
-local function IsInstanceInteresting(instance)
-    local className = instance.ClassName
-    if not RobloxClasses[className] then return false end
-    if InheritsFrom(className, "Service") then return false end -- Serviços são tratados no loop principal
-    if className == "Folder" then return false end -- Pastas são apenas diretórios
-    if className == "Terrain" or className == "Camera" then return false end
-    return true
-end
-
-local function CleanScriptSource(file)
-    -- Remove tags XML ao redor do código fonte para salvar limpo
-    local startTag = "<string name=\"Source\">"
-    local endTag = "</string>"
-    local s = file:find(startTag, 1, true)
-    if not s then return file end
-    s = s + #startTag
-    local e = file:find(endTag, s, true) or -1
-    local code = file:sub(s, e - 1)
-    
-    -- Decodifica HTML entities
-    code = code:gsub("&lt;", "<"):gsub("&gt;", ">"):gsub("&amp;", "&"):gsub("&quot;", '"'):gsub("&apos;", "'")
-    
-    -- Remove seção CDATA se existir
-    code = code:gsub("<!%[CDATA%[", ""):gsub("%]%]>", "")
-    
-    return code
-end
-
-local function SanitizeName(name)
-    return name:gsub("[\\/:*?\"<>|]", "_") -- Remove caracteres proibidos no Windows
-end
-
-local function OutputFile(instance, folderPath)
-    if not IsInstanceInteresting(instance) then return end
-
-    local name = SanitizeName(instance.Name)
-    local ext = ScriptExtensions[instance.ClassName]
-    
-    local content
-    if ext then
-        -- É SCRIPT: Salva apenas o código fonte limpo
-        name = name .. ext
-        local rawXml = roblox.serializeModel({instance}, true)
-        content = CleanScriptSource(rawXml)
-    else
-        -- É OUTRA COISA (Part, Model, etc): Salva o modelo completo
-        name = name .. "." .. instance.ClassName:lower() .. ".rbxmx"
-        content = roblox.serializeModel({instance}, true)
-    end
-
-    fs.writeFile(folderPath .. "/" .. name, content)
-end
-
--- Função Recursiva Principal
-local function ProcessTree(instance, currentPath)
-    -- 1. Cria a pasta para o item atual (se necessário)
-    -- Se for o game ou serviços, a pasta já foi criada pelo loop principal
-    
-    -- 2. Itera sobre os filhos
-    local children = instance:GetChildren()
-    
-    for _, child in ipairs(children) do
-        -- A) Tenta salvar o arquivo do filho
-        OutputFile(child, currentPath)
-        
-        -- B) Se o filho tiver filhos (ex: Model com Scripts, Pasta, ScreenGui)
-        -- Cria uma subpasta e entra nela
-        if #child:GetChildren() > 0 then
-            local childFolderName = SanitizeName(child.Name)
-            local newPath = currentPath .. "/" .. childFolderName
-            
-            CreateDir(newPath)
-            ProcessTree(child, newPath)
+for _, sName in ipairs(Services) do
+    local service = game:GetService(sName)
+    if service then
+        print("📦 Exportando " .. sName)
+        local sPath = outputFolder .. "/" .. sName
+        fs.writeDir(sPath)
+        for _, child in ipairs(service:GetChildren()) do
+            ProcessNode(child, sPath)
         end
     end
 end
 
---===============================--
--- LOOP DOS SERVIÇOS (Onde a mágica acontece)
---===============================--
-
-local ServicesToExport = {
-   -- "Workspace",
-    --"Lighting",
-    "ReplicatedFirst",
-    "ReplicatedStorage",
-    "ServerScriptService",
-    "ServerStorage",
-    "StarterGui",
-    "StarterPack",
-    "StarterPlayer",
-    --"SoundService",
-    --"Chat"
-}
-
-for _, serviceName in ipairs(ServicesToExport) do
-    local service = game:GetService(serviceName)
-    if service then
-        print("Exportando Serviço: " .. serviceName)
-        
-        -- Cria a pasta do serviço explicitamente dentro de Project/
-        local servicePath = outputFolder .. "/" .. serviceName
-        CreateDir(servicePath)
-        
-        -- Processa tudo dentro desse serviço
-        ProcessTree(service, servicePath)
-    end
-end
-
-print("Concluído! Pastas separadas com sucesso.")
+print("✅ Exportação (Sem .folder redundante) Concluída!")
