@@ -14,6 +14,7 @@ local RunService = game:GetService("RunService")
 local NPCPerception = require(script.Parent.NPCPerception)
 local NPCStateMachine = require(script.Parent.NPCStateMachine)
 local NPCDecision = require(script.Parent.NPCDecision)
+local NPCMovement = require(script.Parent.NPCMovement)
 
 -- ======================================================================
 -- CONFIGURAÇÃO
@@ -76,6 +77,8 @@ local function SpawnNPC(position)
 	NPCPerception.InitializeNPC(npc)
 	-- Inicializa State Machine (Inicia em Idle)
 	NPCStateMachine.InitializeNPC(npc)
+	-- Inicializa Movimento
+	NPCMovement.InitializeNPC(npc)
 	
 	-- Adiciona à lista de NPCs ativos
 	table.insert(ActiveNPCs, npc)
@@ -105,6 +108,7 @@ function RemoveNPC(npc)
 	-- Cleanup de percepção
 	NPCPerception.Cleanup(npc)
 	NPCStateMachine.Cleanup(npc)
+	NPCMovement.Cleanup(npc)
 	
 	-- Remove do workspace após delay
 	task.delay(3, function()
@@ -120,7 +124,7 @@ end
 -- LOOP DE ATUALIZAÇÃO
 -- ======================================================================
 
-RunService.Heartbeat:Connect(function()
+RunService.Heartbeat:Connect(function(step)
 	local currentTime = tick()
 	
 	-- Throttle: percepção a cada UPDATE_INTERVAL
@@ -132,20 +136,6 @@ RunService.Heartbeat:Connect(function()
 			-- 1. Percepção (Throttle)
 			if dt >= UPDATE_INTERVAL then
 				NPCPerception.Update(npc)
-				
-				-- 2. Decision Making (Pilar 3)
-				local perceptionData = NPCPerception.GetData(npc)
-				local currentState = NPCStateMachine.GetState(npc)
-				local stateData = NPCStateMachine.GetStateData(npc)
-				
-				if perceptionData and stateData then
-					local nextState = NPCDecision.GetNextState(npc, perceptionData, currentState, stateData.StateTime)
-					
-					if nextState and nextState ~= currentState then
-						print(string.format("🔄 [Decision] %s: %s -> %s", npc.Name, currentState, nextState))
-						NPCStateMachine.ChangeState(npc, nextState)
-					end
-				end
 				
 				-- DEBUG: Mostra dados de percepção
 				local data = NPCPerception.GetData(npc)
@@ -175,8 +165,23 @@ RunService.Heartbeat:Connect(function()
 				end
 			end
 			
-			-- 2. State Machine (Todo frame)
-			NPCStateMachine.Update(npc, currentTime - (LastUpdateTime - dt)) -- dt real aproximado
+			-- 2. Tomada de Decisão (Todo frame)
+			local currentState = NPCStateMachine.GetState(npc)
+			local context = NPCStateMachine.GetContext(npc)
+			local perception = NPCPerception.GetData(npc)
+			
+			local nextState = NPCDecision.DecideNextState(npc, perception, currentState, context)
+			
+			if nextState and nextState ~= currentState then
+				print(string.format("🧠 [Decision] %s: %s -> %s", npc.Name, currentState, nextState))
+				NPCStateMachine.ChangeState(npc, nextState)
+			end
+			
+			-- 3. State Machine Update (Todo frame)
+			NPCStateMachine.Update(npc, step)
+			
+			-- 4. Movimento (Todo frame)
+			NPCMovement.Update(npc, step)
 		end
 	end
 	

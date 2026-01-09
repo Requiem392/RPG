@@ -1,11 +1,15 @@
--- States/Recover.lua
+-- States/Recover.module.luau
 local Recover = {}
+
+local ServerScriptService = game:GetService("ServerScriptService")
+local NPCMovement = require(ServerScriptService.NPCMovement)
 
 function Recover.Enter(npc, context)
 	-- Estado de vulnerabilidade pós-ataque
+	NPCMovement.Stop(npc) -- Garante parado (ou podia ser strafe)
 	local humanoid = npc:FindFirstChild("Humanoid")
 	if humanoid then
-		humanoid.WalkSpeed = 4 -- Anda devagar
+		humanoid.WalkSpeed = 4 -- Anda devagar se mover manualmente
 	end
 	
 	context.RecoverTime = 1.0 -- Tempo fixo por enquanto

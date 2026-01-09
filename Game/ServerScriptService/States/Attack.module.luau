@@ -1,12 +1,15 @@
--- States/Attack.lua
+-- States/Attack.module.luau
 local Attack = {}
 
+local ServerScriptService = game:GetService("ServerScriptService")
+local NPCMovement = require(ServerScriptService.NPCMovement)
+
 function Attack.Enter(npc, context)
-	-- Zera velocidade
+	-- Zera velocidade e para
+	NPCMovement.Stop(npc)
 	local humanoid = npc:FindFirstChild("Humanoid")
 	if humanoid then
-		humanoid.WalkSpeed = 0
-		humanoid:MoveTo(npc.PrimaryPart.Position)
+		humanoid.WalkSpeed = 0 -- Força zero para não ser empurrado facilmente
 	end
 	
 	context.AttackFinished = false

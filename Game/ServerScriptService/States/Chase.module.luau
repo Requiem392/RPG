@@ -1,33 +1,41 @@
--- States/Chase.lua
+-- States/Chase.module.luau
 local Chase = {}
 
+-- Precisa acessar Percepção para saber ONDE está o alvo
+local ServerScriptService = game:GetService("ServerScriptService")
+local NPCPerception = require(ServerScriptService.NPCPerception)
+local NPCMovement = require(ServerScriptService.NPCMovement) -- Novo require
+
 function Chase.Enter(npc, context)
-	local humanoid = npc:FindFirstChild("Humanoid")
-	if humanoid then
-		humanoid.WalkSpeed = 20 -- Corre
-	end
-	
-	print(npc.Name .. " começou a PERSEGUIR!")
+	-- Velocidade é controlada pelo NPCMovement.MoveTo
+	-- print(npc.Name .. " começou a PERSEGUIR!")
 end
 
 function Chase.Update(npc, context, dt)
-	-- Lógica de movimento será gerenciada aqui ou no Pilar 3?
-	-- Geralmente o estado executa o output da decisão.
-	-- Aqui vamos assumir que se está em Chase, deve ir até o alvo.
+	-- Busca dados de percepção
+	local data = NPCPerception.GetData(npc)
+	if not data then return end
 	
-	-- OBS: Movimento real deve vir de um MovementController (Pilar de Movimento)
-	-- Mas por enquanto vamos fazer simples:
+	local targetPos = nil
 	
-	-- local targetPos = ... (pegar da percepção)
-	-- npc.Humanoid:MoveTo(targetPos)
+	-- Prioridade: Onde o alvo está AGORA (Visão)
+	if data.HasVisual and data.CurrentTarget and data.CurrentTarget.Character and data.CurrentTarget.Character.PrimaryPart then
+		targetPos = data.CurrentTarget.Character.PrimaryPart.Position
+		
+	-- Fallback: Última posição conhecida (Memória)
+	elseif data.LastSeenPosition then
+		targetPos = data.LastSeenPosition
+	end
+	
+	-- Move se tiver destino
+	if targetPos then
+		-- Otimização interna do NPCMovement já lida com spam, mas podemos manter um throttle simples se quisermos
+		NPCMovement.MoveTo(npc, targetPos, {speed = 20}) -- Corre
+	end
 end
 
 function Chase.Exit(npc, context)
-	local humanoid = npc:FindFirstChild("Humanoid")
-	if humanoid then
-		humanoid.WalkSpeed = 16 -- Volta ao normal
-		humanoid:MoveTo(npc.PrimaryPart.Position) -- Para
-	end
+	NPCMovement.Stop(npc)
 end
 
 return Chase

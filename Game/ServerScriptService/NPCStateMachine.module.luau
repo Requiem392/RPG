@@ -105,8 +105,9 @@ function NPCStateMachine.GetState(npc)
 	return data and data.StateName or "None"
 end
 
-function NPCStateMachine.GetStateData(npc)
-	return StateData[npc]
+function NPCStateMachine.GetContext(npc)
+	local data = StateData[npc]
+	return data and data.Context or nil
 end
 
 function NPCStateMachine.Cleanup(npc)

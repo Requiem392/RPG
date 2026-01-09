@@ -1,5 +1,8 @@
--- States/Dead.lua
+-- States/Dead.module.luau
 local Dead = {}
+
+local ServerScriptService = game:GetService("ServerScriptService")
+local NPCMovement = require(ServerScriptService.NPCMovement)
 
 function Dead.Enter(npc, context)
 	-- Toca animação de morte
@@ -9,6 +12,7 @@ function Dead.Enter(npc, context)
 	print(npc.Name .. " MORREU 💀")
 	
 	-- Desabilita percepção e movimento
+	NPCMovement.Stop(npc)
 	local humanoid = npc:FindFirstChild("Humanoid")
 	if humanoid then
 		humanoid.WalkSpeed = 0

@@ -1,139 +1,125 @@
 --[[
 	NPCDecision.module.luau
 	
-	Pilar 3: DECISION MAKING (MACRO)
+	Pilar 3: DECISION MAKING (Macro)
 	
-	Responsabilidade:
-	- Analisar dados de Percepção e Estado Atual
-	- Decidir qual o PRÓXIMO estado
-	- NÃO executa ações
-	- NÃO altera variáveis de estado (apenas lê)
+	Responsabilidades:
+	- Determinar "Qual a próxima intenção do NPC?"
+	- Avaliar transições de estado com base em:
+		1. Percepção (PerceptionData)
+		2. Estado Atual (StateMachine)
+		3. Status (Vida, etc.)
+	
+	NÃO FAZ:
+	- Executar ações
+	- Escolher ataques específicos (Isso é Pilar 4)
+	- Mover o NPC
 ]]
 
 local NPCDecision = {}
 
--- Configurações Básicas (serão movidas para NPCConfig depois)
-local DECISION_CONFIG = {
-	AlertDuration = 2.0,    -- Tempo em Alert antes de Chase
-	AttackRange = 5.0,      -- Distância para iniciar ataque
-	RecoverDuration = 1.0,  -- Tempo vulnerável pós-ataque
-	ChaseGiveUpDistance = 60 -- Distância para desistir
-}
+-- ======================================================================
+-- CONFIGURAÇÃO
+-- ======================================================================
 
-function NPCDecision.GetNextState(npc, perceptionData, currentState, stateTime)
-	local currentTime = tick()
-	local timeInState = currentTime - stateTime
+local ATTACK_RANGE = 6  -- Distância para começar a atacar
+local STOP_CHASE_DISTANCE = 40 -- Distância para desistir (se perder visão)
+
+-- ======================================================================
+-- LÓGICA DE DECISÃO
+-- ======================================================================
+
+function NPCDecision.DecideNextState(npc, perceptionData, currentStateName, context)
+	if not perceptionData then return nil end
 	
-	-- ======================================================================
-	-- 1. PRIORIDADE MÁXIMA (Sobrevivência/Global)
-	-- ======================================================================
-	
+	-- 1. MORTE (Prioridade Máxima)
 	local humanoid = npc:FindFirstChild("Humanoid")
 	if not humanoid or humanoid.Health <= 0 then
-		if currentState ~= "Dead" then
+		if currentStateName ~= "Dead" then
 			return "Dead"
 		end
-		return nil -- Já está morto
-	end
-	
-	-- ======================================================================
-	-- 2. SEM ALVO DETECTADO
-	-- ======================================================================
-	
-	if not perceptionData.CurrentTarget then
-		-- Se ouviu algo (Suspeita), vai para Alert
-		if perceptionData.HasSuspicion then
-			if currentState ~= "Alert" then
-				return "Alert"
-			end
-			return nil
-		end
-		
-		-- Sem visão e sem suspeita -> Idle
-		if currentState ~= "Idle" then
-			return "Idle"
-		end
 		return nil
 	end
 	
-	-- 3. COM ALVO (Potencialmente)
-	-- ======================================================================
-	
-	-- Só consideramos que "TEM ALVO" se tivermos alguma info sensorial
-	local hasSensoryInfo = perceptionData.HasVisual or perceptionData.HasSuspicion or perceptionData.LastSeenPosition
-	
-	if not hasSensoryInfo then
-		if currentState ~= "Idle" then
-			return "Idle"
-		end
+	-- Se já está morto, não decide mais nada
+	if currentStateName == "Dead" then
 		return nil
+	end
+	
+	-- 2. RECUPERAÇÃO (Recover)
+	if currentStateName == "Recover" then
+		-- Só sai se terminou
+		if context and context.RecoverFinished then
+			-- Fallthrough para reavaliar (provavelmente Chase ou Idle)
+		else
+			return nil -- Continua recuperando
+		end
+	end
+	
+	-- 3. ATAQUE (Attack)
+	if currentStateName == "Attack" then
+		-- Só sai se terminou
+		if context and context.AttackFinished then
+			-- Se terminou ataque, DEVE ir para Recover (regra de combate)
+			return "Recover"
+		else
+			return nil -- Continua atacando
+		end
 	end
 
-	-- Transições específicas do estado atual
-	
-	if currentState == "Idle" then
-		-- Só sai do Idle se tiver info sensorial concreta (já checado acima)
-		return "Alert"
-	end
-	
-	if currentState == "Alert" then
-		-- Se já confirmou alvo visualmente e passou o tempo de reação
-		if perceptionData.HasVisual and timeInState >= DECISION_CONFIG.AlertDuration then
-			return "Chase"
-		end
-		
-		-- Se perdeu o alvo de vista E a suspeita acabou -> Idle
-		if not perceptionData.HasVisual and not perceptionData.LastSeenPosition and not perceptionData.HasSuspicion then
+	-- 4. ALVO PERDIDO OU INVÁLIDO
+	local target = perceptionData.CurrentTarget
+	if not target or (not perceptionData.HasVisual and not perceptionData.HasSuspicion and not perceptionData.LastSeenPosition) then
+		-- Sem alvo, sem visão, sem memória, sem suspeita -> IDLE
+		if currentStateName ~= "Idle" then
 			return "Idle"
 		end
+		return nil
 	end
 	
-	if currentState == "Chase" then
-		local dist = perceptionData.DistanceToTarget
+	-- 5. REAÇÃO A SUSPEITA (Sem visão, mas ouviu algo)
+	-- Se está em Alert, verifica trava de investigação
+	if currentStateName == "Alert" then
+		-- Se tem VISÃO, interrompe e persegue (prioridade alta)
+		if perceptionData.HasVisual then
+			return "Chase" -- Chase sempre vence Alert
+		end
 		
-		-- Alvo muito longe -> Desiste (Idle) ou volta pra Alert?
-		-- Por enquanto: se perdeu visual E memória acabou -> Alert (para procurar)
-		if not perceptionData.HasVisual and (currentTime - perceptionData.LastSeenTime > 5) then
+		-- Se está travado na investigação, NÃO SAI (ignora timeouts ou outros sons menores)
+		if context and context.InvestigationLocked then
+			return nil 
+		end
+	end
+	
+	if not perceptionData.HasVisual and not perceptionData.LastSeenPosition and perceptionData.HasSuspicion then
+		if currentStateName ~= "Alert" then
 			return "Alert"
 		end
-		
-		-- Perto o suficiente -> Attack
-		if dist <= DECISION_CONFIG.AttackRange then
+		return nil
+	end
+	
+	-- 6. COMBATE / PERSEGUIÇÃO (Com alvo confirmado ou memória visual)
+	
+	-- Distância até o alvo (ou até a última posição conhecida)
+	local dist = perceptionData.DistanceToTarget
+	
+	-- Se estamos muito longe e sem visão direta (apenas memória), talvez desistir?
+	-- Por enquanto, se tem memória (LastSeenPosition), ele vai até lá (Chase).
+	
+	-- Se está perto o suficiente para atacar (e tem visão direta)
+	if dist <= ATTACK_RANGE and perceptionData.HasVisual then
+		if currentStateName ~= "Attack" then
 			return "Attack"
 		end
-	end
-	
-	if currentState == "Attack" then
-		-- O estado Attack deve sinalizar quando acabou (via Context, não temos acesso aqui ainda)
-		-- Mas o StateMachine deve passar dados extras?
-		-- Por simplificação, vamos assumir que Attack termina por tempo ou sinal
-		-- Como Decisions roda todo frame, precismos saber se o ataque acabou.
-		
-		-- *NOTA*: O correto é checar uma flag no Context compartilhado.
-		-- Vamos assumir que essa flag é passada ou o próprio Attack transitiona?
-		-- NÃO, Estados não decidem.
-		
-		-- Solução Temporária: Attack define TimeInState e nós usamos tempo fixo simulado
-		-- Depois, Pilar 5 (Execution) vai dar a flag de "AttackFinished"
-		
-		if timeInState >= 1.5 then -- Tempo mock de ataque
-			return "Recover"
+	else
+		-- Se não pode atacar, deve perseguir
+		if currentStateName ~= "Chase" then
+			return "Chase" -- Chase lida com ir até o Alvo ou LastSeenPosition
 		end
 	end
 	
-	if currentState == "Recover" then
-		if timeInState >= DECISION_CONFIG.RecoverDuration then
-			-- Voltou do recover, ainda tem alvo?
-			if perceptionData.HasVisual then
-				-- Se está perto, ataca de novo? Ou Chase para reposicionar?
-				return "Chase"
-			else
-				return "Alert"
-			end
-		end
-	end
-	
-	return nil -- Nenhuma mudança necessária
+	-- Nenhuma mudança necessária
+	return nil
 end
 
 return NPCDecision
