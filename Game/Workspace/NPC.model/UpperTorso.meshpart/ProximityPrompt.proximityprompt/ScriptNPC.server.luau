@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local eventoStart = ReplicatedStorage:WaitForChild("RequestDialogoStart")
 
-local ID_DO_DIALOGO = "Guardiao_Inicio" 
+local ID_DO_DIALOGO = "NPC_TesteRecompensa" 
 
 script.Parent.Triggered:Connect(function(player)
 	-- CORREÇÃO AQUI 👇

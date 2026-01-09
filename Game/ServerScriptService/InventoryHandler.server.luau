@@ -1,4 +1,5 @@
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 
@@ -28,40 +29,74 @@ local UpdateInvEvent = GetRemote("UpdateInventory", "RemoteEvent")
 local UseItemEvent = GetRemote("UseItem", "RemoteEvent")
 
 -- Eventos Internos
-local ServerEvents = ServerStorage:FindFirstChild("ServerEvents") or Instance.new("Folder", ServerStorage)
-ServerEvents.Name = "ServerEvents"
-local CombatEvent = ServerEvents:FindFirstChild("CombatSystem") or Instance.new("BindableEvent", ServerEvents)
-CombatEvent.Name = "CombatSystem"
+local ServerEvents = ServerStorage:WaitForChild("ServerEvents") 
+local CombatEvent = ServerEvents:WaitForChild("CombatSystem")
+
+-- Evento de Atualização de Equipamento (Para StatsHandler)
+local GearUpdateEvent = ServerEvents:WaitForChild("GearUpdate")
 
 -- Dados dos Jogadores
 local PlayerInventories = {} 
 local PlayerHotbars = {}    
-local PlayerEquipped = {} 
+local PlayerEquipped = {} -- Slot da HOTBAR atualmente "selecionado"
+local PlayerGear = {}     -- Slots de equipamento: { ["Weapon"] = "Caladbolg", ["Armor"] = "..." }  
 
--- CONTROLE DE ESTADO
-local PlayerBusy = {} -- Bloqueio RÍGIDO (Task.wait)
-local PlayerSpamCheck = {} -- Bloqueio LEVE (Timestamp) para não crashar a rede
+-- Debounces Simples
+local ActionDebounce = {} 
 
--- Configuração
-local HEAVY_WAIT = 0.8 -- Tempo travado para armas
-local SPAM_LIMIT = 0.05 -- Limite técnico de rede (20 cliques/segundo máx)
+local function CheckDebounce(player, duration)
+	local last = ActionDebounce[player.UserId] or 0
+	local now = os.clock()
+	if (now - last) < duration then return false end
+	ActionDebounce[player.UserId] = now
+	return true
+end
 
 -- ============================================================================
 -- FUNÇÕES AUXILIARES
 -- ============================================================================
 
-local function IsHeavyItem(itemName)
-	if not itemName then return false end
-	local data = ItemData.Get(itemName)
-	return (data and data.Type == "Weapon") 
+
+
+local function CalculateWeight(backpack, hotbar, gear)
+	local total = 0
+
+	local function sumItem(item)
+		if not item then return end
+		local data = ItemData.Get(item.Name)
+		if data and data.Weight then
+			total += data.Weight * (item.Amount or 1)
+		end
+	end
+
+	for _, item in pairs(backpack) do sumItem(item) end
+	for _, item in pairs(hotbar) do sumItem(item) end
+	if gear then for _, item in pairs(gear) do sumItem(item) end end
+
+	return total
 end
 
 local function SendUpdate(player)
+	local backpack = PlayerInventories[player.UserId] or {}
+	local hotbar = PlayerHotbars[player.UserId] or {}
+	local gear = PlayerGear[player.UserId] or {}
+
+	local currentWeight = CalculateWeight(backpack, hotbar, gear)
+	local maxWeight = 100 -- Valor fixo por enquanto, futuramente pode vir de status (Força)
+
 	UpdateInvEvent:FireClient(player, {
-		Backpack = PlayerInventories[player.UserId] or {},
-		Hotbar = PlayerHotbars[player.UserId] or {},
-		EquippedSlot = PlayerEquipped[player.UserId] 
+		Backpack = backpack,
+		Hotbar = hotbar,
+		EquippedSlot = PlayerEquipped[player.UserId],
+		Gear = gear, 
+		CurrentWeight = currentWeight,
+		MaxWeight = maxWeight
 	})
+
+	-- Notifica StatsHandler (Se existir)
+	if GearUpdateEvent then
+		GearUpdateEvent:Fire(player, gear)
+	end
 end
 
 -- ============================================================================
@@ -71,16 +106,17 @@ local function SetupPlayer(player)
 	if PlayerInventories[player.UserId] then return end
 
 	PlayerInventories[player.UserId] = {
-		"Caladbolg", 
-		"Poção de Cura", 
-		"Poção de Cura",
-		"Espada de Ferro"
+		{Name = "Caladbolg", Amount = 1}, 
+		{Name = "Sword", Amount = 1},
+		{Name = "Dagger", Amount = 1},
+		{Name = "Poção de Cura", Amount = 1},
+		{Name = "Poção de Cura", Amount = 1},
+		{Name = "Espada de Ferro", Amount = 1}
 	} 
 
 	PlayerHotbars[player.UserId] = {}
+	PlayerGear[player.UserId] = {}
 	PlayerEquipped[player.UserId] = nil
-	PlayerBusy[player.UserId] = false
-	PlayerSpamCheck[player.UserId] = 0
 
 	task.wait(1)
 	SendUpdate(player)
@@ -92,160 +128,397 @@ for _, player in ipairs(Players:GetPlayers()) do SetupPlayer(player) end
 Players.PlayerRemoving:Connect(function(player)
 	local currentSlot = PlayerEquipped[player.UserId]
 	if currentSlot then
-		local itemName = PlayerHotbars[player.UserId][currentSlot]
-		if itemName then
-			CombatEvent:Fire("Unequip", player, itemName)
+		local item = PlayerHotbars[player.UserId][currentSlot]
+		if item then -- item agora é tabela
+			CombatEvent:Fire("Unequip", player, item.Name)
 		end
 	end
 	PlayerInventories[player.UserId] = nil
 	PlayerHotbars[player.UserId] = nil
+	PlayerGear[player.UserId] = nil
 	PlayerEquipped[player.UserId] = nil
-	PlayerBusy[player.UserId] = nil
-	PlayerSpamCheck[player.UserId] = nil
+	ActionDebounce[player.UserId] = nil
 end)
 
 -- ============================================================================
 -- MOVIMENTAÇÃO
 -- ============================================================================
+-- ============================================================================
+-- MOVIMENTAÇÃO (Agora suporta Slots de Equipamento)
+-- ============================================================================
 MoveItemEvent.OnServerEvent:Connect(function(player, itemName, targetSlot, sourceType, sourceIndex)
-	if PlayerBusy[player.UserId] then return end -- Não mexe se estiver travado em arma
+	-- itemName continua sendo o NOME (string) enviado pelo client para validação, mas trabalharemos com objetos
+	-- Validação básica de ação (sem bloqueio pesado)
 
 	local backpack = PlayerInventories[player.UserId]
 	local hotbar = PlayerHotbars[player.UserId]
+	local gear = PlayerGear[player.UserId]
+
 	if not backpack then return end
 
 	targetSlot = tostring(targetSlot)
-	sourceIndex = (sourceType == "Hotbar") and tostring(sourceIndex) or tonumber(sourceIndex)
-	local currentEquipped = PlayerEquipped[player.UserId]
+	sourceIndex = (sourceType == "Hotbar") and tostring(sourceIndex) or sourceIndex 
 
-	local function CheckUnequip(slotMexido)
-		if tostring(currentEquipped) == tostring(slotMexido) then
-			PlayerEquipped[player.UserId] = nil
-			CombatEvent:Fire("Unequip", player, itemName)
+	local function GetSourceItem()
+		if sourceType == "Backpack" then return backpack[tonumber(sourceIndex)] end
+		if sourceType == "Hotbar" then return hotbar[tostring(sourceIndex)] end
+		if sourceType == "Gear" then return gear[tostring(sourceIndex)] end
+		return nil
+	end
+
+	local function SetSourceItem(newItem) -- newItem agora é {Name, Amount} ou nil
+		if sourceType == "Backpack" then 
+			if newItem then backpack[tonumber(sourceIndex)] = newItem else table.remove(backpack, tonumber(sourceIndex)) end
+		elseif sourceType == "Hotbar" then 
+			hotbar[tostring(sourceIndex)] = newItem 
+		elseif sourceType == "Gear" then
+			gear[tostring(sourceIndex)] = newItem
+			if not newItem then CombatEvent:Fire("Unequip", player, itemName) end 
 		end
 	end
 
-	if sourceType == "Backpack" and targetSlot ~= "Backpack" then
-		if backpack[sourceIndex] == itemName then
-			CheckUnequip(targetSlot) 
-			local oldItem = hotbar[targetSlot]
-			hotbar[targetSlot] = itemName
-			table.remove(backpack, sourceIndex)
-			if oldItem then table.insert(backpack, oldItem) end
+	local itemMoved = GetSourceItem()
+	if not itemMoved or itemMoved.Name ~= itemName then return end 
+
+	-- 1. GEAR
+	if ItemData.Get(targetSlot) == nil and (targetSlot == "Weapon" or targetSlot == "Armor" or targetSlot == "Helm" or targetSlot == "OffHand" or string.find(targetSlot, "Ring")) then
+		if sourceType == "Gear" and tostring(sourceIndex) == tostring(targetSlot) then return end
+
+		local itemInfo = ItemData.Get(itemName)
+		if not itemInfo or itemInfo.SlotType ~= targetSlot then return end
+
+		local oldItemInSlot = gear[targetSlot] -- oldItemInSlot é objeto {Name, Amount}
+
+		-- Verifica se tinha arma sacada (pelo modelo no personagem)
+		local wasDrawn = false
+		if oldItemInSlot and player.Character then
+			local equippedModel = player.Character:FindFirstChild("Equipped_" .. oldItemInSlot.Name)
+			if equippedModel then
+				-- Verifica se estava na mão (DrawWeapon) ao invés de nas costas (Sheath)
+				local handle = equippedModel:FindFirstChild("Handle")
+				if handle and handle:FindFirstChild("RightArmMotor") then
+					wasDrawn = true
+					print("🔍 [DEBUG] Arma anterior ESTAVA SACADA")
+				else
+					print("🔍 [DEBUG] Arma anterior estava guardada")
+				end
+			end
 		end
-	elseif sourceType == "Hotbar" and targetSlot ~= "Backpack" then
-		local temp = hotbar[targetSlot]
-		hotbar[targetSlot] = hotbar[sourceIndex]
-		hotbar[sourceIndex] = temp
-		if tostring(currentEquipped) == sourceIndex then
-			PlayerEquipped[player.UserId] = targetSlot
-		elseif tostring(currentEquipped) == targetSlot then
-			PlayerEquipped[player.UserId] = sourceIndex
+
+		gear[targetSlot] = itemMoved
+		SetSourceItem(oldItemInSlot)
+
+		print("🔍 [DEBUG] Chamando Equip:", itemMoved.Name)
+		CombatEvent:Fire("Equip", player, itemMoved.Name)
+		-- EquipVisual já limpa a arma anterior automaticamente
+
+		-- Se estava sacada, saca a nova arma automaticamente
+		if wasDrawn then
+			print("🔍 [DEBUG] Aguardando 0.3s antes de re-sacar...")
+			task.wait(0.3) -- Delay maior para garantir que EquipVisual terminou
+			print("🔍 [DEBUG] Chamando DrawWeapon:", itemMoved.Name)
+			CombatEvent:Fire("DrawWeapon", player, itemMoved.Name)
+			print("🔄 [InventoryHandler] Re-sacando nova arma:", itemMoved.Name)
 		end
-	elseif sourceType == "Hotbar" and targetSlot == "Backpack" then
-		CheckUnequip(sourceIndex)
-		local item = hotbar[sourceIndex]
-		if item then
-			hotbar[sourceIndex] = nil
-			table.insert(backpack, item)
+
+		-- 2. BACKPACK
+	elseif targetSlot == "Backpack" then
+		SetSourceItem(nil)
+		table.insert(backpack, itemMoved)
+
+		-- 3. SWAP / MERGE BACKPACK
+	elseif string.sub(targetSlot, 1, 13) == "SwapBackpack_" then
+		local targetIdx = tonumber(string.sub(targetSlot, 14))
+		if targetIdx then
+			if sourceType == "Backpack" then
+				local sourceIdx = tonumber(sourceIndex)
+				local itemAtTarget = backpack[targetIdx]
+
+				-- MERGE CHECK
+				if itemAtTarget and itemAtTarget.Name == itemMoved.Name then
+					local data = ItemData.Get(itemMoved.Name)
+					if data and data.Stackable then
+						local space = (data.MaxStack or 99) - itemAtTarget.Amount
+						if space > 0 then
+							if itemMoved.Amount <= space then
+								-- Tudo cabe
+								itemAtTarget.Amount += itemMoved.Amount
+								SetSourceItem(nil) -- Remove origem (foi tudo)
+								SendUpdate(player)
+								return 
+							else
+								-- Cabe parte
+								itemAtTarget.Amount += space
+								itemMoved.Amount -= space
+								backpack[sourceIdx] = itemMoved -- Atualiza resto na origem
+								SendUpdate(player)
+								return
+							end
+						end
+					end
+				end
+
+				backpack[sourceIdx] = itemAtTarget
+				backpack[targetIdx] = itemMoved
+			else
+				local itemAtTarget = backpack[targetIdx]
+
+				-- Se tiver item no destino e for igual -> Tenta Merge
+				if itemAtTarget and itemAtTarget.Name == itemMoved.Name then
+					local data = ItemData.Get(itemMoved.Name)
+					if data and data.Stackable then
+						local space = (data.MaxStack or 99) - itemAtTarget.Amount
+						if space > 0 then
+							if itemMoved.Amount <= space then
+								itemAtTarget.Amount += itemMoved.Amount
+								SetSourceItem(nil)
+								SendUpdate(player)
+								return
+							else
+								itemAtTarget.Amount += space
+								itemMoved.Amount -= space
+								SetSourceItem(itemMoved) -- Resto
+								SendUpdate(player)
+								return
+							end
+						end
+					end
+				end
+
+				if sourceType == "Gear" then
+				-- Verifica se a arma DO SLOT estava sacada antes de trocar
+				local wasDrawn = false
+				if player.Character then
+					local equippedModel = player.Character:FindFirstChild("Equipped_" .. itemMoved.Name)
+					if equippedModel then
+						local handle = equippedModel:FindFirstChild("Handle")
+						if handle and handle:FindFirstChild("RightArmMotor") then
+							wasDrawn = true
+							print("🔍 [DEBUG] Arma do SLOT estava SACADA antes de mover para Backpack")
+						end
+					end
+				end
+				
+				-- ... Gear swap logic similar ...
+				local canSwap = false
+				if not itemAtTarget then canSwap = true else
+					local dataTarget = ItemData.Get(itemAtTarget.Name)
+					if dataTarget and dataTarget.SlotType == sourceIndex then canSwap = true end
+				end
+				if canSwap then
+					SetSourceItem(itemAtTarget)
+					CombatEvent:Fire("Equip", player, itemAtTarget and itemAtTarget.Name)
+					if not itemAtTarget then 
+						CombatEvent:Fire("Unequip", player, itemMoved.Name) 
+					else
+						-- Se a arma antiga estava sacada E trocamos por outra arma, re-saca
+						if wasDrawn then
+							print("🔍 [DEBUG] Aguardando 0.3s antes de re-sacar (Gear→Backpack)...")
+							task.wait(0.3)
+							print("🔍 [DEBUG] Re-sacando nova arma:", itemAtTarget.Name)
+							CombatEvent:Fire("DrawWeapon", player, itemAtTarget.Name)
+							print("🔄 [InventoryHandler] Re-sacando nova arma:", itemAtTarget.Name)
+						end
+					end
+				else
+					backpack[targetIdx] = itemAtTarget -- Reverte
+					return 
+				end
+				elseif sourceType == "Hotbar" then
+					SetSourceItem(itemAtTarget)
+				end
+				backpack[targetIdx] = itemMoved
+			end
 		end
+
+		-- 4. HOTBAR (Com Merge também)
+	elseif tonumber(targetSlot) then 
+		local targetKey = tostring(targetSlot)
+		local oldItemOrSwap = hotbar[targetKey]
+
+		-- Merge se já tiver item igual
+		if oldItemOrSwap and oldItemOrSwap.Name == itemMoved.Name then
+			local data = ItemData.Get(itemMoved.Name)
+			if data and data.Stackable then
+				local space = (data.MaxStack or 99) - oldItemOrSwap.Amount
+				if space > 0 then
+					if itemMoved.Amount <= space then
+						oldItemOrSwap.Amount += itemMoved.Amount
+						SetSourceItem(nil)
+						SendUpdate(player)
+						return
+					else
+						oldItemOrSwap.Amount += space
+						itemMoved.Amount -= space
+						SetSourceItem(itemMoved)
+						SendUpdate(player)
+						return
+					end
+				end
+			end
+		end
+
+		hotbar[targetKey] = itemMoved
+		SetSourceItem(oldItemOrSwap)
 	end
+
 	SendUpdate(player)
 end)
 
 -- ============================================================================
 -- EQUIPAR (A Lógica Híbrida)
 -- ============================================================================
+-- ============================================================================
+-- EQUIPAR RÁPIDO (Atalhos numéricos - Apenas troca Hotbar Select)
+-- ============================================================================
 EquipEvent.OnServerEvent:Connect(function(player, slotNumber)
-	-- 1. CHECAGEM RÍGIDA: Se já estiver travado (por causa de uma arma), ignora TUDO.
-	if PlayerBusy[player.UserId] then 
-		return 
-	end
-
-	-- 2. CHECAGEM DE SPAM LEVE: Evita crash de rede, mas permite switch rápido
-	local now = os.clock()
-	local lastOp = PlayerSpamCheck[player.UserId] or 0
-	if (now - lastOp) < SPAM_LIMIT then return end
-	PlayerSpamCheck[player.UserId] = now
-
-	-- Lógica padrão
-	local hotbar = PlayerHotbars[player.UserId]
+	-- Apenas seleciona o slot visual na hotbar (para usar consumíveis, etc)
+	-- Arma agora é via "Weapon" slot e tecla T
 	local slotString = tostring(slotNumber)
-	local targetItemName = hotbar[slotString] 
 
-	if not targetItemName then return end
-
-	local currentSlot = PlayerEquipped[player.UserId]
-	local currentItemName = currentSlot and hotbar[currentSlot]
-
-	-- 3. VERIFICA SE DEVEMOS TRAVAR O SERVIDOR
-	-- Só travamos se uma ARMA estiver envolvida (saindo ou entrando)
-	local needsLock = IsHeavyItem(currentItemName) or IsHeavyItem(targetItemName)
-
-	-- Se precisar travar, ativamos a flag AGORA
-	if needsLock then
-		PlayerBusy[player.UserId] = true
-	end
-
-	-- Executa a Troca
-	if currentSlot == slotString then
-		-- Desequipar
+	if PlayerEquipped[player.UserId] == slotString then
 		PlayerEquipped[player.UserId] = nil
-		CombatEvent:Fire("Unequip", player, targetItemName)
 	else
-		-- Equipar
-		if currentSlot then
-			local oldItem = hotbar[currentSlot]
-			if oldItem then
-				CombatEvent:Fire("Unequip", player, oldItem)
-			end
-		end
 		PlayerEquipped[player.UserId] = slotString
-		CombatEvent:Fire("Equip", player, targetItemName)
 	end
 
 	SendUpdate(player)
-
-	-- 4. APLICA A ESPERA (Task.Wait) SOMENTE SE NECESSÁRIO
-	if needsLock then
-		-- Se for arma, o script "dorme" aqui e ignora inputs no passo 1
-		task.wait(HEAVY_WAIT)
-		PlayerBusy[player.UserId] = false
-	end
-
-	-- Se não for arma (Poção -> Poção), o script termina aqui instantaneamente
-	-- e libera o jogador para apertar outro botão no próximo frame.
 end)
 
 -- ============================================================================
--- USAR ITEM
+-- USAR ITEM (Consumíveis na Hotbar)
 -- ============================================================================
 UseItemEvent.OnServerEvent:Connect(function(player)
-	if PlayerBusy[player.UserId] then return end -- Não pode beber se estiver sacando espada
+	-- Sem bloqueio pesado
 
 	local equippedSlot = PlayerEquipped[player.UserId]
 	if not equippedSlot then return end 
 
 	local hotbar = PlayerHotbars[player.UserId]
-	local itemName = hotbar[equippedSlot]
-	if not itemName then return end
+	local item = hotbar[equippedSlot] -- item é {Name="...", Amount=1}
+	if not item then return end
 
-	local data = ItemData.Get(itemName)
+	local data = ItemData.Get(item.Name)
 	if not data then return end
 
-	if data.Type == "Consumable" then
-		-- Trava mínima para consumo (não precisa de lock global pesado)
-		local now = os.clock()
-		local lastOp = PlayerSpamCheck[player.UserId] or 0
-		if (now - lastOp) < 0.15 then return end
-		PlayerSpamCheck[player.UserId] = now
+	-- Se for Equipamento (Arma/Armadura)
+	if data.Type == "Weapon" or data.Type == "Equipment" then
+		-- ... Lógica de Equipar via Hotbar (Atualizada para usar objetos) ...
+		local targetSlot = data.SlotType
+		if targetSlot then
+			local gear = PlayerGear[player.UserId]
+			local oldItem = gear[targetSlot]
 
-		hotbar[equippedSlot] = nil
-		PlayerEquipped[player.UserId] = nil 
-		CombatEvent:Fire("UseItem", player, itemName)
+			-- Verifica se tinha arma sacada antes de trocar
+			local wasDrawn = false
+			if oldItem and player.Character then
+				local equippedModel = player.Character:FindFirstChild("Equipped_" .. oldItem.Name)
+				if equippedModel then
+					local handle = equippedModel:FindFirstChild("Handle")
+					if handle and handle:FindFirstChild("RightArmMotor") then
+						wasDrawn = true
+						print("🔍 [DEBUG HOTBAR] Arma anterior ESTAVA SACADA")
+					else
+						print("🔍 [DEBUG HOTBAR] Arma anterior estava guardada")
+					end
+				end
+			end
+
+			gear[targetSlot] = item
+			hotbar[equippedSlot] = oldItem 
+
+			print("🔍 [DEBUG HOTBAR] Chamando Equip:", item.Name)
+			CombatEvent:Fire("Equip", player, item.Name)
+			if oldItem then CombatEvent:Fire("Unequip", player, oldItem.Name) end
+
+			-- Se estava sacada, saca a nova arma automaticamente
+			if wasDrawn then
+				print("🔍 [DEBUG HOTBAR] Aguardando 0.3s antes de re-sacar...")
+				task.wait(0.3)
+				print("🔍 [DEBUG HOTBAR] Chamando DrawWeapon:", item.Name)
+				CombatEvent:Fire("DrawWeapon", player, item.Name)
+				print("🔄 [Hotbar] Re-sacando nova arma:", item.Name)
+			end
+
+			SendUpdate(player)
+		end
+
+	elseif data.Type == "Consumable" then
+		if not CheckDebounce(player, 0.2) then return end 
+
+		-- Consome 1
+		-- (Ideally, we apply effect here or fire another event)
+		CombatEvent:Fire("UseItem", player, item.Name)
+
+		if data.Stackable then
+			item.Amount -= 1
+			if item.Amount <= 0 then
+				hotbar[equippedSlot] = nil
+				PlayerEquipped[player.UserId] = nil 
+			end
+		else
+			hotbar[equippedSlot] = nil
+			PlayerEquipped[player.UserId] = nil 
+		end
+
 		SendUpdate(player) 
-
-	elseif data.Type == "Weapon" then
-		print(player.Name .. " tentou atacar com " .. itemName)
 	end
 end)
+
+-- ============================================================================
+-- API PÚBLICA (para DialogueLogic e outros systems)
+-- ============================================================================
+
+local function AddItem(player, itemName, quantity)
+	quantity = quantity or 1
+
+	local backpack = PlayerInventories[player.UserId]
+	if not backpack then return false end
+
+	local itemData = ItemData.Get(itemName)
+	if not itemData then 
+		warn("[InventoryHandler] Item não existe:", itemName)
+		return false
+	end
+
+	-- Se for stackable, tenta adicionar a stack existente
+	if itemData.Stackable then
+		for _, item in ipairs(backpack) do
+			if item.Name == itemName then
+				local maxStack = itemData.MaxStack or 99
+				local space = maxStack - item.Amount
+
+				if space > 0 then
+					local toAdd = math.min(quantity, space)
+					item.Amount = item.Amount + toAdd
+					quantity = quantity - toAdd
+
+					if quantity <= 0 then
+						SendUpdate(player)
+						return true
+					end
+				end
+			end
+		end
+	end
+
+	-- Adiciona novo slot pro resto (ou item não-stackable)
+	while quantity > 0 do
+		local toAdd = itemData.Stackable and math.min(quantity, itemData.MaxStack or 99) or 1
+		table.insert(backpack, {Name = itemName, Amount = toAdd})
+		quantity = quantity - toAdd
+	end
+
+	SendUpdate(player)
+	return true
+end
+
+-- Exporta para _G
+_G.InventoryHandler = {
+	AddItem = AddItem,
+	GetPlayerGear = function(player)
+		return PlayerGear[player.UserId]
+	end
+}
+
+print("✅ InventoryHandler iniciado")

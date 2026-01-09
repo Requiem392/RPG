@@ -1,0 +1,1889 @@
+{
+  "iconDefinitions": {
+    "_default": {
+      "iconPath": "./icons/Part.png"
+    },
+    "_folder": {
+      "iconPath": "./icons/Folder.png"
+    },
+    "_folder_open": {
+      "iconPath": "./icons/Folder.png"
+    },
+    "_accessory": {
+      "iconPath": "./icons/Accessory.png"
+    },
+    "_actor": {
+      "iconPath": "./icons/Actor.png"
+    },
+    "_adgui": {
+      "iconPath": "./icons/AdGui.png"
+    },
+    "_adportal": {
+      "iconPath": "./icons/AdPortal.png"
+    },
+    "_aircontroller": {
+      "iconPath": "./icons/AirController.png"
+    },
+    "_alignorientation": {
+      "iconPath": "./icons/AlignOrientation.png"
+    },
+    "_alignposition": {
+      "iconPath": "./icons/AlignPosition.png"
+    },
+    "_angularvelocity": {
+      "iconPath": "./icons/AngularVelocity.png"
+    },
+    "_animation": {
+      "iconPath": "./icons/Animation.png"
+    },
+    "_animationconstraint": {
+      "iconPath": "./icons/AnimationConstraint.png"
+    },
+    "_animationcontroller": {
+      "iconPath": "./icons/AnimationController.png"
+    },
+    "_animationfromvideocreatorservice": {
+      "iconPath": "./icons/AnimationFromVideoCreatorService.png"
+    },
+    "_animator": {
+      "iconPath": "./icons/Animator.png"
+    },
+    "_archandles": {
+      "iconPath": "./icons/ArcHandles.png"
+    },
+    "_atmosphere": {
+      "iconPath": "./icons/Atmosphere.png"
+    },
+    "_attachment": {
+      "iconPath": "./icons/Attachment.png"
+    },
+    "_audioanalyzer": {
+      "iconPath": "./icons/AudioAnalyzer.png"
+    },
+    "_audiochannelmixer": {
+      "iconPath": "./icons/AudioChannelMixer.png"
+    },
+    "_audiochannelsplitter": {
+      "iconPath": "./icons/AudioChannelSplitter.png"
+    },
+    "_audiochorus": {
+      "iconPath": "./icons/AudioChorus.png"
+    },
+    "_audiocompressor": {
+      "iconPath": "./icons/AudioCompressor.png"
+    },
+    "_audiodeviceinput": {
+      "iconPath": "./icons/AudioDeviceInput.png"
+    },
+    "_audiodeviceoutput@3x": {
+      "iconPath": "./icons/AudioDeviceOutput@3x.png"
+    },
+    "_audiodistortion": {
+      "iconPath": "./icons/AudioDistortion.png"
+    },
+    "_audioecho": {
+      "iconPath": "./icons/AudioEcho.png"
+    },
+    "_audioemitter": {
+      "iconPath": "./icons/AudioEmitter.png"
+    },
+    "_audioequalizer": {
+      "iconPath": "./icons/AudioEqualizer.png"
+    },
+    "_audiofader": {
+      "iconPath": "./icons/AudioFader.png"
+    },
+    "_audiofilter": {
+      "iconPath": "./icons/AudioFilter.png"
+    },
+    "_audioflanger": {
+      "iconPath": "./icons/AudioFlanger.png"
+    },
+    "_audiolimiter": {
+      "iconPath": "./icons/AudioLimiter.png"
+    },
+    "_audiolistener": {
+      "iconPath": "./icons/AudioListener.png"
+    },
+    "_audiopitchshifter": {
+      "iconPath": "./icons/AudioPitchShifter.png"
+    },
+    "_audioplayer": {
+      "iconPath": "./icons/AudioPlayer.png"
+    },
+    "_audiorecorder": {
+      "iconPath": "./icons/AudioRecorder.png"
+    },
+    "_audioreverb": {
+      "iconPath": "./icons/AudioReverb.png"
+    },
+    "_audiospeechtotext": {
+      "iconPath": "./icons/AudioSpeechToText.png"
+    },
+    "_audiotexttospeech": {
+      "iconPath": "./icons/AudioTextToSpeech.png"
+    },
+    "_audiotremolo": {
+      "iconPath": "./icons/AudioTremolo.png"
+    },
+    "_aurorascript": {
+      "iconPath": "./icons/AuroraScript.png"
+    },
+    "_avatareditorservice": {
+      "iconPath": "./icons/AvatarEditorService.png"
+    },
+    "_avatarsettings": {
+      "iconPath": "./icons/AvatarSettings.png"
+    },
+    "_backpack": {
+      "iconPath": "./icons/Backpack.png"
+    },
+    "_ballsocketconstraint": {
+      "iconPath": "./icons/BallSocketConstraint.png"
+    },
+    "_baseplate": {
+      "iconPath": "./icons/BasePlate.png"
+    },
+    "_beam": {
+      "iconPath": "./icons/Beam.png"
+    },
+    "_billboardgui": {
+      "iconPath": "./icons/BillboardGui.png"
+    },
+    "_bindableevent": {
+      "iconPath": "./icons/BindableEvent.png"
+    },
+    "_bindablefunction": {
+      "iconPath": "./icons/BindableFunction.png"
+    },
+    "_blockmesh": {
+      "iconPath": "./icons/BlockMesh.png"
+    },
+    "_bloomeffect": {
+      "iconPath": "./icons/BloomEffect.png"
+    },
+    "_blureffect": {
+      "iconPath": "./icons/BlurEffect.png"
+    },
+    "_bodyangularvelocity": {
+      "iconPath": "./icons/BodyAngularVelocity.png"
+    },
+    "_bodycolors@3x": {
+      "iconPath": "./icons/BodyColors@3x.png"
+    },
+    "_bodyforce": {
+      "iconPath": "./icons/BodyForce.png"
+    },
+    "_bodygyro": {
+      "iconPath": "./icons/BodyGyro.png"
+    },
+    "_bodyposition": {
+      "iconPath": "./icons/BodyPosition.png"
+    },
+    "_bodythrust": {
+      "iconPath": "./icons/BodyThrust.png"
+    },
+    "_bodyvelocity": {
+      "iconPath": "./icons/BodyVelocity.png"
+    },
+    "_bone": {
+      "iconPath": "./icons/Bone.png"
+    },
+    "_boolvalue": {
+      "iconPath": "./icons/BoolValue.png"
+    },
+    "_boxhandleadornment": {
+      "iconPath": "./icons/BoxHandleAdornment.png"
+    },
+    "_breakpoint": {
+      "iconPath": "./icons/Breakpoint.png"
+    },
+    "_brickcolorvalue": {
+      "iconPath": "./icons/BrickColorValue.png"
+    },
+    "_bubblechatconfiguration": {
+      "iconPath": "./icons/BubbleChatConfiguration.png"
+    },
+    "_buggaroo": {
+      "iconPath": "./icons/Buggaroo.png"
+    },
+    "_camera": {
+      "iconPath": "./icons/Camera.png"
+    },
+    "_canvasgroup": {
+      "iconPath": "./icons/CanvasGroup.png"
+    },
+    "_cframevalue": {
+      "iconPath": "./icons/CFrameValue.png"
+    },
+    "_channeltabsconfiguration": {
+      "iconPath": "./icons/ChannelTabsConfiguration.png"
+    },
+    "_charactercontrollermanager": {
+      "iconPath": "./icons/CharacterControllerManager.png"
+    },
+    "_charactermesh": {
+      "iconPath": "./icons/CharacterMesh.png"
+    },
+    "_chat": {
+      "iconPath": "./icons/Chat.png"
+    },
+    "_chatinputbarconfiguration": {
+      "iconPath": "./icons/ChatInputBarConfiguration.png"
+    },
+    "_chatwindowconfiguration": {
+      "iconPath": "./icons/ChatWindowConfiguration.png"
+    },
+    "_chorussoundeffect": {
+      "iconPath": "./icons/ChorusSoundEffect.png"
+    },
+    "_class": {
+      "iconPath": "./icons/Class.png"
+    },
+    "_cleanup": {
+      "iconPath": "./icons/Cleanup.png"
+    },
+    "_clickdetector": {
+      "iconPath": "./icons/ClickDetector.png"
+    },
+    "_clientreplicator": {
+      "iconPath": "./icons/ClientReplicator.png"
+    },
+    "_climbcontroller": {
+      "iconPath": "./icons/ClimbController.png"
+    },
+    "_clouds": {
+      "iconPath": "./icons/Clouds.png"
+    },
+    "_color": {
+      "iconPath": "./icons/Color.png"
+    },
+    "_colorcorrectioneffect": {
+      "iconPath": "./icons/ColorCorrectionEffect.png"
+    },
+    "_compressorsoundeffect": {
+      "iconPath": "./icons/CompressorSoundEffect.png"
+    },
+    "_conehandleadornment": {
+      "iconPath": "./icons/ConeHandleAdornment.png"
+    },
+    "_configuration": {
+      "iconPath": "./icons/Configuration.png"
+    },
+    "_constant": {
+      "iconPath": "./icons/Constant.png"
+    },
+    "_constructor": {
+      "iconPath": "./icons/Constructor.png"
+    },
+    "_controller": {
+      "iconPath": "./icons/Controller.png"
+    },
+    "_coregui@3x": {
+      "iconPath": "./icons/CoreGui@3x.png"
+    },
+    "_cornerwedgepart": {
+      "iconPath": "./icons/CornerWedgePart.png"
+    },
+    "_cylinderhandleadornment": {
+      "iconPath": "./icons/CylinderHandleAdornment.png"
+    },
+    "_cylindricalconstraint": {
+      "iconPath": "./icons/CylindricalConstraint.png"
+    },
+    "_decal": {
+      "iconPath": "./icons/Decal.png"
+    },
+    "_depthoffieldeffect": {
+      "iconPath": "./icons/DepthOfFieldEffect.png"
+    },
+    "_dialog": {
+      "iconPath": "./icons/Dialog.png"
+    },
+    "_dialogchoice": {
+      "iconPath": "./icons/DialogChoice.png"
+    },
+    "_distortionsoundeffect": {
+      "iconPath": "./icons/DistortionSoundEffect.png"
+    },
+    "_dragdetector": {
+      "iconPath": "./icons/DragDetector.png"
+    },
+    "_echosoundeffect": {
+      "iconPath": "./icons/EchoSoundEffect.png"
+    },
+    "_editableimage": {
+      "iconPath": "./icons/EditableImage.png"
+    },
+    "_editablemesh": {
+      "iconPath": "./icons/EditableMesh.png"
+    },
+    "_enum": {
+      "iconPath": "./icons/Enum.png"
+    },
+    "_enummember": {
+      "iconPath": "./icons/EnumMember.png"
+    },
+    "_equalizersoundeffect": {
+      "iconPath": "./icons/EqualizerSoundEffect.png"
+    },
+    "_event": {
+      "iconPath": "./icons/Event.png"
+    },
+    "_explosion": {
+      "iconPath": "./icons/Explosion.png"
+    },
+    "_facecontrols": {
+      "iconPath": "./icons/FaceControls.png"
+    },
+    "_field": {
+      "iconPath": "./icons/Field.png"
+    },
+    "_file": {
+      "iconPath": "./icons/File.png"
+    },
+    "_fire": {
+      "iconPath": "./icons/Fire.png"
+    },
+    "_flangesoundeffect": {
+      "iconPath": "./icons/FlangeSoundEffect.png"
+    },
+    "_forcefield": {
+      "iconPath": "./icons/ForceField.png"
+    },
+    "_frame": {
+      "iconPath": "./icons/Frame.png"
+    },
+    "_function": {
+      "iconPath": "./icons/Function.png"
+    },
+    "_gamesettings": {
+      "iconPath": "./icons/GameSettings.png"
+    },
+    "_groundcontroller": {
+      "iconPath": "./icons/GroundController.png"
+    },
+    "_handles": {
+      "iconPath": "./icons/Handles.png"
+    },
+    "_hapticeffect": {
+      "iconPath": "./icons/HapticEffect.png"
+    },
+    "_hapticservice": {
+      "iconPath": "./icons/HapticService.png"
+    },
+    "_heightmapimporterservice": {
+      "iconPath": "./icons/HeightmapImporterService.png"
+    },
+    "_highlight": {
+      "iconPath": "./icons/Highlight.png"
+    },
+    "_hingeconstraint": {
+      "iconPath": "./icons/HingeConstraint.png"
+    },
+    "_humanoid": {
+      "iconPath": "./icons/Humanoid.png"
+    },
+    "_humanoiddescription": {
+      "iconPath": "./icons/HumanoidDescription.png"
+    },
+    "_ikcontrol": {
+      "iconPath": "./icons/IKControl.png"
+    },
+    "_imagebutton": {
+      "iconPath": "./icons/ImageButton.png"
+    },
+    "_imagehandleadornment": {
+      "iconPath": "./icons/ImageHandleAdornment.png"
+    },
+    "_imagelabel": {
+      "iconPath": "./icons/ImageLabel.png"
+    },
+    "_inputaction": {
+      "iconPath": "./icons/InputAction.png"
+    },
+    "_inputbinding": {
+      "iconPath": "./icons/InputBinding.png"
+    },
+    "_inputcontext": {
+      "iconPath": "./icons/InputContext.png"
+    },
+    "_interface": {
+      "iconPath": "./icons/Interface.png"
+    },
+    "_intersectoperation": {
+      "iconPath": "./icons/IntersectOperation.png"
+    },
+    "_keyword": {
+      "iconPath": "./icons/Keyword.png"
+    },
+    "_lighting": {
+      "iconPath": "./icons/Lighting.png"
+    },
+    "_linearvelocity": {
+      "iconPath": "./icons/LinearVelocity.png"
+    },
+    "_lineforce": {
+      "iconPath": "./icons/LineForce.png"
+    },
+    "_linehandleadornment": {
+      "iconPath": "./icons/LineHandleAdornment.png"
+    },
+    "_localfile": {
+      "iconPath": "./icons/LocalFile.png"
+    },
+    "_localizationservice": {
+      "iconPath": "./icons/LocalizationService.png"
+    },
+    "_localizationtable": {
+      "iconPath": "./icons/LocalizationTable.png"
+    },
+    "_localscript": {
+      "iconPath": "./icons/LocalScript.png"
+    },
+    "_materialservice": {
+      "iconPath": "./icons/MaterialService.png"
+    },
+    "_materialvariant": {
+      "iconPath": "./icons/MaterialVariant.png"
+    },
+    "_memorystoreservice": {
+      "iconPath": "./icons/MemoryStoreService.png"
+    },
+    "_meshpart": {
+      "iconPath": "./icons/MeshPart.png"
+    },
+    "_meshparts": {
+      "iconPath": "./icons/Meshparts.png"
+    },
+    "_messagingservice": {
+      "iconPath": "./icons/MessagingService.png"
+    },
+    "_method": {
+      "iconPath": "./icons/Method.png"
+    },
+    "_model": {
+      "iconPath": "./icons/Model.png"
+    },
+    "_modelgroups": {
+      "iconPath": "./icons/Modelgroups.png"
+    },
+    "_module": {
+      "iconPath": "./icons/Module.png"
+    },
+    "_modulescript": {
+      "iconPath": "./icons/ModuleScript.png"
+    },
+    "_motor6d": {
+      "iconPath": "./icons/Motor6D.png"
+    },
+    "_negateoperation": {
+      "iconPath": "./icons/NegateOperation.png"
+    },
+    "_networkclient": {
+      "iconPath": "./icons/NetworkClient.png"
+    },
+    "_nocollisionconstraint": {
+      "iconPath": "./icons/NoCollisionConstraint.png"
+    },
+    "_operator": {
+      "iconPath": "./icons/Operator.png"
+    },
+    "_packagelink": {
+      "iconPath": "./icons/PackageLink.png"
+    },
+    "_pants": {
+      "iconPath": "./icons/Pants.png"
+    },
+    "_part": {
+      "iconPath": "./icons/Part.png"
+    },
+    "_particleemitter": {
+      "iconPath": "./icons/ParticleEmitter.png"
+    },
+    "_path2d": {
+      "iconPath": "./icons/Path2D.png"
+    },
+    "_pathfindinglink": {
+      "iconPath": "./icons/PathfindingLink.png"
+    },
+    "_pathfindingmodifier": {
+      "iconPath": "./icons/PathfindingModifier.png"
+    },
+    "_pathfindingservice": {
+      "iconPath": "./icons/PathfindingService.png"
+    },
+    "_pitchshiftsoundeffect": {
+      "iconPath": "./icons/PitchShiftSoundEffect.png"
+    },
+    "_place": {
+      "iconPath": "./icons/Place.png"
+    },
+    "_plane": {
+      "iconPath": "./icons/Plane.png"
+    },
+    "_planeconstraint": {
+      "iconPath": "./icons/PlaneConstraint.png"
+    },
+    "_player": {
+      "iconPath": "./icons/Player.png"
+    },
+    "_players": {
+      "iconPath": "./icons/Players.png"
+    },
+    "_pluginguiservice": {
+      "iconPath": "./icons/PluginGuiService.png"
+    },
+    "_pointlight": {
+      "iconPath": "./icons/PointLight.png"
+    },
+    "_prismaticconstraint": {
+      "iconPath": "./icons/PrismaticConstraint.png"
+    },
+    "_property": {
+      "iconPath": "./icons/Property.png"
+    },
+    "_proximityprompt": {
+      "iconPath": "./icons/ProximityPrompt.png"
+    },
+    "_publishservice": {
+      "iconPath": "./icons/PublishService.png"
+    },
+    "_reference": {
+      "iconPath": "./icons/Reference.png"
+    },
+    "_remoteevent": {
+      "iconPath": "./icons/RemoteEvent.png"
+    },
+    "_remotefunction": {
+      "iconPath": "./icons/RemoteFunction.png"
+    },
+    "_renderingtest": {
+      "iconPath": "./icons/RenderingTest.png"
+    },
+    "_replicatedfirst": {
+      "iconPath": "./icons/ReplicatedFirst.png"
+    },
+    "_replicatedscriptservice": {
+      "iconPath": "./icons/ReplicatedScriptService.png"
+    },
+    "_replicatedstorage": {
+      "iconPath": "./icons/ReplicatedStorage.png"
+    },
+    "_reverbsoundeffect": {
+      "iconPath": "./icons/ReverbSoundEffect.png"
+    },
+    "_rigidconstraint": {
+      "iconPath": "./icons/RigidConstraint.png"
+    },
+    "_robloxpluginguiservice": {
+      "iconPath": "./icons/RobloxPluginGuiService.png"
+    },
+    "_rocketpropulsion": {
+      "iconPath": "./icons/RocketPropulsion.png"
+    },
+    "_rodconstraint": {
+      "iconPath": "./icons/RodConstraint.png"
+    },
+    "_ropeconstraint": {
+      "iconPath": "./icons/RopeConstraint.png"
+    },
+    "_rotate": {
+      "iconPath": "./icons/Rotate.png"
+    },
+    "_screengui": {
+      "iconPath": "./icons/ScreenGui.png"
+    },
+    "_script": {
+      "iconPath": "./icons/Script.png"
+    },
+    "_scrollingframe": {
+      "iconPath": "./icons/ScrollingFrame.png"
+    },
+    "_seat": {
+      "iconPath": "./icons/Seat.png"
+    },
+    "_selected_workspace": {
+      "iconPath": "./icons/Selected_Workspace.png"
+    },
+    "_selectionbox": {
+      "iconPath": "./icons/SelectionBox.png"
+    },
+    "_selectionsphere": {
+      "iconPath": "./icons/SelectionSphere.png"
+    },
+    "_serverscriptservice": {
+      "iconPath": "./icons/ServerScriptService.png"
+    },
+    "_serverstorage": {
+      "iconPath": "./icons/ServerStorage.png"
+    },
+    "_service": {
+      "iconPath": "./icons/Service.png"
+    },
+    "_shirt": {
+      "iconPath": "./icons/Shirt.png"
+    },
+    "_shirtgraphic": {
+      "iconPath": "./icons/ShirtGraphic.png"
+    },
+    "_skinnedmeshpart": {
+      "iconPath": "./icons/SkinnedMeshPart.png"
+    },
+    "_sky": {
+      "iconPath": "./icons/Sky.png"
+    },
+    "_smoke": {
+      "iconPath": "./icons/Smoke.png"
+    },
+    "_snap": {
+      "iconPath": "./icons/Snap.png"
+    },
+    "_snippet": {
+      "iconPath": "./icons/Snippet.png"
+    },
+    "_socialservice": {
+      "iconPath": "./icons/SocialService.png"
+    },
+    "_sound": {
+      "iconPath": "./icons/Sound.png"
+    },
+    "_soundeffect": {
+      "iconPath": "./icons/SoundEffect.png"
+    },
+    "_soundgroup": {
+      "iconPath": "./icons/SoundGroup.png"
+    },
+    "_soundservice": {
+      "iconPath": "./icons/SoundService.png"
+    },
+    "_sparkles": {
+      "iconPath": "./icons/Sparkles.png"
+    },
+    "_spawnlocation": {
+      "iconPath": "./icons/SpawnLocation.png"
+    },
+    "_specialmesh": {
+      "iconPath": "./icons/SpecialMesh.png"
+    },
+    "_spherehandleadornment": {
+      "iconPath": "./icons/SphereHandleAdornment.png"
+    },
+    "_spotlight": {
+      "iconPath": "./icons/SpotLight.png"
+    },
+    "_springconstraint": {
+      "iconPath": "./icons/SpringConstraint.png"
+    },
+    "_standalonepluginscripts": {
+      "iconPath": "./icons/StandalonePluginScripts.png"
+    },
+    "_startercharacterscripts": {
+      "iconPath": "./icons/StarterCharacterScripts.png"
+    },
+    "_startergui": {
+      "iconPath": "./icons/StarterGui.png"
+    },
+    "_starterpack": {
+      "iconPath": "./icons/StarterPack.png"
+    },
+    "_starterplayer": {
+      "iconPath": "./icons/StarterPlayer.png"
+    },
+    "_starterplayerscripts": {
+      "iconPath": "./icons/StarterPlayerScripts.png"
+    },
+    "_struct": {
+      "iconPath": "./icons/Struct.png"
+    },
+    "_stylederive": {
+      "iconPath": "./icons/StyleDerive.png"
+    },
+    "_stylelink": {
+      "iconPath": "./icons/StyleLink.png"
+    },
+    "_stylerule": {
+      "iconPath": "./icons/StyleRule.png"
+    },
+    "_stylesheet": {
+      "iconPath": "./icons/StyleSheet.png"
+    },
+    "_sunrayseffect": {
+      "iconPath": "./icons/SunRaysEffect.png"
+    },
+    "_surfaceappearance": {
+      "iconPath": "./icons/SurfaceAppearance.png"
+    },
+    "_surfacegui": {
+      "iconPath": "./icons/SurfaceGui.png"
+    },
+    "_surfacelight": {
+      "iconPath": "./icons/SurfaceLight.png"
+    },
+    "_surfaceselection": {
+      "iconPath": "./icons/SurfaceSelection.png"
+    },
+    "_swimcontroller": {
+      "iconPath": "./icons/SwimController.png"
+    },
+    "_taskscheduler": {
+      "iconPath": "./icons/TaskScheduler.png"
+    },
+    "_team": {
+      "iconPath": "./icons/Team.png"
+    },
+    "_teams": {
+      "iconPath": "./icons/Teams.png"
+    },
+    "_terrain": {
+      "iconPath": "./icons/Terrain.png"
+    },
+    "_terraindetail": {
+      "iconPath": "./icons/TerrainDetail.png"
+    },
+    "_testservice": {
+      "iconPath": "./icons/TestService.png"
+    },
+    "_textbox": {
+      "iconPath": "./icons/TextBox.png"
+    },
+    "_textboxservice": {
+      "iconPath": "./icons/TextBoxService.png"
+    },
+    "_textbutton": {
+      "iconPath": "./icons/TextButton.png"
+    },
+    "_textchannel": {
+      "iconPath": "./icons/TextChannel.png"
+    },
+    "_textchatcommand@3x": {
+      "iconPath": "./icons/TextChatCommand@3x.png"
+    },
+    "_textchatservice": {
+      "iconPath": "./icons/TextChatService.png"
+    },
+    "_textlabel": {
+      "iconPath": "./icons/TextLabel.png"
+    },
+    "_textstring": {
+      "iconPath": "./icons/TextString.png"
+    },
+    "_texture": {
+      "iconPath": "./icons/Texture.png"
+    },
+    "_tool": {
+      "iconPath": "./icons/Tool.png"
+    },
+    "_torque": {
+      "iconPath": "./icons/Torque.png"
+    },
+    "_torsionspringconstraint": {
+      "iconPath": "./icons/TorsionSpringConstraint.png"
+    },
+    "_trail": {
+      "iconPath": "./icons/Trail.png"
+    },
+    "_tremolosoundeffect": {
+      "iconPath": "./icons/TremoloSoundEffect.png"
+    },
+    "_trusspart": {
+      "iconPath": "./icons/TrussPart.png"
+    },
+    "_typeparameter": {
+      "iconPath": "./icons/TypeParameter.png"
+    },
+    "_ugcvalidationservice": {
+      "iconPath": "./icons/UGCValidationService.png"
+    },
+    "_uiaspectratioconstraint": {
+      "iconPath": "./icons/UIAspectRatioConstraint.png"
+    },
+    "_uicorner": {
+      "iconPath": "./icons/UICorner.png"
+    },
+    "_uidragdetector": {
+      "iconPath": "./icons/UIDragDetector.png"
+    },
+    "_uiflexitem": {
+      "iconPath": "./icons/UIFlexItem.png"
+    },
+    "_uigradient": {
+      "iconPath": "./icons/UIGradient.png"
+    },
+    "_uigridlayout": {
+      "iconPath": "./icons/UIGridLayout.png"
+    },
+    "_uilistlayout": {
+      "iconPath": "./icons/UIListLayout.png"
+    },
+    "_uipadding": {
+      "iconPath": "./icons/UIPadding.png"
+    },
+    "_uipagelayout": {
+      "iconPath": "./icons/UIPageLayout.png"
+    },
+    "_uiscale": {
+      "iconPath": "./icons/UIScale.png"
+    },
+    "_uisizeconstraint": {
+      "iconPath": "./icons/UISizeConstraint.png"
+    },
+    "_uistroke": {
+      "iconPath": "./icons/UIStroke.png"
+    },
+    "_uitablelayout": {
+      "iconPath": "./icons/UITableLayout.png"
+    },
+    "_uitextsizeconstraint": {
+      "iconPath": "./icons/UITextSizeConstraint.png"
+    },
+    "_unionoperation": {
+      "iconPath": "./icons/UnionOperation.png"
+    },
+    "_unit": {
+      "iconPath": "./icons/Unit.png"
+    },
+    "_universalconstraint": {
+      "iconPath": "./icons/UniversalConstraint.png"
+    },
+    "_unreliableremoteevent": {
+      "iconPath": "./icons/UnreliableRemoteEvent.png"
+    },
+    "_updateavailable": {
+      "iconPath": "./icons/UpdateAvailable.png"
+    },
+    "_userservice": {
+      "iconPath": "./icons/UserService.png"
+    },
+    "_value": {
+      "iconPath": "./icons/Value.png"
+    },
+    "_variable": {
+      "iconPath": "./icons/Variable.png"
+    },
+    "_vectorforce": {
+      "iconPath": "./icons/VectorForce.png"
+    },
+    "_vehicleseat": {
+      "iconPath": "./icons/VehicleSeat.png"
+    },
+    "_videodisplay": {
+      "iconPath": "./icons/VideoDisplay.png"
+    },
+    "_videoframe": {
+      "iconPath": "./icons/VideoFrame.png"
+    },
+    "_videoplayer": {
+      "iconPath": "./icons/VideoPlayer.png"
+    },
+    "_viewportframe": {
+      "iconPath": "./icons/ViewportFrame.png"
+    },
+    "_virtualuser": {
+      "iconPath": "./icons/VirtualUser.png"
+    },
+    "_voicechannel": {
+      "iconPath": "./icons/VoiceChannel.png"
+    },
+    "_voicechat": {
+      "iconPath": "./icons/Voicechat.png"
+    },
+    "_voicechatservice": {
+      "iconPath": "./icons/VoiceChatService.png"
+    },
+    "_vrservice": {
+      "iconPath": "./icons/VRService.png"
+    },
+    "_wedgepart": {
+      "iconPath": "./icons/WedgePart.png"
+    },
+    "_weld": {
+      "iconPath": "./icons/Weld.png"
+    },
+    "_weldconstraint": {
+      "iconPath": "./icons/WeldConstraint.png"
+    },
+    "_wire": {
+      "iconPath": "./icons/Wire.png"
+    },
+    "_wireframehandleadornment": {
+      "iconPath": "./icons/WireframeHandleAdornment.png"
+    },
+    "_workspace": {
+      "iconPath": "./icons/Workspace.png"
+    },
+    "_worldmodel": {
+      "iconPath": "./icons/WorldModel.png"
+    },
+    "_wrapdeformer": {
+      "iconPath": "./icons/WrapDeformer.png"
+    },
+    "_wraplayer": {
+      "iconPath": "./icons/WrapLayer.png"
+    },
+    "_wraptarget": {
+      "iconPath": "./icons/WrapTarget.png"
+    }
+  },
+  "fileExtensions": {
+    "rbxm": "_default",
+    "rbxmx": "_default",
+    "accessory.rbxmx": "_accessory",
+    "accessory.rbxm": "_accessory",
+    "actor.rbxmx": "_actor",
+    "actor.rbxm": "_actor",
+    "adgui.rbxmx": "_adgui",
+    "adgui.rbxm": "_adgui",
+    "adportal.rbxmx": "_adportal",
+    "adportal.rbxm": "_adportal",
+    "aircontroller.rbxmx": "_aircontroller",
+    "aircontroller.rbxm": "_aircontroller",
+    "alignorientation.rbxmx": "_alignorientation",
+    "alignorientation.rbxm": "_alignorientation",
+    "alignposition.rbxmx": "_alignposition",
+    "alignposition.rbxm": "_alignposition",
+    "angularvelocity.rbxmx": "_angularvelocity",
+    "angularvelocity.rbxm": "_angularvelocity",
+    "animation.rbxmx": "_animation",
+    "animation.rbxm": "_animation",
+    "animationconstraint.rbxmx": "_animationconstraint",
+    "animationconstraint.rbxm": "_animationconstraint",
+    "animationcontroller.rbxmx": "_animationcontroller",
+    "animationcontroller.rbxm": "_animationcontroller",
+    "animationfromvideocreatorservice.rbxmx": "_animationfromvideocreatorservice",
+    "animationfromvideocreatorservice.rbxm": "_animationfromvideocreatorservice",
+    "animator.rbxmx": "_animator",
+    "animator.rbxm": "_animator",
+    "archandles.rbxmx": "_archandles",
+    "archandles.rbxm": "_archandles",
+    "atmosphere.rbxmx": "_atmosphere",
+    "atmosphere.rbxm": "_atmosphere",
+    "attachment.rbxmx": "_attachment",
+    "attachment.rbxm": "_attachment",
+    "audioanalyzer.rbxmx": "_audioanalyzer",
+    "audioanalyzer.rbxm": "_audioanalyzer",
+    "audiochannelmixer.rbxmx": "_audiochannelmixer",
+    "audiochannelmixer.rbxm": "_audiochannelmixer",
+    "audiochannelsplitter.rbxmx": "_audiochannelsplitter",
+    "audiochannelsplitter.rbxm": "_audiochannelsplitter",
+    "audiochorus.rbxmx": "_audiochorus",
+    "audiochorus.rbxm": "_audiochorus",
+    "audiocompressor.rbxmx": "_audiocompressor",
+    "audiocompressor.rbxm": "_audiocompressor",
+    "audiodeviceinput.rbxmx": "_audiodeviceinput",
+    "audiodeviceinput.rbxm": "_audiodeviceinput",
+    "audiodeviceoutput@3x.rbxmx": "_audiodeviceoutput@3x",
+    "audiodeviceoutput@3x.rbxm": "_audiodeviceoutput@3x",
+    "audiodistortion.rbxmx": "_audiodistortion",
+    "audiodistortion.rbxm": "_audiodistortion",
+    "audioecho.rbxmx": "_audioecho",
+    "audioecho.rbxm": "_audioecho",
+    "audioemitter.rbxmx": "_audioemitter",
+    "audioemitter.rbxm": "_audioemitter",
+    "audioequalizer.rbxmx": "_audioequalizer",
+    "audioequalizer.rbxm": "_audioequalizer",
+    "audiofader.rbxmx": "_audiofader",
+    "audiofader.rbxm": "_audiofader",
+    "audiofilter.rbxmx": "_audiofilter",
+    "audiofilter.rbxm": "_audiofilter",
+    "audioflanger.rbxmx": "_audioflanger",
+    "audioflanger.rbxm": "_audioflanger",
+    "audiolimiter.rbxmx": "_audiolimiter",
+    "audiolimiter.rbxm": "_audiolimiter",
+    "audiolistener.rbxmx": "_audiolistener",
+    "audiolistener.rbxm": "_audiolistener",
+    "audiopitchshifter.rbxmx": "_audiopitchshifter",
+    "audiopitchshifter.rbxm": "_audiopitchshifter",
+    "audioplayer.rbxmx": "_audioplayer",
+    "audioplayer.rbxm": "_audioplayer",
+    "audiorecorder.rbxmx": "_audiorecorder",
+    "audiorecorder.rbxm": "_audiorecorder",
+    "audioreverb.rbxmx": "_audioreverb",
+    "audioreverb.rbxm": "_audioreverb",
+    "audiospeechtotext.rbxmx": "_audiospeechtotext",
+    "audiospeechtotext.rbxm": "_audiospeechtotext",
+    "audiotexttospeech.rbxmx": "_audiotexttospeech",
+    "audiotexttospeech.rbxm": "_audiotexttospeech",
+    "audiotremolo.rbxmx": "_audiotremolo",
+    "audiotremolo.rbxm": "_audiotremolo",
+    "aurorascript.rbxmx": "_aurorascript",
+    "aurorascript.rbxm": "_aurorascript",
+    "avatareditorservice.rbxmx": "_avatareditorservice",
+    "avatareditorservice.rbxm": "_avatareditorservice",
+    "avatarsettings.rbxmx": "_avatarsettings",
+    "avatarsettings.rbxm": "_avatarsettings",
+    "backpack.rbxmx": "_backpack",
+    "backpack.rbxm": "_backpack",
+    "ballsocketconstraint.rbxmx": "_ballsocketconstraint",
+    "ballsocketconstraint.rbxm": "_ballsocketconstraint",
+    "baseplate.rbxmx": "_baseplate",
+    "baseplate.rbxm": "_baseplate",
+    "beam.rbxmx": "_beam",
+    "beam.rbxm": "_beam",
+    "billboardgui.rbxmx": "_billboardgui",
+    "billboardgui.rbxm": "_billboardgui",
+    "bindableevent.rbxmx": "_bindableevent",
+    "bindableevent.rbxm": "_bindableevent",
+    "bindablefunction.rbxmx": "_bindablefunction",
+    "bindablefunction.rbxm": "_bindablefunction",
+    "blockmesh.rbxmx": "_blockmesh",
+    "blockmesh.rbxm": "_blockmesh",
+    "bloomeffect.rbxmx": "_bloomeffect",
+    "bloomeffect.rbxm": "_bloomeffect",
+    "blureffect.rbxmx": "_blureffect",
+    "blureffect.rbxm": "_blureffect",
+    "bodyangularvelocity.rbxmx": "_bodyangularvelocity",
+    "bodyangularvelocity.rbxm": "_bodyangularvelocity",
+    "bodycolors@3x.rbxmx": "_bodycolors@3x",
+    "bodycolors@3x.rbxm": "_bodycolors@3x",
+    "bodyforce.rbxmx": "_bodyforce",
+    "bodyforce.rbxm": "_bodyforce",
+    "bodygyro.rbxmx": "_bodygyro",
+    "bodygyro.rbxm": "_bodygyro",
+    "bodyposition.rbxmx": "_bodyposition",
+    "bodyposition.rbxm": "_bodyposition",
+    "bodythrust.rbxmx": "_bodythrust",
+    "bodythrust.rbxm": "_bodythrust",
+    "bodyvelocity.rbxmx": "_bodyvelocity",
+    "bodyvelocity.rbxm": "_bodyvelocity",
+    "bone.rbxmx": "_bone",
+    "bone.rbxm": "_bone",
+    "boolvalue.rbxmx": "_boolvalue",
+    "boolvalue.rbxm": "_boolvalue",
+    "boxhandleadornment.rbxmx": "_boxhandleadornment",
+    "boxhandleadornment.rbxm": "_boxhandleadornment",
+    "breakpoint.rbxmx": "_breakpoint",
+    "breakpoint.rbxm": "_breakpoint",
+    "brickcolorvalue.rbxmx": "_brickcolorvalue",
+    "brickcolorvalue.rbxm": "_brickcolorvalue",
+    "bubblechatconfiguration.rbxmx": "_bubblechatconfiguration",
+    "bubblechatconfiguration.rbxm": "_bubblechatconfiguration",
+    "buggaroo.rbxmx": "_buggaroo",
+    "buggaroo.rbxm": "_buggaroo",
+    "camera.rbxmx": "_camera",
+    "camera.rbxm": "_camera",
+    "canvasgroup.rbxmx": "_canvasgroup",
+    "canvasgroup.rbxm": "_canvasgroup",
+    "cframevalue.rbxmx": "_cframevalue",
+    "cframevalue.rbxm": "_cframevalue",
+    "channeltabsconfiguration.rbxmx": "_channeltabsconfiguration",
+    "channeltabsconfiguration.rbxm": "_channeltabsconfiguration",
+    "charactercontrollermanager.rbxmx": "_charactercontrollermanager",
+    "charactercontrollermanager.rbxm": "_charactercontrollermanager",
+    "charactermesh.rbxmx": "_charactermesh",
+    "charactermesh.rbxm": "_charactermesh",
+    "chat.rbxmx": "_chat",
+    "chat.rbxm": "_chat",
+    "chatinputbarconfiguration.rbxmx": "_chatinputbarconfiguration",
+    "chatinputbarconfiguration.rbxm": "_chatinputbarconfiguration",
+    "chatwindowconfiguration.rbxmx": "_chatwindowconfiguration",
+    "chatwindowconfiguration.rbxm": "_chatwindowconfiguration",
+    "chorussoundeffect.rbxmx": "_chorussoundeffect",
+    "chorussoundeffect.rbxm": "_chorussoundeffect",
+    "class.rbxmx": "_class",
+    "class.rbxm": "_class",
+    "cleanup.rbxmx": "_cleanup",
+    "cleanup.rbxm": "_cleanup",
+    "clickdetector.rbxmx": "_clickdetector",
+    "clickdetector.rbxm": "_clickdetector",
+    "clientreplicator.rbxmx": "_clientreplicator",
+    "clientreplicator.rbxm": "_clientreplicator",
+    "climbcontroller.rbxmx": "_climbcontroller",
+    "climbcontroller.rbxm": "_climbcontroller",
+    "clouds.rbxmx": "_clouds",
+    "clouds.rbxm": "_clouds",
+    "color.rbxmx": "_color",
+    "color.rbxm": "_color",
+    "colorcorrectioneffect.rbxmx": "_colorcorrectioneffect",
+    "colorcorrectioneffect.rbxm": "_colorcorrectioneffect",
+    "compressorsoundeffect.rbxmx": "_compressorsoundeffect",
+    "compressorsoundeffect.rbxm": "_compressorsoundeffect",
+    "conehandleadornment.rbxmx": "_conehandleadornment",
+    "conehandleadornment.rbxm": "_conehandleadornment",
+    "configuration.rbxmx": "_configuration",
+    "configuration.rbxm": "_configuration",
+    "constant.rbxmx": "_constant",
+    "constant.rbxm": "_constant",
+    "constructor.rbxmx": "_constructor",
+    "constructor.rbxm": "_constructor",
+    "controller.rbxmx": "_controller",
+    "controller.rbxm": "_controller",
+    "coregui@3x.rbxmx": "_coregui@3x",
+    "coregui@3x.rbxm": "_coregui@3x",
+    "cornerwedgepart.rbxmx": "_cornerwedgepart",
+    "cornerwedgepart.rbxm": "_cornerwedgepart",
+    "cylinderhandleadornment.rbxmx": "_cylinderhandleadornment",
+    "cylinderhandleadornment.rbxm": "_cylinderhandleadornment",
+    "cylindricalconstraint.rbxmx": "_cylindricalconstraint",
+    "cylindricalconstraint.rbxm": "_cylindricalconstraint",
+    "decal.rbxmx": "_decal",
+    "decal.rbxm": "_decal",
+    "depthoffieldeffect.rbxmx": "_depthoffieldeffect",
+    "depthoffieldeffect.rbxm": "_depthoffieldeffect",
+    "dialog.rbxmx": "_dialog",
+    "dialog.rbxm": "_dialog",
+    "dialogchoice.rbxmx": "_dialogchoice",
+    "dialogchoice.rbxm": "_dialogchoice",
+    "distortionsoundeffect.rbxmx": "_distortionsoundeffect",
+    "distortionsoundeffect.rbxm": "_distortionsoundeffect",
+    "dragdetector.rbxmx": "_dragdetector",
+    "dragdetector.rbxm": "_dragdetector",
+    "echosoundeffect.rbxmx": "_echosoundeffect",
+    "echosoundeffect.rbxm": "_echosoundeffect",
+    "editableimage.rbxmx": "_editableimage",
+    "editableimage.rbxm": "_editableimage",
+    "editablemesh.rbxmx": "_editablemesh",
+    "editablemesh.rbxm": "_editablemesh",
+    "enum.rbxmx": "_enum",
+    "enum.rbxm": "_enum",
+    "enummember.rbxmx": "_enummember",
+    "enummember.rbxm": "_enummember",
+    "equalizersoundeffect.rbxmx": "_equalizersoundeffect",
+    "equalizersoundeffect.rbxm": "_equalizersoundeffect",
+    "event.rbxmx": "_event",
+    "event.rbxm": "_event",
+    "explosion.rbxmx": "_explosion",
+    "explosion.rbxm": "_explosion",
+    "facecontrols.rbxmx": "_facecontrols",
+    "facecontrols.rbxm": "_facecontrols",
+    "field.rbxmx": "_field",
+    "field.rbxm": "_field",
+    "file.rbxmx": "_file",
+    "file.rbxm": "_file",
+    "fire.rbxmx": "_fire",
+    "fire.rbxm": "_fire",
+    "flangesoundeffect.rbxmx": "_flangesoundeffect",
+    "flangesoundeffect.rbxm": "_flangesoundeffect",
+    "folder.rbxmx": "_folder",
+    "folder.rbxm": "_folder",
+    "forcefield.rbxmx": "_forcefield",
+    "forcefield.rbxm": "_forcefield",
+    "frame.rbxmx": "_frame",
+    "frame.rbxm": "_frame",
+    "function.rbxmx": "_function",
+    "function.rbxm": "_function",
+    "gamesettings.rbxmx": "_gamesettings",
+    "gamesettings.rbxm": "_gamesettings",
+    "groundcontroller.rbxmx": "_groundcontroller",
+    "groundcontroller.rbxm": "_groundcontroller",
+    "handles.rbxmx": "_handles",
+    "handles.rbxm": "_handles",
+    "hapticeffect.rbxmx": "_hapticeffect",
+    "hapticeffect.rbxm": "_hapticeffect",
+    "hapticservice.rbxmx": "_hapticservice",
+    "hapticservice.rbxm": "_hapticservice",
+    "heightmapimporterservice.rbxmx": "_heightmapimporterservice",
+    "heightmapimporterservice.rbxm": "_heightmapimporterservice",
+    "highlight.rbxmx": "_highlight",
+    "highlight.rbxm": "_highlight",
+    "hingeconstraint.rbxmx": "_hingeconstraint",
+    "hingeconstraint.rbxm": "_hingeconstraint",
+    "humanoid.rbxmx": "_humanoid",
+    "humanoid.rbxm": "_humanoid",
+    "humanoiddescription.rbxmx": "_humanoiddescription",
+    "humanoiddescription.rbxm": "_humanoiddescription",
+    "ikcontrol.rbxmx": "_ikcontrol",
+    "ikcontrol.rbxm": "_ikcontrol",
+    "imagebutton.rbxmx": "_imagebutton",
+    "imagebutton.rbxm": "_imagebutton",
+    "imagehandleadornment.rbxmx": "_imagehandleadornment",
+    "imagehandleadornment.rbxm": "_imagehandleadornment",
+    "imagelabel.rbxmx": "_imagelabel",
+    "imagelabel.rbxm": "_imagelabel",
+    "inputaction.rbxmx": "_inputaction",
+    "inputaction.rbxm": "_inputaction",
+    "inputbinding.rbxmx": "_inputbinding",
+    "inputbinding.rbxm": "_inputbinding",
+    "inputcontext.rbxmx": "_inputcontext",
+    "inputcontext.rbxm": "_inputcontext",
+    "interface.rbxmx": "_interface",
+    "interface.rbxm": "_interface",
+    "intersectoperation.rbxmx": "_intersectoperation",
+    "intersectoperation.rbxm": "_intersectoperation",
+    "keyword.rbxmx": "_keyword",
+    "keyword.rbxm": "_keyword",
+    "lighting.rbxmx": "_lighting",
+    "lighting.rbxm": "_lighting",
+    "linearvelocity.rbxmx": "_linearvelocity",
+    "linearvelocity.rbxm": "_linearvelocity",
+    "lineforce.rbxmx": "_lineforce",
+    "lineforce.rbxm": "_lineforce",
+    "linehandleadornment.rbxmx": "_linehandleadornment",
+    "linehandleadornment.rbxm": "_linehandleadornment",
+    "localfile.rbxmx": "_localfile",
+    "localfile.rbxm": "_localfile",
+    "localizationservice.rbxmx": "_localizationservice",
+    "localizationservice.rbxm": "_localizationservice",
+    "localizationtable.rbxmx": "_localizationtable",
+    "localizationtable.rbxm": "_localizationtable",
+    "localscript.rbxmx": "_localscript",
+    "localscript.rbxm": "_localscript",
+    "client.luau": "_localscript",
+    "materialservice.rbxmx": "_materialservice",
+    "materialservice.rbxm": "_materialservice",
+    "materialvariant.rbxmx": "_materialvariant",
+    "materialvariant.rbxm": "_materialvariant",
+    "memorystoreservice.rbxmx": "_memorystoreservice",
+    "memorystoreservice.rbxm": "_memorystoreservice",
+    "meshpart.rbxmx": "_meshpart",
+    "meshpart.rbxm": "_meshpart",
+    "meshparts.rbxmx": "_meshparts",
+    "meshparts.rbxm": "_meshparts",
+    "messagingservice.rbxmx": "_messagingservice",
+    "messagingservice.rbxm": "_messagingservice",
+    "method.rbxmx": "_method",
+    "method.rbxm": "_method",
+    "model.rbxmx": "_model",
+    "model.rbxm": "_model",
+    "modelgroups.rbxmx": "_modelgroups",
+    "modelgroups.rbxm": "_modelgroups",
+    "module.rbxmx": "_module",
+    "module.rbxm": "_module",
+    "modulescript.rbxmx": "_modulescript",
+    "modulescript.rbxm": "_modulescript",
+    "module.luau": "_modulescript",
+    "motor6d.rbxmx": "_motor6d",
+    "motor6d.rbxm": "_motor6d",
+    "negateoperation.rbxmx": "_negateoperation",
+    "negateoperation.rbxm": "_negateoperation",
+    "networkclient.rbxmx": "_networkclient",
+    "networkclient.rbxm": "_networkclient",
+    "nocollisionconstraint.rbxmx": "_nocollisionconstraint",
+    "nocollisionconstraint.rbxm": "_nocollisionconstraint",
+    "operator.rbxmx": "_operator",
+    "operator.rbxm": "_operator",
+    "packagelink.rbxmx": "_packagelink",
+    "packagelink.rbxm": "_packagelink",
+    "pants.rbxmx": "_pants",
+    "pants.rbxm": "_pants",
+    "part.rbxmx": "_part",
+    "part.rbxm": "_part",
+    "particleemitter.rbxmx": "_particleemitter",
+    "particleemitter.rbxm": "_particleemitter",
+    "path2d.rbxmx": "_path2d",
+    "path2d.rbxm": "_path2d",
+    "pathfindinglink.rbxmx": "_pathfindinglink",
+    "pathfindinglink.rbxm": "_pathfindinglink",
+    "pathfindingmodifier.rbxmx": "_pathfindingmodifier",
+    "pathfindingmodifier.rbxm": "_pathfindingmodifier",
+    "pathfindingservice.rbxmx": "_pathfindingservice",
+    "pathfindingservice.rbxm": "_pathfindingservice",
+    "pitchshiftsoundeffect.rbxmx": "_pitchshiftsoundeffect",
+    "pitchshiftsoundeffect.rbxm": "_pitchshiftsoundeffect",
+    "place.rbxmx": "_place",
+    "place.rbxm": "_place",
+    "plane.rbxmx": "_plane",
+    "plane.rbxm": "_plane",
+    "planeconstraint.rbxmx": "_planeconstraint",
+    "planeconstraint.rbxm": "_planeconstraint",
+    "player.rbxmx": "_player",
+    "player.rbxm": "_player",
+    "players.rbxmx": "_players",
+    "players.rbxm": "_players",
+    "pluginguiservice.rbxmx": "_pluginguiservice",
+    "pluginguiservice.rbxm": "_pluginguiservice",
+    "pointlight.rbxmx": "_pointlight",
+    "pointlight.rbxm": "_pointlight",
+    "prismaticconstraint.rbxmx": "_prismaticconstraint",
+    "prismaticconstraint.rbxm": "_prismaticconstraint",
+    "property.rbxmx": "_property",
+    "property.rbxm": "_property",
+    "proximityprompt.rbxmx": "_proximityprompt",
+    "proximityprompt.rbxm": "_proximityprompt",
+    "publishservice.rbxmx": "_publishservice",
+    "publishservice.rbxm": "_publishservice",
+    "reference.rbxmx": "_reference",
+    "reference.rbxm": "_reference",
+    "remoteevent.rbxmx": "_remoteevent",
+    "remoteevent.rbxm": "_remoteevent",
+    "remotefunction.rbxmx": "_remotefunction",
+    "remotefunction.rbxm": "_remotefunction",
+    "renderingtest.rbxmx": "_renderingtest",
+    "renderingtest.rbxm": "_renderingtest",
+    "replicatedfirst.rbxmx": "_replicatedfirst",
+    "replicatedfirst.rbxm": "_replicatedfirst",
+    "replicatedscriptservice.rbxmx": "_replicatedscriptservice",
+    "replicatedscriptservice.rbxm": "_replicatedscriptservice",
+    "replicatedstorage.rbxmx": "_replicatedstorage",
+    "replicatedstorage.rbxm": "_replicatedstorage",
+    "reverbsoundeffect.rbxmx": "_reverbsoundeffect",
+    "reverbsoundeffect.rbxm": "_reverbsoundeffect",
+    "rigidconstraint.rbxmx": "_rigidconstraint",
+    "rigidconstraint.rbxm": "_rigidconstraint",
+    "robloxpluginguiservice.rbxmx": "_robloxpluginguiservice",
+    "robloxpluginguiservice.rbxm": "_robloxpluginguiservice",
+    "rocketpropulsion.rbxmx": "_rocketpropulsion",
+    "rocketpropulsion.rbxm": "_rocketpropulsion",
+    "rodconstraint.rbxmx": "_rodconstraint",
+    "rodconstraint.rbxm": "_rodconstraint",
+    "ropeconstraint.rbxmx": "_ropeconstraint",
+    "ropeconstraint.rbxm": "_ropeconstraint",
+    "rotate.rbxmx": "_rotate",
+    "rotate.rbxm": "_rotate",
+    "screengui.rbxmx": "_screengui",
+    "screengui.rbxm": "_screengui",
+    "script.rbxmx": "_script",
+    "script.rbxm": "_script",
+    "server.luau": "_script",
+    "scrollingframe.rbxmx": "_scrollingframe",
+    "scrollingframe.rbxm": "_scrollingframe",
+    "seat.rbxmx": "_seat",
+    "seat.rbxm": "_seat",
+    "selected_workspace.rbxmx": "_selected_workspace",
+    "selected_workspace.rbxm": "_selected_workspace",
+    "selectionbox.rbxmx": "_selectionbox",
+    "selectionbox.rbxm": "_selectionbox",
+    "selectionsphere.rbxmx": "_selectionsphere",
+    "selectionsphere.rbxm": "_selectionsphere",
+    "serverscriptservice.rbxmx": "_serverscriptservice",
+    "serverscriptservice.rbxm": "_serverscriptservice",
+    "serverstorage.rbxmx": "_serverstorage",
+    "serverstorage.rbxm": "_serverstorage",
+    "service.rbxmx": "_service",
+    "service.rbxm": "_service",
+    "shirt.rbxmx": "_shirt",
+    "shirt.rbxm": "_shirt",
+    "shirtgraphic.rbxmx": "_shirtgraphic",
+    "shirtgraphic.rbxm": "_shirtgraphic",
+    "skinnedmeshpart.rbxmx": "_skinnedmeshpart",
+    "skinnedmeshpart.rbxm": "_skinnedmeshpart",
+    "sky.rbxmx": "_sky",
+    "sky.rbxm": "_sky",
+    "smoke.rbxmx": "_smoke",
+    "smoke.rbxm": "_smoke",
+    "snap.rbxmx": "_snap",
+    "snap.rbxm": "_snap",
+    "snippet.rbxmx": "_snippet",
+    "snippet.rbxm": "_snippet",
+    "socialservice.rbxmx": "_socialservice",
+    "socialservice.rbxm": "_socialservice",
+    "sound.rbxmx": "_sound",
+    "sound.rbxm": "_sound",
+    "soundeffect.rbxmx": "_soundeffect",
+    "soundeffect.rbxm": "_soundeffect",
+    "soundgroup.rbxmx": "_soundgroup",
+    "soundgroup.rbxm": "_soundgroup",
+    "soundservice.rbxmx": "_soundservice",
+    "soundservice.rbxm": "_soundservice",
+    "sparkles.rbxmx": "_sparkles",
+    "sparkles.rbxm": "_sparkles",
+    "spawnlocation.rbxmx": "_spawnlocation",
+    "spawnlocation.rbxm": "_spawnlocation",
+    "specialmesh.rbxmx": "_specialmesh",
+    "specialmesh.rbxm": "_specialmesh",
+    "spherehandleadornment.rbxmx": "_spherehandleadornment",
+    "spherehandleadornment.rbxm": "_spherehandleadornment",
+    "spotlight.rbxmx": "_spotlight",
+    "spotlight.rbxm": "_spotlight",
+    "springconstraint.rbxmx": "_springconstraint",
+    "springconstraint.rbxm": "_springconstraint",
+    "standalonepluginscripts.rbxmx": "_standalonepluginscripts",
+    "standalonepluginscripts.rbxm": "_standalonepluginscripts",
+    "startercharacterscripts.rbxmx": "_startercharacterscripts",
+    "startercharacterscripts.rbxm": "_startercharacterscripts",
+    "startergui.rbxmx": "_startergui",
+    "startergui.rbxm": "_startergui",
+    "starterpack.rbxmx": "_starterpack",
+    "starterpack.rbxm": "_starterpack",
+    "starterplayer.rbxmx": "_starterplayer",
+    "starterplayer.rbxm": "_starterplayer",
+    "starterplayerscripts.rbxmx": "_starterplayerscripts",
+    "starterplayerscripts.rbxm": "_starterplayerscripts",
+    "struct.rbxmx": "_struct",
+    "struct.rbxm": "_struct",
+    "stylederive.rbxmx": "_stylederive",
+    "stylederive.rbxm": "_stylederive",
+    "stylelink.rbxmx": "_stylelink",
+    "stylelink.rbxm": "_stylelink",
+    "stylerule.rbxmx": "_stylerule",
+    "stylerule.rbxm": "_stylerule",
+    "stylesheet.rbxmx": "_stylesheet",
+    "stylesheet.rbxm": "_stylesheet",
+    "sunrayseffect.rbxmx": "_sunrayseffect",
+    "sunrayseffect.rbxm": "_sunrayseffect",
+    "surfaceappearance.rbxmx": "_surfaceappearance",
+    "surfaceappearance.rbxm": "_surfaceappearance",
+    "surfacegui.rbxmx": "_surfacegui",
+    "surfacegui.rbxm": "_surfacegui",
+    "surfacelight.rbxmx": "_surfacelight",
+    "surfacelight.rbxm": "_surfacelight",
+    "surfaceselection.rbxmx": "_surfaceselection",
+    "surfaceselection.rbxm": "_surfaceselection",
+    "swimcontroller.rbxmx": "_swimcontroller",
+    "swimcontroller.rbxm": "_swimcontroller",
+    "taskscheduler.rbxmx": "_taskscheduler",
+    "taskscheduler.rbxm": "_taskscheduler",
+    "team.rbxmx": "_team",
+    "team.rbxm": "_team",
+    "teams.rbxmx": "_teams",
+    "teams.rbxm": "_teams",
+    "terrain.rbxmx": "_terrain",
+    "terrain.rbxm": "_terrain",
+    "terraindetail.rbxmx": "_terraindetail",
+    "terraindetail.rbxm": "_terraindetail",
+    "testservice.rbxmx": "_testservice",
+    "testservice.rbxm": "_testservice",
+    "textbox.rbxmx": "_textbox",
+    "textbox.rbxm": "_textbox",
+    "textboxservice.rbxmx": "_textboxservice",
+    "textboxservice.rbxm": "_textboxservice",
+    "textbutton.rbxmx": "_textbutton",
+    "textbutton.rbxm": "_textbutton",
+    "textchannel.rbxmx": "_textchannel",
+    "textchannel.rbxm": "_textchannel",
+    "textchatcommand@3x.rbxmx": "_textchatcommand@3x",
+    "textchatcommand@3x.rbxm": "_textchatcommand@3x",
+    "textchatservice.rbxmx": "_textchatservice",
+    "textchatservice.rbxm": "_textchatservice",
+    "textlabel.rbxmx": "_textlabel",
+    "textlabel.rbxm": "_textlabel",
+    "textstring.rbxmx": "_textstring",
+    "textstring.rbxm": "_textstring",
+    "texture.rbxmx": "_texture",
+    "texture.rbxm": "_texture",
+    "tool.rbxmx": "_tool",
+    "tool.rbxm": "_tool",
+    "torque.rbxmx": "_torque",
+    "torque.rbxm": "_torque",
+    "torsionspringconstraint.rbxmx": "_torsionspringconstraint",
+    "torsionspringconstraint.rbxm": "_torsionspringconstraint",
+    "trail.rbxmx": "_trail",
+    "trail.rbxm": "_trail",
+    "tremolosoundeffect.rbxmx": "_tremolosoundeffect",
+    "tremolosoundeffect.rbxm": "_tremolosoundeffect",
+    "trusspart.rbxmx": "_trusspart",
+    "trusspart.rbxm": "_trusspart",
+    "typeparameter.rbxmx": "_typeparameter",
+    "typeparameter.rbxm": "_typeparameter",
+    "ugcvalidationservice.rbxmx": "_ugcvalidationservice",
+    "ugcvalidationservice.rbxm": "_ugcvalidationservice",
+    "uiaspectratioconstraint.rbxmx": "_uiaspectratioconstraint",
+    "uiaspectratioconstraint.rbxm": "_uiaspectratioconstraint",
+    "uicorner.rbxmx": "_uicorner",
+    "uicorner.rbxm": "_uicorner",
+    "uidragdetector.rbxmx": "_uidragdetector",
+    "uidragdetector.rbxm": "_uidragdetector",
+    "uiflexitem.rbxmx": "_uiflexitem",
+    "uiflexitem.rbxm": "_uiflexitem",
+    "uigradient.rbxmx": "_uigradient",
+    "uigradient.rbxm": "_uigradient",
+    "uigridlayout.rbxmx": "_uigridlayout",
+    "uigridlayout.rbxm": "_uigridlayout",
+    "uilistlayout.rbxmx": "_uilistlayout",
+    "uilistlayout.rbxm": "_uilistlayout",
+    "uipadding.rbxmx": "_uipadding",
+    "uipadding.rbxm": "_uipadding",
+    "uipagelayout.rbxmx": "_uipagelayout",
+    "uipagelayout.rbxm": "_uipagelayout",
+    "uiscale.rbxmx": "_uiscale",
+    "uiscale.rbxm": "_uiscale",
+    "uisizeconstraint.rbxmx": "_uisizeconstraint",
+    "uisizeconstraint.rbxm": "_uisizeconstraint",
+    "uistroke.rbxmx": "_uistroke",
+    "uistroke.rbxm": "_uistroke",
+    "uitablelayout.rbxmx": "_uitablelayout",
+    "uitablelayout.rbxm": "_uitablelayout",
+    "uitextsizeconstraint.rbxmx": "_uitextsizeconstraint",
+    "uitextsizeconstraint.rbxm": "_uitextsizeconstraint",
+    "unionoperation.rbxmx": "_unionoperation",
+    "unionoperation.rbxm": "_unionoperation",
+    "unit.rbxmx": "_unit",
+    "unit.rbxm": "_unit",
+    "universalconstraint.rbxmx": "_universalconstraint",
+    "universalconstraint.rbxm": "_universalconstraint",
+    "unreliableremoteevent.rbxmx": "_unreliableremoteevent",
+    "unreliableremoteevent.rbxm": "_unreliableremoteevent",
+    "updateavailable.rbxmx": "_updateavailable",
+    "updateavailable.rbxm": "_updateavailable",
+    "userservice.rbxmx": "_userservice",
+    "userservice.rbxm": "_userservice",
+    "value.rbxmx": "_value",
+    "value.rbxm": "_value",
+    "variable.rbxmx": "_variable",
+    "variable.rbxm": "_variable",
+    "vectorforce.rbxmx": "_vectorforce",
+    "vectorforce.rbxm": "_vectorforce",
+    "vehicleseat.rbxmx": "_vehicleseat",
+    "vehicleseat.rbxm": "_vehicleseat",
+    "videodisplay.rbxmx": "_videodisplay",
+    "videodisplay.rbxm": "_videodisplay",
+    "videoframe.rbxmx": "_videoframe",
+    "videoframe.rbxm": "_videoframe",
+    "videoplayer.rbxmx": "_videoplayer",
+    "videoplayer.rbxm": "_videoplayer",
+    "viewportframe.rbxmx": "_viewportframe",
+    "viewportframe.rbxm": "_viewportframe",
+    "virtualuser.rbxmx": "_virtualuser",
+    "virtualuser.rbxm": "_virtualuser",
+    "voicechannel.rbxmx": "_voicechannel",
+    "voicechannel.rbxm": "_voicechannel",
+    "voicechat.rbxmx": "_voicechat",
+    "voicechat.rbxm": "_voicechat",
+    "voicechatservice.rbxmx": "_voicechatservice",
+    "voicechatservice.rbxm": "_voicechatservice",
+    "vrservice.rbxmx": "_vrservice",
+    "vrservice.rbxm": "_vrservice",
+    "wedgepart.rbxmx": "_wedgepart",
+    "wedgepart.rbxm": "_wedgepart",
+    "weld.rbxmx": "_weld",
+    "weld.rbxm": "_weld",
+    "weldconstraint.rbxmx": "_weldconstraint",
+    "weldconstraint.rbxm": "_weldconstraint",
+    "wire.rbxmx": "_wire",
+    "wire.rbxm": "_wire",
+    "wireframehandleadornment.rbxmx": "_wireframehandleadornment",
+    "wireframehandleadornment.rbxm": "_wireframehandleadornment",
+    "workspace.rbxmx": "_workspace",
+    "workspace.rbxm": "_workspace",
+    "worldmodel.rbxmx": "_worldmodel",
+    "worldmodel.rbxm": "_worldmodel",
+    "wrapdeformer.rbxmx": "_wrapdeformer",
+    "wrapdeformer.rbxm": "_wrapdeformer",
+    "wraplayer.rbxmx": "_wraplayer",
+    "wraplayer.rbxm": "_wraplayer",
+    "wraptarget.rbxmx": "_wraptarget",
+    "wraptarget.rbxm": "_wraptarget"
+  },
+  "folderNames": {
+    "ReplicatedFirst": "_replicatedfirst",
+    "ReplicatedStorage": "_replicatedstorage",
+    "Caladbolg.model": "_model",
+    "Handle.part": "_part",
+    "Hitbox.part": "_part",
+    "Part.part": "_part",
+    "Olho.attachment": "_attachment",
+    "Olho2.attachment": "_attachment",
+    "Olho3.attachment": "_attachment",
+    "Olho4.attachment": "_attachment",
+    "Olho5.attachment": "_attachment",
+    "Olho6.attachment": "_attachment",
+    "Olho7.attachment": "_attachment",
+    "Olho8.attachment": "_attachment",
+    "VFX.attachment": "_attachment",
+    "Part2.part": "_part",
+    "Part3.part": "_part",
+    "Attachment.attachment": "_attachment",
+    "Trail.part": "_part",
+    "Dagger.model": "_model",
+    "Sword.model": "_model",
+    "Sword.part": "_part",
+    "IndicadorPostura.billboardgui": "_billboardgui",
+    "BloodFloor.part": "_part",
+    "Hitblood.part": "_part",
+    "RastroPunch.part": "_part",
+    "RaycastHitboxV4.modulescript": "_modulescript",
+    "ServerScriptService": "_serverscriptservice",
+    "DialogueLogic.modulescript": "_modulescript",
+    "ProximityPrompt.proximityprompt": "_proximityprompt",
+    "ServerStorage": "_serverstorage",
+    "RBX_ANIMSAVES.model": "_model",
+    "StarterGui": "_startergui",
+    "DialogoGui.screengui": "_screengui",
+    "CaixaDialogo.frame": "_frame",
+    "ContainerRespostas.frame": "_frame",
+    "RespostaTemplate.imagebutton": "_imagebutton",
+    "Inventory.screengui": "_screengui",
+    "Background.frame": "_frame",
+    "Hotbar.frame": "_frame",
+    "ItemTemplate.imagebutton": "_imagebutton",
+    "Hotkey.textlabel": "_textlabel",
+    "ItemName.textlabel": "_textlabel",
+    "Qtd.textlabel": "_textlabel",
+    "SlotFixo.imagebutton": "_imagebutton",
+    "InventoryBackground.frame": "_frame",
+    "Category.scrollingframe": "_scrollingframe",
+    "All.textbutton": "_textbutton",
+    "Consumables.textbutton": "_textbutton",
+    "Equipments.textbutton": "_textbutton",
+    "Misc.textbutton": "_textbutton",
+    "Weapons.textbutton": "_textbutton",
+    "ScrollingFrame.scrollingframe": "_scrollingframe",
+    "Search.frame": "_frame",
+    "Weight.frame": "_frame",
+    "ItemInfo.frame": "_frame",
+    "Infos.frame": "_frame",
+    "Linha.frame": "_frame",
+    "LinhaBaixo.frame": "_frame",
+    "Rarity.frame": "_frame",
+    "SlotsItems.frame": "_frame",
+    "Armor.imagebutton": "_imagebutton",
+    "Boots.imagebutton": "_imagebutton",
+    "Gloves.imagebutton": "_imagebutton",
+    "Helm.imagebutton": "_imagebutton",
+    "Neck.imagebutton": "_imagebutton",
+    "OffHand.imagebutton": "_imagebutton",
+    "Ring1.imagebutton": "_imagebutton",
+    "Ring2.imagebutton": "_imagebutton",
+    "Weapon.imagebutton": "_imagebutton",
+    "Status.frame": "_frame",
+    "Attack.textlabel": "_textlabel",
+    "Crit.textlabel": "_textlabel",
+    "Defense.textlabel": "_textlabel",
+    "Level.textlabel": "_textlabel",
+    "XP.textlabel": "_textlabel",
+    "Visual.frame": "_frame",
+    "Resources.screengui": "_screengui",
+    "ENERGY.frame": "_frame",
+    "Fill.frame": "_frame",
+    "HP.frame": "_frame",
+    "FUNDO.viewportframe": "_viewportframe",
+    "HP_ORB.meshpart": "_meshpart",
+    "ORB_FRAME.viewportframe": "_viewportframe",
+    "ORB.meshpart": "_meshpart",
+    "MANA.frame": "_frame",
+    "POSTURE.frame": "_frame",
+    "StarterPack": "_starterpack",
+    "StarterPlayer": "_starterplayer",
+    "StarterCharacterScripts.startercharacterscripts": "_startercharacterscripts",
+    "Animate.localscript": "_localscript",
+    "Animation1.animation": "_animation",
+    "StarterPlayerScripts.starterplayerscripts": "_starterplayerscripts",
+    "Workspace": "_workspace",
+    "Animations.model": "_model",
+    "AnimSaves.model": "_model",
+    "Head.part": "_part",
+    "Humanoid.humanoid": "_humanoid",
+    "HumanoidDescription.humanoiddescription": "_humanoiddescription",
+    "HumanoidRootPart.part": "_part",
+    "Left Arm.part": "_part",
+    "Left Leg.part": "_part",
+    "Right Arm.part": "_part",
+    "Right Leg.part": "_part",
+    "Torso.part": "_part",
+    "Baseplate.part": "_part",
+    "BlockDummy.model": "_model",
+    "BlockyCharacter.model": "_model",
+    "EyeBrow.accessory": "_accessory",
+    "Handle.meshpart": "_meshpart",
+    "Head.meshpart": "_meshpart",
+    "FaceCenterAttachment.attachment": "_attachment",
+    "FaceFrontAttachment.attachment": "_attachment",
+    "HairAttachment.attachment": "_attachment",
+    "HatAttachment.attachment": "_attachment",
+    "NeckRigAttachment.attachment": "_attachment",
+    "LeftFoot.meshpart": "_meshpart",
+    "LeftAnkleRigAttachment.attachment": "_attachment",
+    "LeftFootAttachment.attachment": "_attachment",
+    "LeftHand.meshpart": "_meshpart",
+    "LeftGripAttachment.attachment": "_attachment",
+    "LeftWristRigAttachment.attachment": "_attachment",
+    "LeftLowerArm.meshpart": "_meshpart",
+    "LeftElbowRigAttachment.attachment": "_attachment",
+    "LeftLowerLeg.meshpart": "_meshpart",
+    "LeftKneeRigAttachment.attachment": "_attachment",
+    "LeftUpperArm.meshpart": "_meshpart",
+    "LeftShoulderAttachment.attachment": "_attachment",
+    "LeftShoulderRigAttachment.attachment": "_attachment",
+    "LeftUpperLeg.meshpart": "_meshpart",
+    "LeftHipRigAttachment.attachment": "_attachment",
+    "LowerTorso.meshpart": "_meshpart",
+    "RightHipRigAttachment.attachment": "_attachment",
+    "RootRigAttachment.attachment": "_attachment",
+    "WaistBackAttachment.attachment": "_attachment",
+    "WaistCenterAttachment.attachment": "_attachment",
+    "WaistFrontAttachment.attachment": "_attachment",
+    "WaistRigAttachment.attachment": "_attachment",
+    "RightFoot.meshpart": "_meshpart",
+    "RightAnkleRigAttachment.attachment": "_attachment",
+    "RightFootAttachment.attachment": "_attachment",
+    "RightHand.meshpart": "_meshpart",
+    "RightGripAttachment.attachment": "_attachment",
+    "RightWristRigAttachment.attachment": "_attachment",
+    "RightLowerArm.meshpart": "_meshpart",
+    "RightElbowRigAttachment.attachment": "_attachment",
+    "RightLowerLeg.meshpart": "_meshpart",
+    "RightKneeRigAttachment.attachment": "_attachment",
+    "RightUpperArm.meshpart": "_meshpart",
+    "RightShoulderAttachment.attachment": "_attachment",
+    "RightShoulderRigAttachment.attachment": "_attachment",
+    "RightUpperLeg.meshpart": "_meshpart",
+    "UpperTorso.meshpart": "_meshpart",
+    "BodyBackAttachment.attachment": "_attachment",
+    "BodyFrontAttachment.attachment": "_attachment",
+    "LeftCollarAttachment.attachment": "_attachment",
+    "NeckAttachment.attachment": "_attachment",
+    "RightCollarAttachment.attachment": "_attachment",
+    "Combat Animations.model": "_model",
+    "CombatAnims.model": "_model",
+    "Attacks.model": "_model",
+    "Back.model": "_model",
+    "Guardar.model": "_model",
+    "Daedric Dagger.meshpart": "_meshpart",
+    "NPC.model": "_model",
+    "punch aims.model": "_model",
+    "SpawnLocation.spawnlocation": "_spawnlocation",
+    "test.model": "_model"
+  },
+  "folderNamesExpanded": {
+    "ReplicatedFirst": "_replicatedfirst",
+    "ReplicatedStorage": "_replicatedstorage",
+    "Caladbolg.model": "_model",
+    "Handle.part": "_part",
+    "Hitbox.part": "_part",
+    "Part.part": "_part",
+    "Olho.attachment": "_attachment",
+    "Olho2.attachment": "_attachment",
+    "Olho3.attachment": "_attachment",
+    "Olho4.attachment": "_attachment",
+    "Olho5.attachment": "_attachment",
+    "Olho6.attachment": "_attachment",
+    "Olho7.attachment": "_attachment",
+    "Olho8.attachment": "_attachment",
+    "VFX.attachment": "_attachment",
+    "Part2.part": "_part",
+    "Part3.part": "_part",
+    "Attachment.attachment": "_attachment",
+    "Trail.part": "_part",
+    "Dagger.model": "_model",
+    "Sword.model": "_model",
+    "Sword.part": "_part",
+    "IndicadorPostura.billboardgui": "_billboardgui",
+    "BloodFloor.part": "_part",
+    "Hitblood.part": "_part",
+    "RastroPunch.part": "_part",
+    "RaycastHitboxV4.modulescript": "_modulescript",
+    "ServerScriptService": "_serverscriptservice",
+    "DialogueLogic.modulescript": "_modulescript",
+    "ProximityPrompt.proximityprompt": "_proximityprompt",
+    "ServerStorage": "_serverstorage",
+    "RBX_ANIMSAVES.model": "_model",
+    "StarterGui": "_startergui",
+    "DialogoGui.screengui": "_screengui",
+    "CaixaDialogo.frame": "_frame",
+    "ContainerRespostas.frame": "_frame",
+    "RespostaTemplate.imagebutton": "_imagebutton",
+    "Inventory.screengui": "_screengui",
+    "Background.frame": "_frame",
+    "Hotbar.frame": "_frame",
+    "ItemTemplate.imagebutton": "_imagebutton",
+    "Hotkey.textlabel": "_textlabel",
+    "ItemName.textlabel": "_textlabel",
+    "Qtd.textlabel": "_textlabel",
+    "SlotFixo.imagebutton": "_imagebutton",
+    "InventoryBackground.frame": "_frame",
+    "Category.scrollingframe": "_scrollingframe",
+    "All.textbutton": "_textbutton",
+    "Consumables.textbutton": "_textbutton",
+    "Equipments.textbutton": "_textbutton",
+    "Misc.textbutton": "_textbutton",
+    "Weapons.textbutton": "_textbutton",
+    "ScrollingFrame.scrollingframe": "_scrollingframe",
+    "Search.frame": "_frame",
+    "Weight.frame": "_frame",
+    "ItemInfo.frame": "_frame",
+    "Infos.frame": "_frame",
+    "Linha.frame": "_frame",
+    "LinhaBaixo.frame": "_frame",
+    "Rarity.frame": "_frame",
+    "SlotsItems.frame": "_frame",
+    "Armor.imagebutton": "_imagebutton",
+    "Boots.imagebutton": "_imagebutton",
+    "Gloves.imagebutton": "_imagebutton",
+    "Helm.imagebutton": "_imagebutton",
+    "Neck.imagebutton": "_imagebutton",
+    "OffHand.imagebutton": "_imagebutton",
+    "Ring1.imagebutton": "_imagebutton",
+    "Ring2.imagebutton": "_imagebutton",
+    "Weapon.imagebutton": "_imagebutton",
+    "Status.frame": "_frame",
+    "Attack.textlabel": "_textlabel",
+    "Crit.textlabel": "_textlabel",
+    "Defense.textlabel": "_textlabel",
+    "Level.textlabel": "_textlabel",
+    "XP.textlabel": "_textlabel",
+    "Visual.frame": "_frame",
+    "Resources.screengui": "_screengui",
+    "ENERGY.frame": "_frame",
+    "Fill.frame": "_frame",
+    "HP.frame": "_frame",
+    "FUNDO.viewportframe": "_viewportframe",
+    "HP_ORB.meshpart": "_meshpart",
+    "ORB_FRAME.viewportframe": "_viewportframe",
+    "ORB.meshpart": "_meshpart",
+    "MANA.frame": "_frame",
+    "POSTURE.frame": "_frame",
+    "StarterPack": "_starterpack",
+    "StarterPlayer": "_starterplayer",
+    "StarterCharacterScripts.startercharacterscripts": "_startercharacterscripts",
+    "Animate.localscript": "_localscript",
+    "Animation1.animation": "_animation",
+    "StarterPlayerScripts.starterplayerscripts": "_starterplayerscripts",
+    "Workspace": "_workspace",
+    "Animations.model": "_model",
+    "AnimSaves.model": "_model",
+    "Head.part": "_part",
+    "Humanoid.humanoid": "_humanoid",
+    "HumanoidDescription.humanoiddescription": "_humanoiddescription",
+    "HumanoidRootPart.part": "_part",
+    "Left Arm.part": "_part",
+    "Left Leg.part": "_part",
+    "Right Arm.part": "_part",
+    "Right Leg.part": "_part",
+    "Torso.part": "_part",
+    "Baseplate.part": "_part",
+    "BlockDummy.model": "_model",
+    "BlockyCharacter.model": "_model",
+    "EyeBrow.accessory": "_accessory",
+    "Handle.meshpart": "_meshpart",
+    "Head.meshpart": "_meshpart",
+    "FaceCenterAttachment.attachment": "_attachment",
+    "FaceFrontAttachment.attachment": "_attachment",
+    "HairAttachment.attachment": "_attachment",
+    "HatAttachment.attachment": "_attachment",
+    "NeckRigAttachment.attachment": "_attachment",
+    "LeftFoot.meshpart": "_meshpart",
+    "LeftAnkleRigAttachment.attachment": "_attachment",
+    "LeftFootAttachment.attachment": "_attachment",
+    "LeftHand.meshpart": "_meshpart",
+    "LeftGripAttachment.attachment": "_attachment",
+    "LeftWristRigAttachment.attachment": "_attachment",
+    "LeftLowerArm.meshpart": "_meshpart",
+    "LeftElbowRigAttachment.attachment": "_attachment",
+    "LeftLowerLeg.meshpart": "_meshpart",
+    "LeftKneeRigAttachment.attachment": "_attachment",
+    "LeftUpperArm.meshpart": "_meshpart",
+    "LeftShoulderAttachment.attachment": "_attachment",
+    "LeftShoulderRigAttachment.attachment": "_attachment",
+    "LeftUpperLeg.meshpart": "_meshpart",
+    "LeftHipRigAttachment.attachment": "_attachment",
+    "LowerTorso.meshpart": "_meshpart",
+    "RightHipRigAttachment.attachment": "_attachment",
+    "RootRigAttachment.attachment": "_attachment",
+    "WaistBackAttachment.attachment": "_attachment",
+    "WaistCenterAttachment.attachment": "_attachment",
+    "WaistFrontAttachment.attachment": "_attachment",
+    "WaistRigAttachment.attachment": "_attachment",
+    "RightFoot.meshpart": "_meshpart",
+    "RightAnkleRigAttachment.attachment": "_attachment",
+    "RightFootAttachment.attachment": "_attachment",
+    "RightHand.meshpart": "_meshpart",
+    "RightGripAttachment.attachment": "_attachment",
+    "RightWristRigAttachment.attachment": "_attachment",
+    "RightLowerArm.meshpart": "_meshpart",
+    "RightElbowRigAttachment.attachment": "_attachment",
+    "RightLowerLeg.meshpart": "_meshpart",
+    "RightKneeRigAttachment.attachment": "_attachment",
+    "RightUpperArm.meshpart": "_meshpart",
+    "RightShoulderAttachment.attachment": "_attachment",
+    "RightShoulderRigAttachment.attachment": "_attachment",
+    "RightUpperLeg.meshpart": "_meshpart",
+    "UpperTorso.meshpart": "_meshpart",
+    "BodyBackAttachment.attachment": "_attachment",
+    "BodyFrontAttachment.attachment": "_attachment",
+    "LeftCollarAttachment.attachment": "_attachment",
+    "NeckAttachment.attachment": "_attachment",
+    "RightCollarAttachment.attachment": "_attachment",
+    "Combat Animations.model": "_model",
+    "CombatAnims.model": "_model",
+    "Attacks.model": "_model",
+    "Back.model": "_model",
+    "Guardar.model": "_model",
+    "Daedric Dagger.meshpart": "_meshpart",
+    "NPC.model": "_model",
+    "punch aims.model": "_model",
+    "SpawnLocation.spawnlocation": "_spawnlocation",
+    "test.model": "_model"
+  },
+  "folder": "_folder",
+  "folderExpanded": "_folder_open"
+}

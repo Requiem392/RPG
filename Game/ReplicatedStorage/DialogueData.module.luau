@@ -67,4 +67,39 @@ DialogueData["Guardiao_Aceitou"] = {
 	}
 }
 
+-- === DIÁLOGO DE TESTE: Dar Recompensas ===
+DialogueData["NPC_TesteRecompensa"] = {
+	Text = "Olá aventureiro! Aqui está sua recompensa!",
+	FaceAnimId = Faces.Smile,
+
+	Responses = {
+		{
+			Text = "Obrigado! (Receber XP e Item)",
+			Action = {
+				Type = "GiveRewards",
+				Rewards = {
+					XP = 50,
+					Items = {
+						{Name = "Poção de Cura", Amount = 3}
+					}
+				}
+			},
+			NextID = "NPC_Agradecimento"
+		},
+		{
+			Text = "Não precisa.",
+			NextID = "EXIT"
+		}
+	}
+}
+
+DialogueData["NPC_Agradecimento"] = {
+	Text = "Você recebeu 50 XP e 3 Poções! Boa sorte na sua jornada!",
+	FaceAnimId = Faces.Smile2,
+
+	Responses = {
+		{Text = "Valeu!", NextID = "EXIT"}
+	}
+}
+
 return DialogueData
