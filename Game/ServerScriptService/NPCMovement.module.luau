@@ -139,10 +139,13 @@ function NPCMovement.Face(npc, position)
 	end
 end
 
-function NPCMovement.FaceDirection(npc, direction)
+function NPCMovement.SetLocked(npc, locked)
 	local data = MovementData[npc]
 	if not data then return end
-	data.FaceDirection = direction.Unit
+	data.IsLocked = locked
+	if locked then
+		NPCMovement.Stop(npc)
+	end
 end
 
 -- ======================================================================
@@ -153,21 +156,20 @@ function NPCMovement.Update(npc, dt)
 	local data = MovementData[npc]
 	if not data then return end
 	
+	-- 1) TRAVA DE MOVIMENTO
+	if data.IsLocked then return end
+	
 	local humanoid = npc:FindFirstChild("Humanoid")
 	local root = npc:FindFirstChild("HumanoidRootPart")
 	if not humanoid or not root then return end
 	
 	-- ROTAÇÃO EXPLÍCITA (Prioridade sobre movimento se parado, ou junto?)
-	-- Se tiver FaceDirection e NÃO estiver andando rápido (ou se quiser override)
 	if data.FaceDirection then
 		local currentLook = root.CFrame.LookVector
-		local newLook = currentLook:Lerp(data.FaceDirection, 0.15) -- Suave
-		-- CFrame.lookAt requer Eye e Target. 
-		-- Criamos um CFrame na posição atual olhando para (posição + newLook)
+		local newLook = currentLook:Lerp(data.FaceDirection, 0.15) 
 		root.CFrame = CFrame.new(root.Position, root.Position + newLook)
 	end
 	
-	-- Se não está movendo, acabou
 	if not data.IsMoving or not data.TargetPosition then return end
 	
 	humanoid.WalkSpeed = data.Speed
@@ -189,9 +191,14 @@ function NPCMovement.Update(npc, dt)
 		end
 	end
 	
-	-- 2. Direção Básica
+	-- 2. Direção Básica (PROTEÇÃO .UNIT)
 	local diff = (nextPoint - root.Position)
-	local direction = (diff.Magnitude > 0.1) and diff.Unit or root.CFrame.LookVector
+	if diff.Magnitude < 0.1 then
+		-- Muito perto do sub-destino, não força direção
+		return 
+	end
+	
+	local direction = diff.Unit
 	
 	-- 3. STEERING MELHORADO (3 Raios + Memória de Desvio)
 	local avoidVector = Vector3.new(0,0,0)

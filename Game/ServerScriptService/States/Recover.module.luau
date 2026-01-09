@@ -6,10 +6,12 @@ local NPCMovement = require(ServerScriptService.NPCMovement)
 
 function Recover.Enter(npc, context)
 	-- Estado de vulnerabilidade pós-ataque
-	NPCMovement.Stop(npc) -- Garante parado (ou podia ser strafe)
+	NPCMovement.SetLocked(npc, true) -- Trava, ou talvez permitir movimento lento?
+	-- "Recover should set true on Enter and false on Exit" -User
+	
 	local humanoid = npc:FindFirstChild("Humanoid")
 	if humanoid then
-		humanoid.WalkSpeed = 4 -- Anda devagar se mover manualmente
+		humanoid.WalkSpeed = 4 -- Anda devagar se mover manualmente (mas agora tá travado)
 	end
 	
 	context.RecoverTime = 1.0 -- Tempo fixo por enquanto
@@ -26,6 +28,7 @@ function Recover.Update(npc, context, dt)
 end
 
 function Recover.Exit(npc, context)
+	NPCMovement.SetLocked(npc, false)
 	context.RecoverFinished = false
 end
 

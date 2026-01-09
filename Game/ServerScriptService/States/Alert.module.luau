@@ -70,13 +70,16 @@ function Alert.Update(npc, context, dt)
 		
 		local dist = (npcRoot.Position - context.AlertTargetPos).Magnitude
 		
-		-- Transição -> SEARCH
-		if dist < 3 or phaseTime > 6.0 then
+		-- Transição -> SEARCH (SÓ QUANDO CHEGAR)
+		if dist < 1.5 then 
 			context.AlertPhase = "SEARCH"
 			context.CurrentPhaseStartTime = currentTime
 			context.SearchStep = 1
 			context.NextSearchPoint = nil 
-			print(npc.Name .. " 🔍 procurando... (SEARCH Step 1)")
+			-- Reset context values
+			context.PointArriveTime = nil
+			context.IsObserving = false
+			print(npc.Name .. " 🔍 chegou no local suspeito... SEARCH inicado.")
 		end
 		
 	-- ======================================================================
@@ -142,14 +145,14 @@ function Alert.Update(npc, context, dt)
 			-- Anda até o ponto
 			NPCMovement.MoveTo(npc, context.NextSearchPoint, {speed = SEARCH_SPEED})
 			
-			-- Verifica chegada
+			-- Verifica chegada (ESTRITA)
 			if context.NextSearchPoint then
 				local distToPoint = (Vector3.new(npcRoot.Position.X, 0, npcRoot.Position.Z) - Vector3.new(context.NextSearchPoint.X, 0, context.NextSearchPoint.Z)).Magnitude
 				
-				if distToPoint < 2 then
-					context.PointArriveTime = currentTime -- Chegou! Começa a esperar
+				if distToPoint < 1.5 then -- Chegou no ponto EXATO!
+					context.PointArriveTime = currentTime 
 					NPCMovement.Stop(npc)
-					print(npc.Name .. " � checou ponto... esperando.")
+					print(npc.Name .. " 🛑 chegou no ponto... verificando.")
 				end
 			end
 		end

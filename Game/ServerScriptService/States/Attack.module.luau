@@ -6,7 +6,7 @@ local NPCMovement = require(ServerScriptService.NPCMovement)
 
 function Attack.Enter(npc, context)
 	-- Zera velocidade e para
-	NPCMovement.Stop(npc)
+	NPCMovement.SetLocked(npc, true) -- Trava física
 	local humanoid = npc:FindFirstChild("Humanoid")
 	if humanoid then
 		humanoid.WalkSpeed = 0 -- Força zero para não ser empurrado facilmente
@@ -30,7 +30,7 @@ function Attack.Update(npc, context, dt)
 end
 
 function Attack.Exit(npc, context)
-	-- Limpa flags de ataque
+	NPCMovement.SetLocked(npc, false) -- Destrava
 end
 
 return Attack
