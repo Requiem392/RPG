@@ -73,84 +73,97 @@ local function ProcessHit(attackerPlayer, targetChar, hitPosition)
     local itemInfo = ItemData.Get(weaponName)
     if not itemInfo then return end
 
-    -- 3. Resolve Defesa (DefenseHandler)
+    -- 3. Resolve Defesa (DefenseHandler Pure)
     local defHandler = DefenseHandler.Registry[targetEntity]
-    local result = "Hit"
+    
+    -- Default Result
+    local result = { Status = "Hit", Multiplier = 1, StunDuration = 0, DamageReturn = 0, PostureDamage = 0 }
     
     if defHandler then
+        -- ResolveHit retorna tabela
         result = defHandler:ResolveHit(attackerPlayer, {
             Weapon = itemInfo, 
             Position = hitPosition
         })
     end
     
-    -- 4. Aplica Resultado
-    if result == "Parry" then
+    -- 4. Aplica Resultado (Orchestration)
+    
+    -- === PARRY ===
+    if result.Status == "Parry" then
         print("⚔️ PARRY!", targetChar.Name)
-        -- Efeito no atacante? Quem decide o stun é o DefenseHandler (interno) ou combat?
-        -- Pelo request: CombatHandler aplica. Mas DefenseHandler já chamou OnParrySuccess internamente.
-        -- Se DefenseHandler:ResolveHit retornou "Parry", significa que o sucesso já foi computado pro defensor.
-        -- Falta punir o atacante.
-        local attackerHumanoid = attackerChar:FindFirstChild("Humanoid")
-        if attackerHumanoid then
-             -- Dano de retorno fixo ou calculado?
-             attackerHumanoid:TakeDamage(5) -- Exemplo dummy
-             -- Stun?
-             local attackerDef = DefenseHandler.Registry[attackerPlayer]
-             if attackerDef then attackerDef:Stun(1.5) end
-        end
-        return
         
-    elseif result == "Block" then
+        -- Efeito no atacante (Orchestrated)
+        -- 1. Dano de Retorno
+        local attackerHumanoid = attackerChar:FindFirstChild("Humanoid")
+        if attackerHumanoid and result.DamageReturn > 0 then
+             attackerHumanoid:TakeDamage(result.DamageReturn)
+             -- VFX Dano Parry?
+        end
+        
+        -- 2. Stun no Atacante
+        local attackerDef = DefenseHandler.Registry[attackerPlayer]
+        if attackerDef and result.StunDuration > 0 then
+             attackerDef:Stun(result.StunDuration)
+        end
+        
+        -- 3. VFX/Sound Parry
+        -- TODO: Adicionar som de Parry aqui
+        return
+    end
+    
+    -- === BLOCK ===
+    if result.Status == "Block" then
         print("🛡️ BLOCK!", targetChar.Name)
-        -- VFX Block
-        -- VFX Block
+        
+        -- 1. VFX/Sound Block
         local blockSoundId = ItemData.GetCategorySound(itemInfo.WeaponCategory, "Block")
         if blockSoundId then
             local sound = Instance.new("Sound")
             sound.SoundId = blockSoundId
+            sound.Volume = 0.8
             sound.Parent = targetChar:FindFirstChild("HumanoidRootPart") or targetChar.PrimaryPart
             sound:Play()
             Debris:AddItem(sound, 2)
         end
         
-        -- Dano Postura
-        -- Pede pro Stats ou Posture calcular o dano?
-        -- Simplificado: Dano base na postura
+        -- 2. Posture Damage
         local posHandler = PostureHandler.Registry[targetEntity]
         if posHandler then
-            posHandler:Damage(10) -- Valor fixo ou vindo do ItemData
+             -- Calculamos dano de postura aqui ou Stats?
+             -- Vamos usar um valor base da arma por enquanto
+            local postureDmg = 15 -- Valor base 
+            -- Se Block tiver multiplier de postura, podemos usar.
+            posHandler:Damage(postureDmg)
         end
         return
     end
     
-    -- 5. HIT Confirmado (Dano HP)
-    if result == "Hit" then
-        -- Calcula Dano (StatsHandler)
+    -- === HIT ===
+    if result.Status == "Hit" then
+        -- 1. Calcula Dano (StatsHandler)
         local attackerStats = StatsHandler.Registry[attackerPlayer]
         local targetStats = StatsHandler.Registry[targetEntity]
         
-        -- Se não tiver handler (ex: Mob simples sem stats), usa nil
         local hitData = {Damage = 10, IsCritical = false}
-        
         if attackerStats then
             hitData = attackerStats:CalculateHit(targetStats, weaponName)
         end
         
-        -- Aplica HP
+        -- 2. Aplica HP
         targetHumanoid:TakeDamage(hitData.Damage)
         
-        -- VFX
+        -- 3. VFX
         if VFXEvent then
             VFXEvent:FireAllClients("Sangue", hitPosition, Vector3.new(0,1,0))
         end
         
-        -- Som
-        -- Som
+        -- 4. Som
         local hitSoundId = ItemData.GetCategorySound(itemInfo.WeaponCategory, "Hit")
         if hitSoundId then
             local sound = Instance.new("Sound")
             sound.SoundId = hitSoundId
+            sound.Volume = 0.7
             sound.Parent = targetChar:FindFirstChild("HumanoidRootPart") or targetChar.PrimaryPart
             sound:Play()
             Debris:AddItem(sound, 2)

@@ -240,17 +240,81 @@ end
 -- 4. EVENTOS & ORQUESTRAÇÃO
 -- ============================================================================
 
-CombatEvent.Event:Connect(function(action, player, itemName)
-	-- print("🛡️ [EquipmentHandler] Ação:", action, "| Item:", itemName)
+-- ============================================================================
+-- 5. REATIVIDADE (Visual System)
+-- ============================================================================
 
+-- Função para conectar sinais de um personagem
+local function ConnectCharacterVisuals(player, character)
+    if not character then return end
+    
+    -- Listener para EquippedWeapon (Visual de Equipamento)
+    character:GetAttributeChangedSignal("EquippedWeapon"):Connect(function()
+        local weaponName = character:GetAttribute("EquippedWeapon")
+        local inCombat = character:GetAttribute("InCombat")
+        
+        -- Se weaponName for vazio, removemos tudo
+        if not weaponName or weaponName == "" then
+             UnequipVisual(player, nil) -- nil pois activeWeapons usa player index
+             return
+        end
+        
+        -- Se estiver em combate vs pacifico
+        if inCombat then
+            DrawWeapon(player, weaponName)
+        else
+            -- Se tiver arma, mas inCombat=false, bota nas costas
+            -- Verifica se já temos o modelo (EquipVisual logic)
+            if not ActiveWeapons[player.UserId] or ActiveWeapons[player.UserId].Name ~= "Equipped_"..weaponName then
+                 EquipVisual(player, weaponName)
+            else
+                 SheathWeapon(player, weaponName)
+            end
+        end
+    end)
+    
+    -- Listener para InCombat (Saca/Guarda)
+    character:GetAttributeChangedSignal("InCombat"):Connect(function()
+        local inCombat = character:GetAttribute("InCombat")
+        local weaponName = character:GetAttribute("EquippedWeapon")
+        
+        if not weaponName or weaponName == "" then return end
+        
+        if inCombat then
+            DrawWeapon(player, weaponName)
+        else
+            SheathWeapon(player, weaponName)
+        end
+    end)
+end
+
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(char)
+        ConnectCharacterVisuals(player, char)
+    end)
+    if player.Character then
+        ConnectCharacterVisuals(player, player.Character)
+    end
+end)
+
+-- Mantemos Events para acionar a mudança de ATRIBUTO (Input -> Remote -> SetAttribute -> Visual)
+CombatEvent.Event:Connect(function(action, player, itemName)
+    -- Traduz Ações Imperativas para Mudança de Estado (Atributos)
+    local char = player.Character
+    if not char then return end
+    
 	if action == "Equip" then
-		EquipVisual(player, itemName)
+        -- Define atributo (Trigger listener)
+		UpdateCombatState(char, false, itemName)
+        
 	elseif action == "Unequip" then
-		UnequipVisual(player, itemName)
+        UpdateCombatState(char, false, "")
+        
 	elseif action == "DrawWeapon" then
-		DrawWeapon(player, itemName)
+        UpdateCombatState(char, true, itemName)
+        
 	elseif action == "SheathWeapon" then
-		SheathWeapon(player, itemName)
+        UpdateCombatState(char, false, itemName)
 	end
 end)
 

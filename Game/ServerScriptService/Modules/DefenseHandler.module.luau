@@ -107,40 +107,7 @@ function DefenseHandler:OnParrySuccess(attacker)
 		    DefenseEvent:FireClient(self.Owner, "ParrySuccess")
         end
 
-		-- Stuna o atacante (se houver atacante e for registrado no sistema, podemos interagir)
-        -- Aqui recebemos o 'attacker' que pode ser um Player ou NPC
-        -- O sistema de combate deve chamar .Stun() no handler do atacante.
-        -- Mas aqui, dentro do handler de quem DEFENDEU, precisamos aplicar o efeito no atacante.
-        -- Para isso, precisamos do Handler do atacante.
-        
-        -- O argumento 'attacker' aqui era 'player object' no código antigo?
-        -- No código antigo: function DefenseService.OnParrySuccess(player, attacker) ... StunPlayer(attacker)
-        -- Agora: self é quem defendeu. 'attacker' é quem atacou.
-        
-        -- Se o attacker for Player, buscamos no Registry.
-        -- Se for NPC, precisaríamos de um jeito de pegar o handler dele.
-        -- POR ENQUANTO, assumiremos que 'attacker' é um PlayerInstance ou Model.
-        -- O ideal seria passar o AttackerHandler, mas manteremos compatibilidade básica.
-        
 		local config = DefenseManager.GetConfig()
-        
-        -- Tenta resolver o Handler do atacante
-        local attackerHandler = nil
-        if attacker:IsA("Player") then
-            attackerHandler = DefenseHandler.Registry[attacker]
-        else
-            -- Para NPC, o chamador deveria ter resolvido, ou usamos um método global de lookup se existisse.
-            -- Como não temos global lookup fácil para NPC aqui, vamos deixar para o chamador lidar com o stun do atacante?
-            -- O código antigo chamava DefenseService.StunPlayer(attacker).
-            -- Se eu mantiver DefenseHandler.GetHandler(entity), posso resolver.
-        end
-
-        -- Vamos criar um Helper estático GetHandler
-        local targetHandler = DefenseHandler.GetHandler(attacker)
-		if targetHandler then
-			targetHandler:Stun(config.Parry.StunDuration)
-		end
-
 		return config.Parry.Damage
 	end
 	return 0
@@ -151,34 +118,35 @@ end
 -- ============================================================================
 
 function DefenseHandler:ResolveHit(attacker, attackData)
-    -- Retorna: "Hit", "Block", "Parry" (ou tabela mais complexa)
+    local result = {
+        Status = "Hit",
+        Multiplier = 1,
+        PostureDamage = 0,
+        StunDuration = 0,
+        DamageReturn = 0
+    }
     
     if self:IsParrying() then
-        -- Sucesso de Parry
-        -- Chama callback interna (Stun e Dano de Parry deve ser resolvido aqui ou pelo orquestrador?)
-        -- O usuário pediu: "CombatHandler só orquestra".
-        -- Então DefenseHandler diz "Foi Parry", e CombatHandler aplica os efeitos (Stun attacker).
-        -- Mas a lógica de "quem stuna quem" é regra de combate.
-        -- Vamos retornar o STATUS e deixar CombatHandler aplicar os efeitos colaterais baseados nisso?
-        -- Ou melhor: ResolveHit aplica efeitos de DEFESA (consumo de stamina, stun no defender se break posture) 
-        -- e retorna info pro CombatHandler aplicar efeitos no ATTACKER.
+        self:OnParrySuccess(attacker) -- Atualiza estado interno
+        result.Status = "Parry"
         
-        self:OnParrySuccess(attacker) -- Aplica efeitos internos (reset janela, fx)
-        return "Parry"
+        local config = DefenseManager.GetConfig()
+        result.StunDuration = config.Parry.StunDuration
+        result.DamageReturn = config.Parry.Damage
+        result.Multiplier = 0
+        return result
     end
     
     if self:IsBlocking() then
-        -- Verifica angulo de bloqueio? (Futuro)
-        -- Verifica Posture
-        return "Block"
+        result.Status = "Block"
+        result.Multiplier = 0 
+        return result
     end
     
-    return "Hit"
+    return result
 end
 
 -- Método para recuperar a instância de defesa de uma entidade (Player ou NPC se registrado)
--- OBS: Para NPC, precisaremos de um mecanismo de registro também se quisermos lookup global.
--- Por enquanto, usaremos apenas para Players no Registry.
 function DefenseHandler.GetHandler(entity)
     if entity:IsA("Player") then
         return DefenseHandler.Registry[entity]
@@ -249,13 +217,11 @@ function DefenseHandler.Init()
 	end
 
 	-- Update Loop (Global Heartbeat para todos os handlers registrados)
-    -- Isso evita ter N conexões heartbeat.
 	RunService.Heartbeat:Connect(function(dt)
         -- Atualiza Players
 		for player, handler in pairs(DefenseHandler.Registry) do
 			handler:Update(dt)
 		end
-        -- TODO: Se tivermos NPCs, iterar sobre lista de NPCs também.
 	end)
 	
 	print("✅ DefenseHandler Loop iniciado")
