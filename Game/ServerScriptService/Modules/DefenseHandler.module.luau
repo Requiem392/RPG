@@ -146,6 +146,36 @@ function DefenseHandler:OnParrySuccess(attacker)
 	return 0
 end
 
+-- ============================================================================
+-- LOGICA DE RESOLUÇÃO DE HIT (Hit / Block / Parry)
+-- ============================================================================
+
+function DefenseHandler:ResolveHit(attacker, attackData)
+    -- Retorna: "Hit", "Block", "Parry" (ou tabela mais complexa)
+    
+    if self:IsParrying() then
+        -- Sucesso de Parry
+        -- Chama callback interna (Stun e Dano de Parry deve ser resolvido aqui ou pelo orquestrador?)
+        -- O usuário pediu: "CombatHandler só orquestra".
+        -- Então DefenseHandler diz "Foi Parry", e CombatHandler aplica os efeitos (Stun attacker).
+        -- Mas a lógica de "quem stuna quem" é regra de combate.
+        -- Vamos retornar o STATUS e deixar CombatHandler aplicar os efeitos colaterais baseados nisso?
+        -- Ou melhor: ResolveHit aplica efeitos de DEFESA (consumo de stamina, stun no defender se break posture) 
+        -- e retorna info pro CombatHandler aplicar efeitos no ATTACKER.
+        
+        self:OnParrySuccess(attacker) -- Aplica efeitos internos (reset janela, fx)
+        return "Parry"
+    end
+    
+    if self:IsBlocking() then
+        -- Verifica angulo de bloqueio? (Futuro)
+        -- Verifica Posture
+        return "Block"
+    end
+    
+    return "Hit"
+end
+
 -- Método para recuperar a instância de defesa de uma entidade (Player ou NPC se registrado)
 -- OBS: Para NPC, precisaremos de um mecanismo de registro também se quisermos lookup global.
 -- Por enquanto, usaremos apenas para Players no Registry.

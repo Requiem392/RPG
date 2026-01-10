@@ -25,9 +25,25 @@ local function SetupPlayer(player)
 	print("🎮 Criando sessão de sistemas para:", player.Name)
     
     player.CharacterAdded:Connect(function(char)
-        -- Se precisarmos de handlers específicos pro Character (ex: hitbox), faríamos aqui.
-        -- Por enquanto os Handlers são atrelados ao Player object.
+        -- Inicialização de ATRIBUTOS (Estado)
+        char:SetAttribute("InCombat", false)
+        char:SetAttribute("IsAttacking", false)
+        char:SetAttribute("IsBlocking", false)
+        char:SetAttribute("IsParrying", false)
+        char:SetAttribute("EquippedWeapon", "") -- Nome da arma ou Vazio
+        
+        print("✅ Atributos de combate inicializados para:", player.Name)
     end)
+    
+    -- Se o char já existe (ex: reload)
+    if player.Character then
+        local char = player.Character
+        char:SetAttribute("InCombat", false)
+        char:SetAttribute("IsAttacking", false)
+        char:SetAttribute("IsBlocking", false)
+        char:SetAttribute("IsParrying", false)
+        char:SetAttribute("EquippedWeapon", "") 
+    end
 
 	local session = {
         -- Cria instâncias vinculadas ao Player

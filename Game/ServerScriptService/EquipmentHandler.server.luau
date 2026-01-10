@@ -8,13 +8,12 @@ local DataFolder = ReplicatedStorage:WaitForChild("Data")
 local ItemData = require(DataFolder:WaitForChild("ItemData"))
 
 local Modules = ServerScriptService:WaitForChild("Modules")
--- ALTERAÇÃO: InventoryService -> InventoryHandler (Classe Modulares)
 local InventoryHandler = require(Modules:WaitForChild("InventoryHandler"))
 
 local ServerEvents = ServerStorage:WaitForChild("ServerEvents")
 local CombatEvent = ServerEvents:WaitForChild("CombatSystem")
 
--- Remotes (cria se não existir para evitar infinite yield)
+-- Remotes
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 
 local function GetRemote(name, class)
@@ -29,13 +28,12 @@ local function GetRemote(name, class)
 end
 
 local ToggleCombatEvent = GetRemote("ToggleCombat", "RemoteEvent")
-local CombatStateEvent = GetRemote("CombatState", "RemoteEvent")
+local CombatStateEvent = GetRemote("CombatState", "RemoteEvent") -- Mantido para receber inputs do client e refletir em atributos
 
--- [[ ESTADO DO SERVIDOR ]] --
-local ActiveWeapons = {}   -- Armazena o modelo da arma atual de cada jogador
-local PlayerInCombat = {}  -- Estado: arma sacada (true) ou guardada (false)
-local PlayerAttackState = {} -- Rastreia se está atacando
-local PlayerBlockState = {} -- Rastreia se está bloqueando
+-- [[ ESTADO DO SERVIDOR (CACHE VISUAL APENAS)]] --
+-- OBS: O estado de GAMEPLAY agora reside nos Attributes do Character.
+-- ActiveWeapons é mantido APENAS para referência de limpeza visual (Destroy models).
+local ActiveWeapons = {} 
 
 -- Debounce
 local ToggleDebounce = {}
@@ -44,7 +42,6 @@ local ToggleDebounce = {}
 -- 1. FUNÇÕES UTILITÁRIAS
 -- ============================================================================
 
--- Limpa todos os motores de handle
 local function ClearAllMotors(handle)
 	local motors = {"MainMotor", "RightArmMotor", "LeftArmMotor"}
 	for _, name in pairs(motors) do
@@ -53,112 +50,104 @@ local function ClearAllMotors(handle)
 	end
 end
 
--- Destrói qualquer Motor existente e cria um novo "limpo" (Reset Absoluto)
 local function ForceNewMotor(weaponModel, targetPart, cframeValue)
 	local handle = weaponModel:FindFirstChild("Handle")
 	if not handle then return nil end
-
-	-- Limpeza total
 	ClearAllMotors(handle)
-
-	-- Criação limpa
 	local newMotor = Instance.new("Motor6D")
 	newMotor.Name = "MainMotor"
 	newMotor.Part0 = targetPart
 	newMotor.Part1 = handle
-	newMotor.C0 = CFrame.new() -- Pivô zerado
-	newMotor.C1 = cframeValue  -- Offset definido pela Tool (Posição + Rotação)
+	newMotor.C0 = CFrame.new() 
+	newMotor.C1 = cframeValue  
 	newMotor.Parent = handle
-
 	return newMotor
 end
 
--- Toca uma animação no Humanoid
 local function PlayAnimation(character, animId)
 	if not animId then return nil end
-
 	local humanoid = character:FindFirstChild("Humanoid")
 	if not humanoid then return nil end
-
 	local animator = humanoid:FindFirstChild("Animator") or Instance.new("Animator", humanoid)
 	local animation = Instance.new("Animation")
 	animation.AnimationId = animId
-
-	-- Para animações antigas se existirem (evita bugs de sobreposição)
+	-- Stop same anims
 	for _, track in pairs(animator:GetPlayingAnimationTracks()) do
-		if track.Animation.AnimationId == animId then
-			track:Stop()
-		end
+		if track.Animation.AnimationId == animId then track:Stop() end
 	end
-
 	local track = animator:LoadAnimation(animation)
 	track:Play()
 	return track
 end
 
--- Busca ID de animação (arma específica ou categoria)
 local function GetAnimationId(itemInfo, animName)
-	-- 1. Tenta pegar da arma específica
 	if itemInfo.Animations and itemInfo.Animations[animName] then
 		return itemInfo.Animations[animName]
 	end
-
-	-- 2. Se não tem, pega da categoria
 	if itemInfo.WeaponCategory then
 		local categoryData = ItemData.GetCategory(itemInfo.WeaponCategory)
 		if categoryData and categoryData.Animations and categoryData.Animations[animName] then
 			return categoryData.Animations[animName]
 		end
 	end
-
 	return nil
 end
 
 -- ============================================================================
--- 2. LÓGICA DE VISUALIZAÇÃO
+-- 2. LÓGICA DE ATRIBUTOS (Helpers)
+-- ============================================================================
+
+local function UpdateCombatState(character, inCombat, equippedWeaponName)
+    if not character then return end
+    character:SetAttribute("InCombat", inCombat)
+    character:SetAttribute("EquippedWeapon", equippedWeaponName or "")
+    if not inCombat then
+        character:SetAttribute("IsAttacking", false)
+        character:SetAttribute("IsBlocking", false)
+    end
+end
+
+-- ============================================================================
+-- 3. LÓGICA DE VISUALIZAÇÃO
 -- ============================================================================
 
 local function EquipVisual(player, itemName)
-	-- Apenas cria o modelo e coloca nas costas (SHEATH)
-    -- Lógica suporta Player ou NPC se adaptado, mas aqui EquipmentHandler está focado em Players (usa UserId)
-    -- Para NPCs, talvez tenhamos que generalizar no futuro, mas por enquanto mantemos foco em Players como o log indicou falha no InventoryService require.
-    
 	local character = player.Character
 	if not character then return end
 
 	local itemInfo = ItemData.Get(itemName)
 	if not itemInfo or not itemInfo.Model then return end
 
-	-- Se for equipamento de armadura, prende no corpo (Lógica simplificada para armadura)
-	if itemInfo.SlotType and itemInfo.SlotType ~= "Weapon" then
-		return 
-	end
+	if itemInfo.SlotType and itemInfo.SlotType ~= "Weapon" then return end
 
-	-- Limpa arma anterior visualmente
+	-- Limpa Visual Anterior
 	if ActiveWeapons[player.UserId] then
 		ActiveWeapons[player.UserId]:Destroy()
 		ActiveWeapons[player.UserId] = nil
 	end
 
-	-- Setup da Nova Arma
+	-- Cria Novo Visual
 	local weaponModel = itemInfo.Model:Clone()
 	weaponModel.Name = "Equipped_" .. itemName
 	weaponModel.Parent = character
 	ActiveWeapons[player.UserId] = weaponModel
 
+	-- Sheath (Costas)
 	local sheathPart = character:FindFirstChild(itemInfo.SheathPart or "Torso")
 	local backCF = weaponModel:FindFirstChild("Back") and weaponModel.Back.Value
 
-	-- Prende nas Costas (Sheath) imediatamente, sem animação
 	if sheathPart and backCF then
 		ForceNewMotor(weaponModel, sheathPart, backCF)
 	end
+    
+    -- Atualiza Atributo (Equipou, mas ainda não sacou -> InCombat=false por padrão aqui, ou mantem anterior?)
+    -- EquipItem geralmente guarda nas costas.
+    UpdateCombatState(character, false, itemName)
 end
 
 local function DrawWeapon(player, itemName)
-	-- Tira das costas -> Mão (Com Animação)
 	local character = player.Character
-	local weaponModel = ActiveWeapons[player.UserId]
+    local weaponModel = ActiveWeapons[player.UserId]
 	if not character or not weaponModel then return end
 
 	local itemInfo = ItemData.Get(itemName)
@@ -171,12 +160,8 @@ local function DrawWeapon(player, itemName)
 
 	if not handle or not handCF then return end
 
-	-- Função para criar os dois Motor6D
 	local function CreateBothMotors()
-		-- Limpa TODOS os motores antigos
 		ClearAllMotors(handle)
-
-		-- Cria Motor6D para Right Arm (único motor usado)
 		local rightMotor = Instance.new("Motor6D")
 		rightMotor.Name = "RightArmMotor"
 		rightMotor.Part0 = rightArm
@@ -185,29 +170,25 @@ local function DrawWeapon(player, itemName)
 		rightMotor.C1 = handCF
 		rightMotor.Enabled = true
 		rightMotor.Parent = handle
-
-		print("⚔️ [EquipmentHandler] Criado RightArmMotor")
 	end
 
 	local equipAnimId = GetAnimationId(itemInfo, "Equip")
-
 	if equipAnimId then
 		local track = PlayAnimation(character, equipAnimId)
 		if track then
 			track:GetMarkerReachedSignal("Reach"):Connect(function()
-				if weaponModel and weaponModel.Parent and rightArm and leftArm then
-					CreateBothMotors()
-				end
+				if weaponModel and weaponModel.Parent then CreateBothMotors() end
 			end)
 		end
 	else
-		-- Se não tem animação, cria direto
 		CreateBothMotors()
 	end
+    
+    -- Atualiza Atributo
+    UpdateCombatState(character, true, itemName)
 end
 
 local function SheathWeapon(player, itemName)
-	-- Tira da Mão -> Costas (Com Animação)
 	local character = player.Character
 	local weaponModel = ActiveWeapons[player.UserId]
 	if not character or not weaponModel then return end
@@ -226,42 +207,41 @@ local function SheathWeapon(player, itemName)
 	end
 
 	local unequipAnimId = GetAnimationId(itemInfo, "Unequip")
-
 	if unequipAnimId then
 		local track = PlayAnimation(character, unequipAnimId)
 		if track then
-			track:GetMarkerReachedSignal("Reach"):Connect(function()
-				SwapToBack()
-			end)
-			-- Fallback
-			track.Stopped:Connect(function() SwapToBack() end)
+			track:GetMarkerReachedSignal("Reach"):Connect(SwapToBack)
+			track.Stopped:Connect(SwapToBack)
 		else
 			SwapToBack()
 		end
 	else
 		SwapToBack()
 	end
+    
+    -- Atualiza Atributo
+    UpdateCombatState(character, false, itemName)
 end
 
 local function UnequipVisual(player, itemName)
-	-- Remove totalmente o modelo (do jogo)
 	local weaponModel = ActiveWeapons[player.UserId]
 	if weaponModel then 
 		weaponModel:Destroy() 
 		ActiveWeapons[player.UserId] = nil
 	end
-
-	-- RESETA ESTADO DE COMBATE NO SERVIDOR (sincroniza com cliente)
-	PlayerInCombat[player.UserId] = false
-	print("🕊️ [UnequipVisual] PlayerInCombat resetado para:", player.Name)
+    
+    -- Atualiza Atributo
+    if player.Character then
+        UpdateCombatState(player.Character, false, "")
+    end
 end
 
 -- ============================================================================
--- 3. GERENCIAMENTO DE EVENTOS
+-- 4. EVENTOS & ORQUESTRAÇÃO
 -- ============================================================================
 
 CombatEvent.Event:Connect(function(action, player, itemName)
-	print("🛡️ [EquipmentHandler] Ação Recebida:", action, "| Item:", itemName)
+	-- print("🛡️ [EquipmentHandler] Ação:", action, "| Item:", itemName)
 
 	if action == "Equip" then
 		EquipVisual(player, itemName)
@@ -274,57 +254,56 @@ CombatEvent.Event:Connect(function(action, player, itemName)
 	end
 end)
 
--- ============================================================================
--- RECEBE ESTADO DE COMBATE DO CLIENTE
--- ============================================================================
+-- Sincronia de Estado Client -> Server Attributes
 CombatStateEvent.OnServerEvent:Connect(function(player, stateType, value)
+    local char = player.Character
+    if not char then return end
+    
 	if stateType == "Attacking" then
-		PlayerAttackState[player.UserId] = value or false
+		char:SetAttribute("IsAttacking", value or false)
 	elseif stateType == "Blocking" then
-		PlayerBlockState[player.UserId] = value or false
+		char:SetAttribute("IsBlocking", value or false)
 	end
 end)
 
--- ============================================================================
--- TOGGLE COMBAT ('T') - SACAR/GUARDAR ARMA
--- ============================================================================
+-- Toggle Combat ('T')
 ToggleCombatEvent.OnServerEvent:Connect(function(player)
-	-- Debounce
 	local now = tick()
 	local lastToggle = ToggleDebounce[player.UserId] or 0
 	if (now - lastToggle) < 0.8 then return end
 	ToggleDebounce[player.UserId] = now
 
-	-- VALIDAÇÃO: Bloqueia toggle durante ataque ou bloqueio
-	if PlayerAttackState[player.UserId] then
-		print("⚠️ [EquipmentHandler] Bloqueado: Player", player.Name, "está atacando!")
+    local char = player.Character
+    if not char then return end
+
+	-- VALIDAÇÃO VIA ATRIBUTOS
+	if char:GetAttribute("IsAttacking") then
+		print("⚠️ Bloqueado: Atacando")
 		return
 	end
 
-	if PlayerBlockState[player.UserId] then
-		print("⚠️ [EquipmentHandler] Bloqueado: Player", player.Name, "está bloqueando!")
+	if char:GetAttribute("IsBlocking") then
+		print("⚠️ Bloqueado: Bloqueando")
 		return
 	end
 
-	-- Verifica se tem arma equipada no slot Weapon do inventário
-	-- ALTERAÇÃO: Usa InventoryHandler.Registry
+	-- Busca arma equipada no handler
 	local weaponItem = nil
     local handler = InventoryHandler.Registry[player]
-    
 	if handler then
 		local gear = handler:GetGear()
 		weaponItem = gear and gear["Weapon"]
 	end
 
 	if not weaponItem then 
-		print("⚠️ [EquipmentHandler] Player", player.Name, "não tem arma equipada no slot Weapon")
+		print("⚠️ Sem arma equipada")
 		return 
 	end
 
-	-- Toggle state
-	local inCombat = not (PlayerInCombat[player.UserId] or false)
-	PlayerInCombat[player.UserId] = inCombat
-
+	-- Toggle via Atributo
+	local inCombat = not char:GetAttribute("InCombat")
+    -- O visual atualiza o atributo, mas aqui decidimos a ação
+    
 	if inCombat then
 		CombatEvent:Fire("DrawWeapon", player, weaponItem.Name) 
 	else
@@ -332,13 +311,9 @@ ToggleCombatEvent.OnServerEvent:Connect(function(player)
 	end
 end)
 
--- Cleanup
 Players.PlayerRemoving:Connect(function(player)
 	ActiveWeapons[player.UserId] = nil
-	PlayerInCombat[player.UserId] = nil
-	PlayerAttackState[player.UserId] = nil
-	PlayerBlockState[player.UserId] = nil
 	ToggleDebounce[player.UserId] = nil
 end)
 
-print("✅ EquipmentHandler Iniciado e Corrigido (Refatorado)")
+print("✅ EquipmentHandler Stateless (Attributes) Iniciado")

@@ -117,6 +117,38 @@ function StatsHandler.GetHandler(entity)
     return StatsHandler.Registry[entity]
 end
 
+-- ======================================================================
+-- LOGICA DE COMBATE (Cálculo de Dano)
+-- ======================================================================
+
+function StatsHandler:CalculateHit(targetStatsHandler, weaponName, attackType)
+    local attackerStats = self:GetStats()
+    local defenderStats = targetStatsHandler and targetStatsHandler:GetStats() or {Defense = 0}
+    
+    -- Busca dados da arma
+    local itemData = ItemData.Get(weaponName)
+    local weaponDamage = itemData and itemData.Damage or 0
+    
+    -- Fórmula Básica: O Stats já inclui o dano da arma (via Recalculate)
+    local rawDamage = attackerStats.Damage
+    
+    -- Crítico
+    local isCrit = (math.random(100) <= attackerStats.CritChance)
+    if isCrit then
+        rawDamage = rawDamage * (attackerStats.CritDamage / 100)
+    end
+    
+    -- Defesa (Redução percentual ou fixa? Vamos assumir Fixa Flat por enquanto, mas com cap de min damage)
+    -- Se Defense for 10, reduz 10 de dano.
+    local finalDamage = math.max(rawDamage - defenderStats.Defense, 1) -- Garante ao menos 1 de dano
+    
+    return {
+        Damage = finalDamage,
+        IsCritical = isCrit,
+        PostureDamage = 0 -- Será calculado pelo Posture logic ou aqui?
+        -- Posture damage geralmente depende da arma vs block. Vamos deixar PostureHandler lidar com o AMOUNT específico ou Stats retornar base.
+    }
+end
 
 -- ======================================================================
 -- INIT
