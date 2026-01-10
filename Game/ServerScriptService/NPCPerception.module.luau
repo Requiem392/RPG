@@ -40,7 +40,7 @@ local HearingConfig = {
 
 local MemoryConfig = {
 	RetentionTime = 5,       -- Tempo que lembra do alvo (segundos)
-	SuspectDuration = 12     -- Tempo que mantém suspeita auditiva (segundos)
+	SuspectDuration = 2.5    -- Tempo que mantém suspeita auditiva (segundos)
 }
 
 -- ======================================================================

@@ -1,9 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 local Debris = game:GetService("Debris")
 
 -- Módulos
 local ItemData = require(game.ReplicatedStorage:WaitForChild("Data"):WaitForChild("ItemData"))
+local Modules = ServerScriptService:WaitForChild("Modules")
+local DefenseService = require(Modules:WaitForChild("DefenseService"))
+local PostureService = require(Modules:WaitForChild("PostureService"))
 
 -- Eventos
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
@@ -76,13 +80,12 @@ local function ApplyDamage(player, targetChar, hitPosition)
 
 	-- Identifica o player alvo
 	local targetPlayer = game.Players:GetPlayerFromCharacter(targetChar)
-	local defenseHandler = _G.DefenseHandler
-
+	
 	-- Verifica Parry
-	if targetPlayer and defenseHandler and defenseHandler.IsPlayerParrying(targetPlayer) then
+	if targetPlayer and DefenseService.IsPlayerParrying(targetPlayer) then
 		print("⚔️ PARRY BEM-SUCEDIDO!", targetPlayer.Name, "contra-atacou!")
 
-		local parryDamage = defenseHandler.OnParrySuccess(targetPlayer, player)
+		local parryDamage = DefenseService.OnParrySuccess(targetPlayer, player)
 		if parryDamage > 0 and player.Character then
 			local attackerHumanoid = player.Character:FindFirstChild("Humanoid")
 			if attackerHumanoid then
@@ -94,7 +97,7 @@ local function ApplyDamage(player, targetChar, hitPosition)
 	end
 
 	-- Verifica Block
-	if targetPlayer and defenseHandler and defenseHandler.IsPlayerBlocking(targetPlayer) then
+	if targetPlayer and DefenseService.IsPlayerBlocking(targetPlayer) then
 		print("🛡️ BLOQUEADO!", targetPlayer.Name, "bloqueou o ataque")
 
 		-- === DANO DE POSTURA ===
@@ -121,11 +124,8 @@ local function ApplyDamage(player, targetChar, hitPosition)
 				local postureDmg = attackerCategory.Stats.PostureDamage - defenderCategory.Stats.PostureNegate
 				postureDmg = math.max(postureDmg, 5) -- Mínimo 5
 				
-				local postureHandler = _G.PostureHandler
-				if postureHandler then
-					postureHandler.DamagePosture(targetPlayer, postureDmg)
-					print("⚖️ Dano de postura:", postureDmg)
-				end
+				PostureService.DamagePosture(targetPlayer, postureDmg)
+				print("⚖️ Dano de postura:", postureDmg)
 			end
 		end
 
@@ -166,11 +166,8 @@ local function ApplyDamage(player, targetChar, hitPosition)
 					local postureDmg = math.floor(attackerCategory.Stats.PostureDamage * 0.5)
 					postureDmg = math.max(postureDmg, 3) -- Mínimo 3
 					
-					local postureHandler = _G.PostureHandler
-					if postureHandler then
-						postureHandler.DamagePosture(targetPlayer, postureDmg)
-						print("⚖️ Postura drenada (hit durante ataque):", postureDmg)
-					end
+					PostureService.DamagePosture(targetPlayer, postureDmg)
+					print("⚖️ Postura drenada (hit durante ataque):", postureDmg)
 				end
 			end
 		end

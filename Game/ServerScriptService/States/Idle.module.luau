@@ -1,11 +1,13 @@
--- States/Idle.module.luau
+-- States/Idle.lua
 local Idle = {}
 
-local ServerScriptService = game:GetService("ServerScriptService")
-local NPCMovement = require(ServerScriptService.NPCMovement)
-
 function Idle.Enter(npc, context)
-	NPCMovement.Stop(npc)
+	-- Para animação de movimento
+	local humanoid = npc:FindFirstChild("Humanoid")
+	if humanoid then
+		humanoid:MoveTo(npc.PrimaryPart.Position) -- Para movimento
+	end
+	
 	-- print(npc.Name .. " entrou em Idle")
 end
 

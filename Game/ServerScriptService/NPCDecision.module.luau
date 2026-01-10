@@ -78,19 +78,6 @@ function NPCDecision.DecideNextState(npc, perceptionData, currentStateName, cont
 	end
 	
 	-- 5. REAÇÃO A SUSPEITA (Sem visão, mas ouviu algo)
-	-- Se está em Alert, verifica trava de investigação
-	if currentStateName == "Alert" then
-		-- Se tem VISÃO, interrompe e persegue (prioridade alta)
-		if perceptionData.HasVisual then
-			return "Chase" -- Chase sempre vence Alert
-		end
-		
-		-- Se está travado na investigação, NÃO SAI (ignora timeouts ou outros sons menores)
-		if context and context.InvestigationLocked then
-			return nil 
-		end
-	end
-	
 	if not perceptionData.HasVisual and not perceptionData.LastSeenPosition and perceptionData.HasSuspicion then
 		if currentStateName ~= "Alert" then
 			return "Alert"

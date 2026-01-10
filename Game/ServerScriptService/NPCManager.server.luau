@@ -14,7 +14,6 @@ local RunService = game:GetService("RunService")
 local NPCPerception = require(script.Parent.NPCPerception)
 local NPCStateMachine = require(script.Parent.NPCStateMachine)
 local NPCDecision = require(script.Parent.NPCDecision)
-local NPCMovement = require(script.Parent.NPCMovement)
 
 -- ======================================================================
 -- CONFIGURAÇÃO
@@ -77,8 +76,6 @@ local function SpawnNPC(position)
 	NPCPerception.InitializeNPC(npc)
 	-- Inicializa State Machine (Inicia em Idle)
 	NPCStateMachine.InitializeNPC(npc)
-	-- Inicializa Movimento
-	NPCMovement.InitializeNPC(npc)
 	
 	-- Adiciona à lista de NPCs ativos
 	table.insert(ActiveNPCs, npc)
@@ -108,7 +105,6 @@ function RemoveNPC(npc)
 	-- Cleanup de percepção
 	NPCPerception.Cleanup(npc)
 	NPCStateMachine.Cleanup(npc)
-	NPCMovement.Cleanup(npc)
 	
 	-- Remove do workspace após delay
 	task.delay(3, function()
@@ -179,9 +175,6 @@ RunService.Heartbeat:Connect(function(step)
 			
 			-- 3. State Machine Update (Todo frame)
 			NPCStateMachine.Update(npc, step)
-			
-			-- 4. Movimento (Todo frame)
-			NPCMovement.Update(npc, step)
 		end
 	end
 	

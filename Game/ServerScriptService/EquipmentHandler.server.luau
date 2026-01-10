@@ -1,10 +1,14 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 
 -- [[ MÓDULOS E DADOS ]] --
 local DataFolder = ReplicatedStorage:WaitForChild("Data")
 local ItemData = require(DataFolder:WaitForChild("ItemData"))
+
+local Modules = ServerScriptService:WaitForChild("Modules")
+local InventoryService = require(Modules:WaitForChild("InventoryService"))
 
 local ServerEvents = ServerStorage:WaitForChild("ServerEvents")
 local CombatEvent = ServerEvents:WaitForChild("CombatSystem")
@@ -305,10 +309,10 @@ ToggleCombatEvent.OnServerEvent:Connect(function(player)
 	end
 
 	-- Verifica se tem arma equipada no slot Weapon do inventário
-	-- (Essa informação vem do InventoryHandler via _G ou podemos consultar)
+	-- (Essa informação vem do InventoryHandler/InventoryService)
 	local weaponItem = nil
-	if _G.InventoryHandler and _G.InventoryHandler.GetPlayerGear then
-		local gear = _G.InventoryHandler.GetPlayerGear(player)
+	if InventoryService.GetPlayerGear then
+		local gear = InventoryService.GetPlayerGear(player)
 		weaponItem = gear and gear["Weapon"]
 	end
 
