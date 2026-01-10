@@ -38,21 +38,16 @@ function DefenseHandler.new(owner)
     self.Owner = owner
     self.State = DefenseManager.CreateDefenseState()
     
-    -- Se for player, registra para Networking
-    if owner:IsA("Player") then
-        DefenseHandler.Registry[owner] = self
-        print("🛡️ [DefenseHandler] Estado criado para Player:", owner.Name)
-    else
-        print("🛡️ [DefenseHandler] Estado criado para NPC/Entity:", owner.Name)
-    end
+    -- Registra TODOS (Player ou NPC)
+    DefenseHandler.Registry[owner] = self
+    print("🛡️ [DefenseHandler] Estado criado para:", owner.Name)
 
     return self
 end
 
 function DefenseHandler:Destroy()
-    if self.Owner:IsA("Player") then
-        DefenseHandler.Registry[self.Owner] = nil
-    end
+    -- Remove do Registry (seja Player ou NPC)
+    DefenseHandler.Registry[self.Owner] = nil
     self.State = nil
     self.Owner = nil
 end
@@ -148,11 +143,7 @@ end
 
 -- Método para recuperar a instância de defesa de uma entidade (Player ou NPC se registrado)
 function DefenseHandler.GetHandler(entity)
-    if entity:IsA("Player") then
-        return DefenseHandler.Registry[entity]
-    end
-    -- TODO: Implementar lookup para NPCs se não forem Players (usando CollectionService ou atributo?)
-    return nil
+    return DefenseHandler.Registry[entity]
 end
 
 

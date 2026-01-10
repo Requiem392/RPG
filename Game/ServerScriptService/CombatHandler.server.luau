@@ -58,17 +58,12 @@ local function ProcessHit(attackerPlayer, targetChar, hitPosition)
     
     local targetEntity = Players:GetPlayerFromCharacter(targetChar) or targetChar -- Player ou Model
     
-    -- 2. Identifica Arma (Estado via Atributo seria ideal, mas pegamos visual por segurança aqui)
-    -- Ou melhor: InventoryHandler.Registry[attackerPlayer]:GetGear().Weapon?
-    -- Vamos usar o que já funciona para pegar o nome da arma do modelo visual para garantir sync com animação.
-    local weaponName = nil
-	for _, child in pairs(attackerChar:GetChildren()) do
-		if child:IsA("Model") and child:FindFirstChild("Hitbox") then
-			weaponName = string.gsub(child.Name, "Equipped_", "")
-			break
-		end
-	end
-    if not weaponName then return end
+
+    
+    -- 2. Identifica Arma (Estado via Atributo - Fonte da verdade)
+    local weaponName = attackerChar:GetAttribute("EquippedWeapon")
+    
+    if not weaponName or weaponName == "" then return end
     
     local itemInfo = ItemData.Get(weaponName)
     if not itemInfo then return end

@@ -44,9 +44,10 @@ function PostureHandler.new(owner)
     self.Owner = owner
     self.Posture = CONFIG.MaxPosture
     
+    -- Registra (Player e NPC)
+    PostureHandler.Registry[owner] = self
+    
     if owner:IsA("Player") then
-        PostureHandler.Registry[owner] = self
-        
         -- Envia estado inicial para cliente
         PostureUpdate:FireClient(owner, "Init", {
             Posture = CONFIG.MaxPosture
@@ -60,9 +61,7 @@ function PostureHandler.new(owner)
 end
 
 function PostureHandler:Destroy()
-    if self.Owner:IsA("Player") then
-        PostureHandler.Registry[self.Owner] = nil
-    end
+    PostureHandler.Registry[self.Owner] = nil
     self.Owner = nil
 end
 
@@ -118,15 +117,8 @@ end
 
 function PostureHandler:Update(dt)
     -- Regeneração
-    -- Precisa checar se ESTÁ BLOQUEANDO.
-    local isBlocking = false
-    
-    if DefenseHandler then
-        local defHandler = DefenseHandler.GetHandler(self.Owner)
-        if defHandler then
-            isBlocking = defHandler:IsBlocking()
-        end
-    end
+    -- Precisa checar se ESTÁ BLOQUEANDO (Via Atributo - Decoupled)
+    local isBlocking = self.Owner:GetAttribute("IsBlocking") == true
     
     if not isBlocking and self.Posture < CONFIG.MaxPosture then
         self.Posture = math.min(self.Posture + CONFIG.RegenRate * dt, CONFIG.MaxPosture)
