@@ -8,7 +8,8 @@ local DataFolder = ReplicatedStorage:WaitForChild("Data")
 local ItemData = require(DataFolder:WaitForChild("ItemData"))
 
 local Modules = ServerScriptService:WaitForChild("Modules")
-local InventoryService = require(Modules:WaitForChild("InventoryService"))
+-- ALTERAÇÃO: InventoryService -> InventoryHandler (Classe Modulares)
+local InventoryHandler = require(Modules:WaitForChild("InventoryHandler"))
 
 local ServerEvents = ServerStorage:WaitForChild("ServerEvents")
 local CombatEvent = ServerEvents:WaitForChild("CombatSystem")
@@ -117,12 +118,11 @@ end
 -- 2. LÓGICA DE VISUALIZAÇÃO
 -- ============================================================================
 
--- ============================================================================
--- 2. LÓGICA DE VISUALIZAÇÃO
--- ============================================================================
-
 local function EquipVisual(player, itemName)
 	-- Apenas cria o modelo e coloca nas costas (SHEATH)
+    -- Lógica suporta Player ou NPC se adaptado, mas aqui EquipmentHandler está focado em Players (usa UserId)
+    -- Para NPCs, talvez tenhamos que generalizar no futuro, mas por enquanto mantemos foco em Players como o log indicou falha no InventoryService require.
+    
 	local character = player.Character
 	if not character then return end
 
@@ -131,8 +131,6 @@ local function EquipVisual(player, itemName)
 
 	-- Se for equipamento de armadura, prende no corpo (Lógica simplificada para armadura)
 	if itemInfo.SlotType and itemInfo.SlotType ~= "Weapon" then
-		-- Lógica de armadura (Por enquanto apenas ignora ou solda no Character)
-		-- Futuramente implementar Weld no BodyPart correto
 		return 
 	end
 
@@ -309,15 +307,17 @@ ToggleCombatEvent.OnServerEvent:Connect(function(player)
 	end
 
 	-- Verifica se tem arma equipada no slot Weapon do inventário
-	-- (Essa informação vem do InventoryHandler/InventoryService)
+	-- ALTERAÇÃO: Usa InventoryHandler.Registry
 	local weaponItem = nil
-	if InventoryService.GetPlayerGear then
-		local gear = InventoryService.GetPlayerGear(player)
+    local handler = InventoryHandler.Registry[player]
+    
+	if handler then
+		local gear = handler:GetGear()
 		weaponItem = gear and gear["Weapon"]
 	end
 
 	if not weaponItem then 
-		print("⚠️ [EquipmentHandler] Player", player.Name, "não tem arma equipada")
+		print("⚠️ [EquipmentHandler] Player", player.Name, "não tem arma equipada no slot Weapon")
 		return 
 	end
 
@@ -341,4 +341,4 @@ Players.PlayerRemoving:Connect(function(player)
 	ToggleDebounce[player.UserId] = nil
 end)
 
-print("✅ EquipmentHandler Iniciado")
+print("✅ EquipmentHandler Iniciado e Corrigido (Refatorado)")
