@@ -12,6 +12,11 @@ local RunService = game:GetService("RunService")
 
 -- Módulos
 local ResourceManager = require(ReplicatedStorage:WaitForChild("ResourceManager"))
+local Modules = game:GetService("ServerScriptService"):WaitForChild("Modules") 
+-- SoundManager está em ReplicatedStorage/Modules agora, mas vamos checar onde o user pediu. 
+-- User pediu em ReplicatedStorage/Modules.
+local ReplicatedModules = ReplicatedStorage:WaitForChild("Modules")
+local SoundManager = require(ReplicatedModules:WaitForChild("SoundManager"))
 
 -- Remotes
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
@@ -158,6 +163,32 @@ RunService.Heartbeat:Connect(function()
 		local oldMana = resources.Mana.Current
 
 		resources:Update(deltaTime)
+
+		-- LOW STAMINA LOGIC
+		if player.Character then
+			local humanoid = player.Character:FindFirstChild("Humanoid")
+			if humanoid then
+				local maxStamina = resources.Stamina.Max
+				local currentStamina = resources.Stamina.Current
+				local ratio = currentStamina / maxStamina
+				
+				local isLowStamina = ratio < 0.25
+				if humanoid:GetAttribute("LowStamina") ~= isLowStamina then
+					humanoid:SetAttribute("LowStamina", isLowStamina)
+					
+					local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
+					if rootPart then
+						if isLowStamina then
+							-- Create & Play Sound via SoundManager
+							SoundManager.PlaySound("rbxassetid://1386876127", rootPart, 1.0, true, "TiredBreathingSound")
+						else
+							-- Fade Out & Destroy Sound via SoundManager
+							SoundManager.DestroySound(rootPart, "TiredBreathingSound", 1.0)
+						end
+					end
+				end
+			end
+		end
 
 		-- Se mudou, notifica cliente
 		if resources.Stamina.Current ~= oldStamina or resources.Mana.Current ~= oldMana then

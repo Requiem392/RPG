@@ -41,7 +41,7 @@ local LastSwingSide = "Right" -- Começa com Right para próximo ataque ser Left
 local IsAttacking = false
 local LoadedAnims = {}
 local CurrentWeaponCategory = nil
-local SoundCache = {}
+-- SoundCache removido (Server-side audio agora)
 local IdleTrack = nil -- Track da animação Idle
 local PlayerHitbox = nil -- Hitbox local do cliente
 local HitCooldowns = {} -- Anti-spam: {[target] = lastHitTime}
@@ -55,6 +55,7 @@ local BlockDrainConnection = nil
 -- Variáveis para lock de movimento no stun
 local OriginalWalkSpeed = 16
 local OriginalJumpPower = 50
+local OriginalJumpHeight = 7.2 -- Valor padrão do Roblox
 local StunExpirationTime = 0
 
 -- Estado de Feint
@@ -142,30 +143,14 @@ local function LoadAnimations(weaponCategory, weaponItemInfo)
 	print("⚔️ Animações carregadas para categoria:", weaponCategory)
 end
 
--- Carrega sons da categoria
+-- Carrega sons (REMOVIDO - Server-side agora)
 local function LoadSounds(weaponCategory)
-	SoundCache = {}
-
-	if not weaponCategory then return end
-
-	local categoryData = ItemData.GetCategory(weaponCategory)
-	if not categoryData or not categoryData.Sounds then return end
-
-	for soundName, soundId in pairs(categoryData.Sounds) do
-		local sound = Instance.new("Sound")
-		sound.SoundId = soundId
-		sound.Volume = 0.5
-		sound.Parent = RootPart
-		SoundCache[soundName] = sound
-	end
+	-- No-op: Sounds are handled by server
 end
 
--- Toca um som
+-- Toca um som (REMOVIDO - Server-side agora)
 local function PlaySound(soundName)
-	local sound = SoundCache[soundName]
-	if sound then
-		sound:Play()
-	end
+	-- No-op
 end
 
 -- === SISTEMA DE HITBOX CLIENT-SIDE ===
@@ -496,8 +481,8 @@ local function Attack()
 		startConnection = track:GetMarkerReachedSignal("Start"):Connect(function()
 			print("🗡️ Hitbox ATIVADA (evento Start)")
 
-			-- Som de swing (sincronizado)
-			PlaySound("Swing")
+			-- Som de swing (Server-side)
+			CombatRemote:FireServer("AttackAudio") -- Fire remote to play sound on server
 
 			-- Dash inteligente (sincronizado com hitbox)
 			SmartDash()
@@ -967,8 +952,7 @@ DefenseEvent.OnClientEvent:Connect(function(action, data)
 		end)
 
 	elseif action == "ParrySuccess" then
-		-- Parry bem-sucedido! Toca som
-		PlaySound("Parry")
+		-- Parry bem-sucedido! (Som no servidor)
 		print("⚔️ [CombatController] PARRY BEM-SUCEDIDO!")
 
 	elseif action == "BlockSuccess" then

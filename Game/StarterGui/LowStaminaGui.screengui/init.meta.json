@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "ResetOnSpawn": false,
+    "IgnoreGuiInset": true,
+    "Name": "LowStaminaGui",
+    "ZIndexBehavior": "Sibling"
+  }
+}

@@ -13,6 +13,9 @@ local DefenseHandler = require(Modules:WaitForChild("DefenseHandler"))
 local PostureHandler = require(Modules:WaitForChild("PostureHandler"))
 local StatsHandler = require(Modules:WaitForChild("StatsHandler"))
 
+local ReplicatedModules = ReplicatedStorage:WaitForChild("Modules")
+local SoundManager = require(ReplicatedModules:WaitForChild("SoundManager"))
+
 -- Eventos
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local CombatRemote = Remotes:WaitForChild("CombatAction")
@@ -103,7 +106,10 @@ local function ProcessHit(attackerPlayer, targetChar, hitPosition)
         end
         
         -- 3. VFX/Sound Parry
-        -- TODO: Adicionar som de Parry aqui
+        local parrySoundId = ItemData.GetCategorySound(itemInfo.WeaponCategory, "Parry")
+        if parrySoundId then
+            SoundManager.PlaySound(parrySoundId, targetChar:FindFirstChild("HumanoidRootPart"), 1.0, false, "Parry")
+        end
         return
     end
     
@@ -114,12 +120,7 @@ local function ProcessHit(attackerPlayer, targetChar, hitPosition)
         -- 1. VFX/Sound Block
         local blockSoundId = ItemData.GetCategorySound(itemInfo.WeaponCategory, "Block")
         if blockSoundId then
-            local sound = Instance.new("Sound")
-            sound.SoundId = blockSoundId
-            sound.Volume = 0.8
-            sound.Parent = targetChar:FindFirstChild("HumanoidRootPart") or targetChar.PrimaryPart
-            sound:Play()
-            Debris:AddItem(sound, 2)
+            SoundManager.PlaySound(blockSoundId, targetChar:FindFirstChild("HumanoidRootPart"), 0.8, false, "Block")
         end
         
         -- 2. Posture Damage
@@ -156,12 +157,7 @@ local function ProcessHit(attackerPlayer, targetChar, hitPosition)
         -- 4. Som
         local hitSoundId = ItemData.GetCategorySound(itemInfo.WeaponCategory, "Hit")
         if hitSoundId then
-            local sound = Instance.new("Sound")
-            sound.SoundId = hitSoundId
-            sound.Volume = 0.7
-            sound.Parent = targetChar:FindFirstChild("HumanoidRootPart") or targetChar.PrimaryPart
-            sound:Play()
-            Debris:AddItem(sound, 2)
+            SoundManager.PlaySound(hitSoundId, targetChar:FindFirstChild("HumanoidRootPart"), 0.7, false, "Hit")
         end
         
         print("💥 Hit:", hitData.Damage, "Crit:", hitData.IsCritical)
@@ -179,6 +175,22 @@ CombatRemote.OnServerEvent:Connect(function(player, action, ...)
         
 		if ValidateHit(player, targetChar, hitPosition) then
 			ProcessHit(player, targetChar, hitPosition)
+		end
+		
+	elseif action == "AttackAudio" then
+		-- Toca som de swing no servidor para replicação
+		local char = player.Character
+		if char then
+			local weaponName = char:GetAttribute("EquippedWeapon")
+			if weaponName then
+				local itemInfo = ItemData.Get(weaponName)
+				if itemInfo then
+					local swingSoundId = ItemData.GetCategorySound(itemInfo.WeaponCategory, "Swing")
+					if swingSoundId then
+						SoundManager.PlaySound(swingSoundId, char:FindFirstChild("HumanoidRootPart"), 0.5, false, "Swing")
+					end
+				end
+			end
 		end
 	end
 end)
