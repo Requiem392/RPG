@@ -9,12 +9,14 @@ local StatsHandler = require(Modules:WaitForChild("StatsHandler"))
 local DefenseHandler = require(Modules:WaitForChild("DefenseHandler"))
 local PostureHandler = require(Modules:WaitForChild("PostureHandler"))
 local InventoryHandler = require(Modules:WaitForChild("InventoryHandler"))
+local SprintHandler = require(Modules:WaitForChild("SprintHandler"))
 
 -- Inicializa Componentes Estáticos (Networking, Loops Globais)
 StatsHandler.Init()
 DefenseHandler.Init()
 PostureHandler.Init()
 InventoryHandler.Init()
+SprintHandler.Init()
 
 -- Gerenciamento de Sessão
 local PlayerSessions = {}
@@ -50,7 +52,8 @@ local function SetupPlayer(player)
         Stats = StatsHandler.new(player),
         Defense = DefenseHandler.new(player),
         Posture = PostureHandler.new(player),
-        Inventory = InventoryHandler.new(player)
+        Inventory = InventoryHandler.new(player),
+		Sprint = SprintHandler.new(player)
 	}
 
 	PlayerSessions[player] = session
@@ -66,6 +69,7 @@ local function CleanupPlayer(player)
         if session.Posture then session.Posture:Destroy() end
         if session.Defense then session.Defense:Destroy() end
         if session.Stats then session.Stats:Destroy() end
+		if session.Sprint then session.Sprint:Destroy() end
         
 		PlayerSessions[player] = nil
 	end

@@ -23,6 +23,18 @@ local ResourceRequest = Instance.new("RemoteFunction")
 ResourceRequest.Name = "ResourceRequest"
 ResourceRequest.Parent = Remotes
 
+local ServerStorage = game:GetService("ServerStorage")
+local ServerEvents = ServerStorage:FindFirstChild("ServerEvents")
+if not ServerEvents then
+	ServerEvents = Instance.new("Folder")
+	ServerEvents.Name = "ServerEvents"
+	ServerEvents.Parent = ServerStorage
+end
+
+local ResourceBindable = Instance.new("BindableFunction")
+ResourceBindable.Name = "ResourceBindable"
+ResourceBindable.Parent = ServerEvents
+
 -- Estado
 local PlayerResources = {} -- { [Player] = PlayerResources }
 
@@ -118,6 +130,18 @@ ResourceRequest.OnServerInvoke = function(player, action, amount)
 		return resources and resources.Stamina.Current or 0
 	end
 
+	return false
+end
+
+-- Server-Side API (via BindableFunction)
+ResourceBindable.OnInvoke = function(action, player, amount)
+	if action == "UseStamina" then
+		return UseStamina(player, amount)
+	elseif action == "CanAffordStamina" then
+		return CanAffordStamina(player, amount)
+	elseif action == "UseMana" then
+		return UseMana(player, amount)
+	end
 	return false
 end
 
